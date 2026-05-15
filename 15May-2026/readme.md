@@ -1,0 +1,1 @@
+my name is amit. I am working in owninfotech pvt company as full stack developer. My hobies are listning musics and reading books, medidation. My short term goal is to be rich.
