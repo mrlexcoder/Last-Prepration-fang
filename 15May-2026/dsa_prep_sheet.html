@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:transparent;color:var(--color-text-primary);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+button,select,input{font-family:var(--font-sans);font-size:13px;background:transparent;color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer}
+button:hover{background:var(--color-background-secondary)}
+input{padding:6px 10px;width:100%}
+select{padding:6px 10px}
+.tab-active{border:2px solid var(--color-border-info)!important;background:var(--color-background-info)!important;color:var(--color-text-info)!important}
+.row-even{background:var(--color-background-primary)}
+.row-odd{background:var(--color-background-secondary)}
+a{color:var(--color-text-info);text-decoration:none}
+</style>
+</head>
+<body>
+<div id="root" style="padding:1.5rem 1rem;max-width:900px;margin:0 auto"></div>
+
+<script>
+h2("sr-only","DSA Interview Preparation Sheet — 200+ questions, 25 topics");
+
+const D={
+  topics:[
+    {id:"arrays",name:"Arrays",qs:[
+      {id:1,name:"Two Sum",d:"Easy",co:["Google","Amazon","Microsoft","Meta","Adobe"],hint:"HashMap complement lookup",pat:"HashMap",lc:"LC-1",must:true,beg:true,faang:false},
+      {id:2,name:"Best Time to Buy & Sell Stock",d:"Easy",co:["Amazon","Meta","Google","Microsoft"],hint:"Track min price, max profit",pat:"Greedy",lc:"LC-121",must:true,beg:true,faang:false},
+      {id:3,name:"Contains Duplicate",d:"Easy",co:["Amazon","Google","Apple"],hint:"HashSet O(n) lookup",pat:"HashSet",lc:"LC-217",must:false,beg:true,faang:false},
+      {id:4,name:"Product of Array Except Self",d:"Medium",co:["Amazon","Meta","Google","Microsoft","Apple"],hint:"Left and right prefix products",pat:"Prefix Products",lc:"LC-238",must:true,beg:false,faang:true},
+      {id:5,name:"Maximum Subarray (Kadane's)",d:"Medium",co:["Amazon","Google","Microsoft","TCS","Infosys"],hint:"max(nums[i], prev+nums[i])",pat:"Kadane's Algorithm",lc:"LC-53",must:true,beg:false,faang:true},
+      {id:6,name:"Maximum Product Subarray",d:"Medium",co:["Amazon","LinkedIn","Google"],hint:"Track max and min (negatives!)",pat:"Dynamic Programming",lc:"LC-152",must:true,beg:false,faang:true},
+      {id:7,name:"Search in Rotated Sorted Array",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"Binary search with rotation check",pat:"Binary Search",lc:"LC-33",must:true,beg:false,faang:true},
+      {id:8,name:"3Sum",d:"Medium",co:["Google","Amazon","Meta","Adobe"],hint:"Sort + two pointers per element",pat:"Two Pointers",lc:"LC-15",must:true,beg:false,faang:true},
+      {id:9,name:"Container With Most Water",d:"Medium",co:["Amazon","Google","Meta","Bloomberg"],hint:"Move smaller side pointer",pat:"Two Pointers",lc:"LC-11",must:true,beg:false,faang:true},
+      {id:10,name:"Trapping Rain Water",d:"Hard",co:["Amazon","Google","Meta","Microsoft","Apple"],hint:"Precompute left/right max or stack",pat:"Two Pointers / Stack",lc:"LC-42",must:true,beg:false,faang:true},
+      {id:11,name:"Merge Intervals",d:"Medium",co:["Google","Meta","Amazon","Microsoft","Twitter"],hint:"Sort by start, merge overlapping",pat:"Sorting + Merge",lc:"LC-56",must:true,beg:false,faang:true},
+      {id:12,name:"Subarray Sum Equals K",d:"Medium",co:["Meta","Amazon","Google","Uber"],hint:"Prefix sum + HashMap",pat:"Prefix Sum + HashMap",lc:"LC-560",must:true,beg:false,faang:true},
+      {id:13,name:"Sort Colors (Dutch Flag)",d:"Medium",co:["Microsoft","Amazon","Google","Cognizant"],hint:"3-way partition",pat:"Dutch National Flag",lc:"LC-75",must:true,beg:false,faang:false},
+      {id:14,name:"Next Permutation",d:"Medium",co:["Google","Amazon","Microsoft"],hint:"Find descent, swap, reverse suffix",pat:"Array Manipulation",lc:"LC-31",must:false,beg:false,faang:false},
+      {id:15,name:"Rotate Array",d:"Medium",co:["Microsoft","Amazon","TCS","Wipro"],hint:"Reverse entire, then parts",pat:"Reversal Algorithm",lc:"LC-189",must:false,beg:true,faang:false},
+      {id:16,name:"Move Zeroes",d:"Easy",co:["Meta","Amazon","Accenture"],hint:"Slow/fast pointer",pat:"Two Pointers",lc:"LC-283",must:false,beg:true,faang:false},
+      {id:17,name:"Find Minimum in Rotated Array",d:"Medium",co:["Microsoft","Amazon","Meta"],hint:"Binary search on pivot",pat:"Binary Search",lc:"LC-153",must:false,beg:false,faang:true},
+      {id:18,name:"Spiral Matrix",d:"Medium",co:["Microsoft","Amazon","Apple","Google"],hint:"4 boundary pointers",pat:"Matrix Simulation",lc:"LC-54",must:false,beg:false,faang:false},
+      {id:19,name:"Find All Duplicates",d:"Medium",co:["Amazon","Microsoft","TCS"],hint:"Negate index as visited marker",pat:"Index Hashing",lc:"LC-442",must:false,beg:false,faang:false},
+      {id:20,name:"Insert Interval",d:"Medium",co:["Meta","Google","LinkedIn"],hint:"Find overlap window and merge",pat:"Array + Merge",lc:"LC-57",must:false,beg:false,faang:false},
+    ]},
+    {id:"strings",name:"Strings",qs:[
+      {id:21,name:"Valid Anagram",d:"Easy",co:["Amazon","Google","Microsoft","TCS"],hint:"Sort or freq count",pat:"HashMap / Sorting",lc:"LC-242",must:false,beg:true,faang:false},
+      {id:22,name:"Valid Palindrome",d:"Easy",co:["Meta","Amazon","Microsoft"],hint:"Two pointers from both ends",pat:"Two Pointers",lc:"LC-125",must:false,beg:true,faang:false},
+      {id:23,name:"Longest Substring Without Repeating",d:"Medium",co:["Amazon","Google","Meta","Microsoft","Adobe"],hint:"Sliding window + HashSet",pat:"Sliding Window",lc:"LC-3",must:true,beg:false,faang:true},
+      {id:24,name:"Longest Repeating Character Replacement",d:"Medium",co:["Google","Amazon","Meta"],hint:"Window - maxCount <= k",pat:"Sliding Window",lc:"LC-424",must:true,beg:false,faang:true},
+      {id:25,name:"Minimum Window Substring",d:"Hard",co:["Meta","Google","Amazon","Snapchat"],hint:"Two HashMaps: need vs window",pat:"Sliding Window",lc:"LC-76",must:true,beg:false,faang:true},
+      {id:26,name:"Group Anagrams",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"Sort each word as key",pat:"HashMap / Sorting",lc:"LC-49",must:true,beg:false,faang:true},
+      {id:27,name:"Longest Palindromic Substring",d:"Medium",co:["Amazon","Google","Microsoft","Adobe"],hint:"Expand around center",pat:"Expand Around Center",lc:"LC-5",must:true,beg:false,faang:false},
+      {id:28,name:"Valid Parentheses",d:"Easy",co:["Google","Amazon","Meta","Microsoft","Accenture"],hint:"Stack: push open, pop on close",pat:"Stack",lc:"LC-20",must:true,beg:true,faang:false},
+      {id:29,name:"Word Break",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"DP + dictionary HashSet",pat:"DP + HashSet",lc:"LC-139",must:true,beg:false,faang:true},
+      {id:30,name:"Palindromic Substrings Count",d:"Medium",co:["Meta","Amazon","LinkedIn"],hint:"Expand center for each position",pat:"Expand Around Center",lc:"LC-647",must:false,beg:false,faang:false},
+      {id:31,name:"Roman to Integer",d:"Easy",co:["Amazon","Google","Meta","Infosys"],hint:"Subtract if current < next",pat:"HashMap + Scan",lc:"LC-13",must:false,beg:true,faang:false},
+      {id:32,name:"Longest Common Prefix",d:"Easy",co:["Amazon","Google","TCS","Wipro"],hint:"Sort, compare first and last",pat:"Sorting / Trie",lc:"LC-14",must:false,beg:true,faang:false},
+      {id:33,name:"Decode String",d:"Medium",co:["Google","Amazon","Meta"],hint:"Stack of (count, string) pairs",pat:"Stack",lc:"LC-394",must:false,beg:false,faang:false},
+    ]},
+    {id:"hashing",name:"Hashing",qs:[
+      {id:34,name:"Top K Frequent Elements",d:"Medium",co:["Meta","Amazon","Google","Uber"],hint:"Bucket sort by frequency",pat:"Bucket Sort / Heap",lc:"LC-347",must:true,beg:false,faang:true},
+      {id:35,name:"Longest Consecutive Sequence",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"HashSet: start only where n-1 absent",pat:"HashSet",lc:"LC-128",must:true,beg:false,faang:true},
+      {id:36,name:"Isomorphic Strings",d:"Easy",co:["Amazon","Meta","TCS"],hint:"Two HashMaps bidirectional mapping",pat:"HashMap",lc:"LC-205",must:false,beg:true,faang:false},
+      {id:37,name:"4Sum",d:"Medium",co:["Adobe","Amazon","Google"],hint:"Sort + fix two, two-pointer rest",pat:"Two Pointers + Sort",lc:"LC-18",must:false,beg:false,faang:false},
+    ]},
+    {id:"sliding",name:"Sliding Window",qs:[
+      {id:38,name:"Permutation in String",d:"Medium",co:["Google","Amazon","Microsoft"],hint:"Fixed window freq map comparison",pat:"Sliding Window + Freq Map",lc:"LC-567",must:true,beg:false,faang:false},
+      {id:39,name:"Sliding Window Maximum",d:"Hard",co:["Amazon","Google","Meta"],hint:"Monotonic deque",pat:"Monotonic Deque",lc:"LC-239",must:true,beg:false,faang:true},
+      {id:40,name:"Maximum Average Subarray",d:"Easy",co:["Google","Amazon","TCS"],hint:"Fixed window of size k",pat:"Fixed Sliding Window",lc:"LC-643",must:false,beg:true,faang:false},
+      {id:41,name:"Minimum Size Subarray Sum",d:"Medium",co:["Meta","Amazon","Google"],hint:"Shrink left when sum >= target",pat:"Variable Sliding Window",lc:"LC-209",must:false,beg:false,faang:false},
+      {id:42,name:"Fruit Into Baskets",d:"Medium",co:["Google","Amazon"],hint:"Longest subarray with ≤2 distinct",pat:"Sliding Window",lc:"LC-904",must:false,beg:false,faang:false},
+    ]},
+    {id:"recursion",name:"Recursion & Backtracking",qs:[
+      {id:43,name:"Generate Parentheses",d:"Medium",co:["Google","Amazon","Meta","Uber"],hint:"Add open if < n, close if close < open",pat:"Backtracking",lc:"LC-22",must:true,beg:false,faang:true},
+      {id:44,name:"Subsets",d:"Medium",co:["Meta","Amazon","Google"],hint:"Include/exclude each element",pat:"Backtracking / Bitmask",lc:"LC-78",must:true,beg:false,faang:true},
+      {id:45,name:"Combination Sum",d:"Medium",co:["Amazon","Google","Meta","Adobe"],hint:"Choose or skip, subtract target",pat:"Backtracking",lc:"LC-39",must:true,beg:false,faang:true},
+      {id:46,name:"Permutations",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"Swap current with each remaining",pat:"Backtracking",lc:"LC-46",must:true,beg:false,faang:true},
+      {id:47,name:"N-Queens",d:"Hard",co:["Amazon","Google","Microsoft","Adobe"],hint:"Place queen row by row, check cols/diags",pat:"Backtracking",lc:"LC-51",must:true,beg:false,faang:true},
+      {id:48,name:"Word Search",d:"Medium",co:["Amazon","Google","Microsoft","Meta"],hint:"DFS from each cell, mark visited",pat:"Backtracking + DFS",lc:"LC-79",must:true,beg:false,faang:true},
+      {id:49,name:"Sudoku Solver",d:"Hard",co:["Amazon","Google","Apple","Microsoft"],hint:"Try 1-9, recurse, backtrack on fail",pat:"Backtracking",lc:"LC-37",must:false,beg:false,faang:true},
+      {id:50,name:"Rat in a Maze",d:"Medium",co:["Amazon","TCS","Infosys","Wipro"],hint:"DFS, mark visited, backtrack",pat:"Backtracking",lc:"GFG",must:false,beg:false,faang:false},
+    ]},
+    {id:"stack",name:"Stack & Queue",qs:[
+      {id:51,name:"Min Stack",d:"Easy",co:["Amazon","Google","Microsoft"],hint:"Auxiliary min-stack",pat:"Stack Design",lc:"LC-155",must:true,beg:true,faang:false},
+      {id:52,name:"Daily Temperatures",d:"Medium",co:["Amazon","Google","Meta","Uber"],hint:"Monotonic stack",pat:"Monotonic Stack",lc:"LC-739",must:true,beg:false,faang:true},
+      {id:53,name:"Largest Rectangle in Histogram",d:"Hard",co:["Amazon","Google","Meta","Microsoft"],hint:"Monotonic stack for bounds",pat:"Monotonic Stack",lc:"LC-84",must:true,beg:false,faang:true},
+      {id:54,name:"Task Scheduler",d:"Medium",co:["Meta","Amazon","Google","Microsoft"],hint:"Max-heap by freq + cooldown",pat:"Greedy + Heap",lc:"LC-621",must:true,beg:false,faang:true},
+      {id:55,name:"Asteroid Collision",d:"Medium",co:["Amazon","Google","Meta"],hint:"Stack: positives wait, negatives eat smaller",pat:"Stack Simulation",lc:"LC-735",must:false,beg:false,faang:false},
+      {id:56,name:"Implement Queue using Stacks",d:"Easy",co:["Amazon","Google","Microsoft"],hint:"Two stacks: in and out",pat:"Stack Design",lc:"LC-232",must:false,beg:true,faang:false},
+    ]},
+    {id:"linkedlist",name:"Linked List",qs:[
+      {id:57,name:"Reverse Linked List",d:"Easy",co:["Amazon","Google","Microsoft","Meta","TCS"],hint:"prev, curr, next iterative",pat:"Pointer Manipulation",lc:"LC-206",must:true,beg:true,faang:false},
+      {id:58,name:"Merge Two Sorted Lists",d:"Easy",co:["Amazon","Google","Microsoft","Meta"],hint:"Dummy node + compare advance",pat:"Two Pointers",lc:"LC-21",must:true,beg:true,faang:false},
+      {id:59,name:"Linked List Cycle Detection",d:"Easy",co:["Amazon","Google","Microsoft"],hint:"Floyd's fast/slow pointer",pat:"Floyd's Cycle",lc:"LC-141",must:true,beg:true,faang:false},
+      {id:60,name:"Copy List with Random Pointer",d:"Medium",co:["Amazon","Microsoft","Meta","Google"],hint:"HashMap original→copy, set random",pat:"HashMap",lc:"LC-138",must:true,beg:false,faang:true},
+      {id:61,name:"LRU Cache",d:"Medium",co:["Amazon","Google","Meta","Microsoft","Uber"],hint:"HashMap + Doubly Linked List",pat:"HashMap + DLL",lc:"LC-146",must:true,beg:false,faang:true},
+      {id:62,name:"Merge K Sorted Lists",d:"Hard",co:["Amazon","Google","Meta","Microsoft"],hint:"Min-heap of (val, node)",pat:"Heap",lc:"LC-23",must:true,beg:false,faang:true},
+      {id:63,name:"Find Duplicate Number",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"Floyd's cycle on array as LL",pat:"Floyd's Cycle",lc:"LC-287",must:true,beg:false,faang:true},
+      {id:64,name:"Remove Nth Node From End",d:"Medium",co:["Amazon","Google","Microsoft","Meta"],hint:"Two pointers n apart",pat:"Two Pointers",lc:"LC-19",must:true,beg:false,faang:false},
+      {id:65,name:"Reverse Nodes in k-Group",d:"Hard",co:["Meta","Amazon","Google"],hint:"Count k, reverse, recurse",pat:"Pointer Manipulation",lc:"LC-25",must:false,beg:false,faang:true},
+    ]},
+    {id:"trees",name:"Trees & BST",qs:[
+      {id:66,name:"Invert Binary Tree",d:"Easy",co:["Google","Amazon","Microsoft","Meta"],hint:"Swap left and right at each node",pat:"Tree Recursion",lc:"LC-226",must:true,beg:true,faang:false},
+      {id:67,name:"Maximum Depth of Binary Tree",d:"Easy",co:["Amazon","Google","Microsoft","Meta","TCS"],hint:"1 + max(left, right)",pat:"Tree DFS",lc:"LC-104",must:true,beg:true,faang:false},
+      {id:68,name:"Diameter of Binary Tree",d:"Easy",co:["Meta","Amazon","Google"],hint:"left_h + right_h at each node",pat:"Tree DFS",lc:"LC-543",must:true,beg:true,faang:false},
+      {id:69,name:"Binary Tree Level Order Traversal",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"BFS with level snapshot",pat:"BFS",lc:"LC-102",must:true,beg:false,faang:true},
+      {id:70,name:"Binary Tree Right Side View",d:"Medium",co:["Meta","Amazon","Google"],hint:"BFS: last of each level",pat:"BFS",lc:"LC-199",must:true,beg:false,faang:true},
+      {id:71,name:"Binary Tree Maximum Path Sum",d:"Hard",co:["Meta","Amazon","Google","Microsoft"],hint:"node + max(0,left) + max(0,right)",pat:"Tree DFS",lc:"LC-124",must:true,beg:false,faang:true},
+      {id:72,name:"Serialize and Deserialize Tree",d:"Hard",co:["Meta","Google","Amazon","Microsoft"],hint:"BFS or preorder with null markers",pat:"BFS/DFS + Encoding",lc:"LC-297",must:true,beg:false,faang:true},
+      {id:73,name:"LCA of Binary Tree",d:"Medium",co:["Meta","Amazon","Google","Microsoft"],hint:"Return node if found, propagate up",pat:"Tree DFS",lc:"LC-236",must:true,beg:false,faang:true},
+      {id:74,name:"Construct from Preorder+Inorder",d:"Medium",co:["Amazon","Google","Microsoft"],hint:"Root from preorder, split inorder",pat:"Divide & Conquer",lc:"LC-105",must:true,beg:false,faang:false},
+      {id:75,name:"Validate BST",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"Pass min/max bounds recursively",pat:"Tree DFS + Bounds",lc:"LC-98",must:true,beg:false,faang:true},
+      {id:76,name:"Kth Smallest in BST",d:"Medium",co:["Amazon","Google","Meta"],hint:"Inorder traversal = sorted",pat:"Inorder DFS",lc:"LC-230",must:true,beg:false,faang:false},
+      {id:77,name:"Path Sum II",d:"Medium",co:["Amazon","Microsoft","Google","Meta"],hint:"DFS + backtrack, save on target",pat:"Backtracking + DFS",lc:"LC-113",must:true,beg:false,faang:false},
+      {id:78,name:"Balanced Binary Tree",d:"Easy",co:["Amazon","Google","Microsoft"],hint:"Return -1 if unbalanced, else height",pat:"Tree DFS",lc:"LC-110",must:false,beg:true,faang:false},
+      {id:79,name:"Zigzag Level Order Traversal",d:"Medium",co:["Meta","Amazon","Microsoft","Google"],hint:"BFS with alternating direction",pat:"BFS",lc:"LC-103",must:false,beg:false,faang:false},
+    ]},
+    {id:"heaps",name:"Heaps",qs:[
+      {id:80,name:"Kth Largest Element in Array",d:"Medium",co:["Meta","Amazon","Google","Microsoft"],hint:"Min-heap of size k",pat:"Min-Heap",lc:"LC-215",must:true,beg:false,faang:true},
+      {id:81,name:"Find Median from Data Stream",d:"Hard",co:["Google","Amazon","Meta","Microsoft"],hint:"Max-heap (lower) + Min-heap (upper)",pat:"Two Heaps",lc:"LC-295",must:true,beg:false,faang:true},
+      {id:82,name:"K Closest Points to Origin",d:"Medium",co:["Meta","Amazon","Google","Uber"],hint:"Max-heap of size k by distance",pat:"Max-Heap",lc:"LC-973",must:true,beg:false,faang:true},
+      {id:83,name:"Reorganize String",d:"Medium",co:["Google","Amazon","Meta"],hint:"Max-heap, always pick most frequent",pat:"Greedy + Heap",lc:"LC-767",must:false,beg:false,faang:false},
+      {id:84,name:"Top K Frequent Words",d:"Medium",co:["Amazon","Google","Meta"],hint:"Heap with freq + lex comparator",pat:"Min-Heap + HashMap",lc:"LC-692",must:false,beg:false,faang:false},
+    ]},
+    {id:"greedy",name:"Greedy",qs:[
+      {id:85,name:"Jump Game",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"Track max reachable index",pat:"Greedy",lc:"LC-55",must:true,beg:false,faang:true},
+      {id:86,name:"Jump Game II",d:"Medium",co:["Amazon","Google","Meta"],hint:"Track current end and farthest",pat:"Greedy BFS",lc:"LC-45",must:true,beg:false,faang:true},
+      {id:87,name:"Gas Station",d:"Medium",co:["Amazon","Google","Microsoft","Meta"],hint:"If total >= cost, solution exists",pat:"Greedy",lc:"LC-134",must:true,beg:false,faang:false},
+      {id:88,name:"Non-overlapping Intervals",d:"Medium",co:["Google","Meta","Amazon"],hint:"Sort by end, remove overlapping greedily",pat:"Greedy + Intervals",lc:"LC-435",must:true,beg:false,faang:false},
+      {id:89,name:"Partition Labels",d:"Medium",co:["Amazon","Google","Meta"],hint:"Last occurrence map, expand greedily",pat:"Greedy + HashMap",lc:"LC-763",must:false,beg:false,faang:false},
+    ]},
+    {id:"graphs",name:"Graphs / BFS / DFS",qs:[
+      {id:90,name:"Number of Islands",d:"Medium",co:["Amazon","Google","Meta","Microsoft","Uber"],hint:"DFS from each unvisited land",pat:"Graph DFS/BFS",lc:"LC-200",must:true,beg:false,faang:true},
+      {id:91,name:"Clone Graph",d:"Medium",co:["Meta","Google","Amazon","Microsoft"],hint:"HashMap old→new, BFS edges",pat:"BFS + HashMap",lc:"LC-133",must:true,beg:false,faang:true},
+      {id:92,name:"Pacific Atlantic Water Flow",d:"Medium",co:["Google","Amazon","Meta"],hint:"BFS from both oceans, find intersection",pat:"Multi-source BFS",lc:"LC-417",must:true,beg:false,faang:true},
+      {id:93,name:"Course Schedule (Cycle Detection)",d:"Medium",co:["Meta","Google","Amazon","Microsoft"],hint:"Detect cycle via DFS or Kahn's BFS",pat:"Topological Sort",lc:"LC-207",must:true,beg:false,faang:true},
+      {id:94,name:"Course Schedule II",d:"Medium",co:["Meta","Amazon","Google"],hint:"Kahn's BFS, return topo order",pat:"Topological Sort",lc:"LC-210",must:true,beg:false,faang:true},
+      {id:95,name:"Word Ladder",d:"Hard",co:["Amazon","Google","Meta","Microsoft"],hint:"BFS on word transformations",pat:"BFS on Implicit Graph",lc:"LC-127",must:true,beg:false,faang:true},
+      {id:96,name:"Alien Dictionary",d:"Hard",co:["Meta","Google","Amazon","Microsoft","Airbnb"],hint:"Build graph, topological sort",pat:"Topological Sort",lc:"LC-269",must:true,beg:false,faang:true},
+      {id:97,name:"Rotting Oranges",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"Multi-source BFS from rotten",pat:"Multi-source BFS",lc:"LC-994",must:true,beg:false,faang:false},
+      {id:98,name:"Accounts Merge",d:"Medium",co:["Meta","Google","Amazon"],hint:"Union-Find by email",pat:"Union-Find",lc:"LC-721",must:true,beg:false,faang:false},
+      {id:99,name:"Dijkstra Shortest Path",d:"Medium",co:["Google","Amazon","Meta","Uber","Lyft"],hint:"Min-heap (dist,node), relax edges",pat:"Dijkstra",lc:"LC-743",must:true,beg:false,faang:true},
+      {id:100,name:"Graph Valid Tree",d:"Medium",co:["Google","Amazon","LinkedIn"],hint:"n-1 edges AND no cycle",pat:"Union-Find / DFS",lc:"LC-261",must:false,beg:false,faang:true},
+      {id:101,name:"Bipartite Check",d:"Medium",co:["Meta","Google","Amazon"],hint:"BFS 2-coloring",pat:"Graph Coloring",lc:"LC-785",must:false,beg:false,faang:false},
+      {id:102,name:"Minimum Spanning Tree",d:"Medium",co:["Google","Amazon","Microsoft"],hint:"Sort edges, union-find cycles",pat:"Kruskal's",lc:"LC-1584",must:false,beg:false,faang:false},
+    ]},
+    {id:"dp",name:"Dynamic Programming",qs:[
+      {id:103,name:"Climbing Stairs",d:"Easy",co:["Amazon","Google","Microsoft","TCS","Wipro"],hint:"dp[i] = dp[i-1] + dp[i-2]",pat:"1D DP (Fibonacci)",lc:"LC-70",must:true,beg:true,faang:false,dp:true},
+      {id:104,name:"House Robber",d:"Medium",co:["Amazon","Google","Microsoft","Airbnb"],hint:"dp[i] = max(dp[i-1], dp[i-2]+nums[i])",pat:"1D DP",lc:"LC-198",must:true,beg:false,faang:true,dp:true},
+      {id:105,name:"Coin Change",d:"Medium",co:["Amazon","Google","Meta","Microsoft","Uber"],hint:"dp[amount] = min coins per denomination",pat:"Unbounded Knapsack",lc:"LC-322",must:true,beg:false,faang:true,dp:true},
+      {id:106,name:"Coin Change II",d:"Medium",co:["Amazon","Google","Microsoft"],hint:"dp[i] += dp[i-coin]",pat:"Unbounded Knapsack",lc:"LC-518",must:true,beg:false,faang:false,dp:true},
+      {id:107,name:"Longest Common Subsequence",d:"Medium",co:["Amazon","Google","Meta","Microsoft","Adobe"],hint:"dp[i][j] match or skip",pat:"2D DP (LCS)",lc:"LC-1143",must:true,beg:false,faang:true,dp:true},
+      {id:108,name:"Edit Distance",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"min insert, delete, replace",pat:"2D DP",lc:"LC-72",must:true,beg:false,faang:true,dp:true},
+      {id:109,name:"Longest Increasing Subsequence",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"dp[i] = max(dp[j]+1) for j<i",pat:"1D DP / Binary Search",lc:"LC-300",must:true,beg:false,faang:true,dp:true},
+      {id:110,name:"0-1 Knapsack",d:"Medium",co:["Amazon","Google","Microsoft","TCS","Wipro"],hint:"dp[i][w] = max(skip, take)",pat:"0-1 Knapsack",lc:"GFG",must:true,beg:false,faang:false,dp:true},
+      {id:111,name:"Partition Equal Subset Sum",d:"Medium",co:["Amazon","Google","Meta"],hint:"Subset sum for target = sum/2",pat:"0-1 Knapsack",lc:"LC-416",must:true,beg:false,faang:true,dp:true},
+      {id:112,name:"Unique Paths",d:"Medium",co:["Amazon","Google","Meta","Microsoft"],hint:"dp[i][j] = dp[i-1][j] + dp[i][j-1]",pat:"2D DP (Grid)",lc:"LC-62",must:true,beg:false,faang:false,dp:true},
+      {id:113,name:"Burst Balloons",d:"Hard",co:["Google","Amazon","Meta"],hint:"Last balloon in [i..j] DP",pat:"Interval DP",lc:"LC-312",must:false,beg:false,faang:true,dp:true},
+      {id:114,name:"Regular Expression Matching",d:"Hard",co:["Google","Meta","Amazon","Microsoft"],hint:"dp[i][j] for s[0..i] matches p[0..j]",pat:"2D DP",lc:"LC-10",must:false,beg:false,faang:true,dp:true},
+      {id:115,name:"Best Time Stock with Cooldown",d:"Medium",co:["Amazon","Google","Meta"],hint:"States: hold, sold, cooldown",pat:"State Machine DP",lc:"LC-309",must:false,beg:false,faang:false,dp:true},
+      {id:116,name:"Target Sum",d:"Medium",co:["Meta","Amazon","Google"],hint:"dp[sum] = number of ways",pat:"Subset Sum DP",lc:"LC-494",must:false,beg:false,faang:false,dp:true},
+      {id:117,name:"Palindrome Partitioning II",d:"Hard",co:["Google","Amazon","Meta"],hint:"dp[i] = min cuts for s[0..i]",pat:"1D DP + Palindrome",lc:"LC-132",must:false,beg:false,faang:true,dp:true},
+      {id:118,name:"Minimum Path Sum",d:"Medium",co:["Amazon","Google","Microsoft"],hint:"dp[i][j] = grid[i][j] + min(up,left)",pat:"2D DP (Grid)",lc:"LC-64",must:false,beg:false,faang:false,dp:true},
+      {id:119,name:"House Robber II (Circular)",d:"Medium",co:["Amazon","Google","Microsoft"],hint:"Run on [0..n-2] and [1..n-1]",pat:"1D DP variant",lc:"LC-213",must:false,beg:false,faang:false,dp:true},
+      {id:120,name:"Wildcard Matching",d:"Hard",co:["Google","Amazon","Meta"],hint:"* matches any sequence in DP",pat:"2D DP",lc:"LC-44",must:false,beg:false,faang:false,dp:true},
+    ]},
+    {id:"bits",name:"Bit Manipulation",qs:[
+      {id:121,name:"Single Number",d:"Easy",co:["Amazon","Google","Meta","Microsoft"],hint:"XOR of all elements",pat:"XOR",lc:"LC-136",must:true,beg:true,faang:false},
+      {id:122,name:"Missing Number",d:"Easy",co:["Google","Amazon","Microsoft","TCS","Wipro"],hint:"XOR all indices and values",pat:"XOR / Sum",lc:"LC-268",must:false,beg:true,faang:false},
+      {id:123,name:"Number of 1 Bits",d:"Easy",co:["Apple","Amazon","Google","Microsoft"],hint:"n & (n-1) removes lowest set bit",pat:"Bit Trick",lc:"LC-191",must:false,beg:true,faang:false},
+      {id:124,name:"Counting Bits",d:"Easy",co:["Google","Amazon","Microsoft"],hint:"dp[i] = dp[i>>1] + (i&1)",pat:"DP + Bit Trick",lc:"LC-338",must:false,beg:true,faang:false},
+      {id:125,name:"Sum Without + Operator",d:"Medium",co:["Meta","Amazon","Google"],hint:"a^b is sum, (a&b)<<1 is carry",pat:"Bit Manipulation",lc:"LC-371",must:false,beg:false,faang:false},
+    ]},
+    {id:"tries",name:"Tries",qs:[
+      {id:126,name:"Implement Trie",d:"Medium",co:["Google","Amazon","Meta","Microsoft"],hint:"TrieNode with children[26] + isEnd",pat:"Trie Design",lc:"LC-208",must:true,beg:false,faang:true},
+      {id:127,name:"Add and Search Words",d:"Medium",co:["Meta","Amazon","Google"],hint:"Trie + DFS for '.' wildcard",pat:"Trie + DFS",lc:"LC-211",must:true,beg:false,faang:true},
+      {id:128,name:"Word Search II",d:"Hard",co:["Airbnb","Amazon","Google","Meta"],hint:"Trie + DFS backtracking on board",pat:"Trie + Backtracking",lc:"LC-212",must:true,beg:false,faang:true},
+      {id:129,name:"Maximum XOR of Two Numbers",d:"Medium",co:["Google","Amazon","Meta"],hint:"Bit Trie: try opposite bit",pat:"Bit Trie",lc:"LC-421",must:false,beg:false,faang:false},
+    ]},
+    {id:"binsearch",name:"Binary Search",qs:[
+      {id:130,name:"Binary Search",d:"Easy",co:["Amazon","Google","Microsoft","TCS","Wipro","Infosys"],hint:"lo, hi, mid = lo+(hi-lo)/2",pat:"Binary Search",lc:"LC-704",must:false,beg:true,faang:false},
+      {id:131,name:"Koko Eating Bananas",d:"Medium",co:["Google","Meta","Amazon"],hint:"Binary search on speed",pat:"Binary Search on Answer",lc:"LC-875",must:true,beg:false,faang:true},
+      {id:132,name:"Capacity to Ship Packages",d:"Medium",co:["Amazon","Meta","Google"],hint:"Binary search on capacity",pat:"Binary Search on Answer",lc:"LC-1011",must:true,beg:false,faang:false},
+      {id:133,name:"Median of Two Sorted Arrays",d:"Hard",co:["Google","Amazon","Meta","Microsoft","Apple"],hint:"Binary search partition in smaller array",pat:"Binary Search",lc:"LC-4",must:true,beg:false,faang:true},
+      {id:134,name:"Split Array Largest Sum",d:"Hard",co:["Google","Meta","Amazon"],hint:"Binary search on max sum",pat:"Binary Search on Answer",lc:"LC-410",must:false,beg:false,faang:true},
+      {id:135,name:"Search a 2D Matrix",d:"Medium",co:["Amazon","Google","Microsoft"],hint:"Treat as 1D sorted array",pat:"Binary Search on Matrix",lc:"LC-74",must:false,beg:false,faang:false},
+    ]},
+    {id:"sorting",name:"Sorting",qs:[
+      {id:136,name:"Merge Sort",d:"Medium",co:["Amazon","Google","Microsoft","TCS","Wipro"],hint:"Divide, sort halves, merge",pat:"Divide & Conquer",lc:"GFG",must:false,beg:true,faang:false},
+      {id:137,name:"Quick Sort",d:"Medium",co:["Amazon","Google","Microsoft","TCS"],hint:"Pivot, partition, recurse both sides",pat:"Divide & Conquer",lc:"GFG",must:false,beg:true,faang:false},
+      {id:138,name:"Count Inversions",d:"Medium",co:["Amazon","Google","Microsoft","TCS"],hint:"Modified merge sort",pat:"Merge Sort",lc:"GFG",must:false,beg:false,faang:false},
+      {id:139,name:"Largest Number",d:"Medium",co:["Amazon","Google","Meta"],hint:"Custom comparator: compare a+b vs b+a",pat:"Custom Sort",lc:"LC-179",must:false,beg:false,faang:false},
+    ]},
+    {id:"math",name:"Math",qs:[
+      {id:140,name:"Sieve of Eratosthenes",d:"Easy",co:["Google","Amazon","TCS","Wipro"],hint:"Mark multiples of primes",pat:"Sieve",lc:"LC-204",must:false,beg:true,faang:false},
+      {id:141,name:"GCD / LCM",d:"Easy",co:["TCS","Wipro","Infosys","Accenture"],hint:"gcd(a,b) = gcd(b, a%b)",pat:"Euclidean Algorithm",lc:"GFG",must:false,beg:true,faang:false},
+      {id:142,name:"Happy Number",d:"Easy",co:["Amazon","Google","Meta"],hint:"Floyd's cycle on digit-sum sequence",pat:"Floyd's Cycle",lc:"LC-202",must:false,beg:true,faang:false},
+      {id:143,name:"Power(x, n)",d:"Medium",co:["Google","Amazon","Microsoft","Accenture"],hint:"x^n = x^(n/2) * x^(n/2)",pat:"Divide & Conquer",lc:"LC-50",must:false,beg:true,faang:false},
+    ]},
+    {id:"matrix",name:"Matrix",qs:[
+      {id:144,name:"Rotate Image (90°)",d:"Medium",co:["Amazon","Google","Microsoft","Meta","Apple"],hint:"Transpose then reverse each row",pat:"Matrix Manipulation",lc:"LC-48",must:true,beg:false,faang:false},
+      {id:145,name:"Set Matrix Zeroes",d:"Medium",co:["Amazon","Google","Microsoft","Meta"],hint:"Use first row/col as flags",pat:"In-place Marking",lc:"LC-73",must:false,beg:false,faang:false},
+      {id:146,name:"Maximal Square",d:"Medium",co:["Meta","Amazon","Google","Microsoft"],hint:"dp[i][j] = min(left,top,diag)+1",pat:"2D DP",lc:"LC-221",must:false,beg:false,faang:true},
+      {id:147,name:"Game of Life",d:"Medium",co:["Amazon","Microsoft","Google"],hint:"In-place 2-bit states",pat:"Simulation",lc:"LC-289",must:false,beg:false,faang:false},
+    ]},
+    {id:"advanced",name:"Advanced DSA",qs:[
+      {id:148,name:"Range Sum Query (Segment Tree)",d:"Hard",co:["Google","Amazon","Meta"],hint:"Build tree, range overlap check",pat:"Segment Tree",lc:"LC-307",must:false,beg:false,faang:false},
+      {id:149,name:"Fenwick Tree / BIT",d:"Hard",co:["Google","Amazon","Meta"],hint:"Update/query with LSB trick",pat:"Fenwick Tree",lc:"LC-307",must:false,beg:false,faang:false},
+      {id:150,name:"Bellman-Ford Algorithm",d:"Hard",co:["Google","Amazon","Meta"],hint:"Relax all edges n-1 times",pat:"Bellman-Ford",lc:"GFG",must:false,beg:false,faang:false},
+      {id:151,name:"Floyd-Warshall All-Pairs SP",d:"Hard",co:["Google","Amazon","Microsoft"],hint:"dp[k][i][j] = min(direct, through k)",pat:"Floyd-Warshall",lc:"LC-1334",must:false,beg:false,faang:false},
+      {id:152,name:"Strongly Connected Components",d:"Hard",co:["Google","Meta","Amazon"],hint:"Kosaraju: DFS, transpose, DFS again",pat:"Kosaraju's / Tarjan's",lc:"GFG",must:false,beg:false,faang:false},
+      {id:153,name:"Maximum Flow (Ford-Fulkerson)",d:"Hard",co:["Google","Meta"],hint:"BFS augmenting paths, update residual",pat:"Max Flow",lc:"GFG",must:false,beg:false,faang:false},
+    ]}
+  ]
+};
+
+function h2(cls,txt){const e=document.createElement("h2");e.className=cls;e.textContent=txt;document.getElementById("root").prepend(e);}
+
+const allQ=D.topics.flatMap(t=>t.qs.map(q=>({...q,topicId:t.id,topicName:t.name})));
+const dColor={Easy:"#1D9E75",Medium:"#BA7517",Hard:"#A32D2D"};
+const dBg={Easy:"#E1F5EE",Medium:"#FAEEDA",Hard:"#FCEBEB"};
+const PER=20;
+
+let state={tab:"all",topic:"all",diff:"all",search:"",page:1};
+
+function getFiltered(){
+  return allQ.filter(q=>{
+    if(state.tab==="must"&&!q.must)return false;
+    if(state.tab==="beg"&&!q.beg)return false;
+    if(state.tab==="faang"&&!q.faang)return false;
+    if(state.tab==="dp"&&!q.dp)return false;
+    if(state.topic!=="all"&&q.topicId!==state.topic)return false;
+    if(state.diff!=="all"&&q.d!==state.diff)return false;
+    const s=state.search.toLowerCase();
+    if(s&&!q.name.toLowerCase().includes(s)&&!q.co.join().toLowerCase().includes(s)&&!q.pat.toLowerCase().includes(s))return false;
+    return true;
+  });
+}
+
+const roadmap=[
+  {w:"Week 1 (Days 1–7)",t:"Arrays, Strings, Hashing, Two Pointers",tasks:["Complete all beginner questions first","Master sliding window & two pointer patterns","Solve 2–3 LeetCode easy per day","Understand time/space complexity of each approach"]},
+  {w:"Week 2 (Days 8–14)",t:"Recursion, Backtracking, Stack, Queue",tasks:["Solve all permutation/combination patterns","Master monotonic stack (daily temps, histogram)","Design problems: MinStack, LRU Cache","5+ backtracking problems with pruning"]},
+  {w:"Week 3 (Days 15–21)",t:"Linked List, Trees, BST, Heaps",tasks:["All classic linked list: reverse, merge, cycle","Tree DFS and BFS traversals from memory","Heap patterns: Kth largest, median stream","2 hard problems per day with timer"]},
+  {w:"Week 4 (Days 22–30)",t:"Graphs, DP, Tries, Binary Search + Mock OAs",tasks:["All graph BFS/DFS/Topo problems","Complete Top 30 DP questions","Binary search on answer pattern","2 full-length timed mock OAs"]}
+];
+
+const tips=[
+  {t:"Pattern First",d:"Identify the pattern before coding. 80% of questions map to ~15 patterns."},
+  {t:"Think Aloud",d:"Interviewers value reasoning. Narrate edge cases and complexity."},
+  {t:"Brute Force First",d:"Always mention brute force then optimize. Shows structured thinking."},
+  {t:"Test with Examples",d:"Trace through 2–3 examples including edge cases before submitting."},
+  {t:"Know Complexities",d:"HashMap O(1), BST O(logN), sorting O(nlogn). Be ready to justify."},
+  {t:"Practice Under Time",d:"30–45 min per problem, no hints. Mirror real interview pressure."},
+];
+
+const mistakes=[
+  "Jumping to code without planning the approach",
+  "Ignoring edge cases (null, empty, single element, overflow)",
+  "Not verifying with examples during the interview",
+  "Practicing too many problems without understanding patterns",
+  "Neglecting time and space complexity analysis",
+  "Skipping 'easy' problems — they appear in OAs too",
+  "Not communicating during the interview",
+  "Memorizing solutions instead of understanding the approach",
+];
+
+const platforms=[
+  {n:"LeetCode",type:"Primary",d:"Best for FAANG prep. Premium for company tags.",url:"https://leetcode.com"},
+  {n:"GeeksforGeeks",type:"Primary",d:"Theory + service company OAs.",url:"https://geeksforgeeks.org"},
+  {n:"HackerRank",type:"OA Prep",d:"Used by TCS, Wipro, Infosys, Accenture.",url:"https://hackerrank.com"},
+  {n:"Codeforces",type:"Competitive",d:"Timed contests and competitive problems.",url:"https://codeforces.com"},
+  {n:"InterviewBit",type:"Interview Prep",d:"Structured prep with company focus.",url:"https://interviewbit.com"},
+  {n:"Naukri Code360",type:"OA Prep",d:"Indian service company OA patterns.",url:"https://www.naukri.com/code360"},
+];
+
+function render(){
+  const filtered=getFiltered();
+  const total=filtered.length;
+  const pages=Math.ceil(total/PER);
+  state.page=Math.min(state.page,Math.max(1,pages));
+  const slice=filtered.slice((state.page-1)*PER,state.page*PER);
+
+  const counts={all:allQ.length,must:allQ.filter(q=>q.must).length,beg:allQ.filter(q=>q.beg).length,faang:allQ.filter(q=>q.faang).length,dp:allQ.filter(q=>q.dp).length};
+
+  document.getElementById("root").innerHTML=`
+  <div style="padding:1.2rem 0.8rem;max-width:900px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <i class="ti ti-code" style="font-size:20px;color:var(--color-text-secondary)" aria-hidden="true"></i>
+      <span style="font-size:20px;font-weight:500">DSA Interview Prep Sheet</span>
+    </div>
+    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem">200+ questions · 25 topics · FAANG + service companies · 2023–2026 interview patterns</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
+      ${[["all","All Questions",counts.all],["must","🔥 Top 50 Must-Do",counts.must],["beg","🌱 Beginner 25",counts.beg],["faang","⭐ FAANG 50",counts.faang],["dp","🧩 Top DP 30",counts.dp]].map(([id,label,cnt])=>`
+        <button onclick="setTab('${id}')" style="padding:5px 11px;border-radius:var(--border-radius-md);font-size:12px;${state.tab===id?"border:2px solid var(--color-border-info);background:var(--color-background-info);color:var(--color-text-info)":"border:0.5px solid var(--color-border-secondary)"}">
+          ${label} <span style="opacity:0.7">(${cnt})</span>
+        </button>`).join("")}
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;align-items:center">
+      <input id="srch" value="${state.search.replace(/"/g,'&quot;')}" placeholder="Search name, company, pattern…" style="flex:1 1 180px;min-width:130px" oninput="setSearch(this.value)">
+      <select onchange="setTopic(this.value)" style="font-size:12px;padding:5px 8px">
+        <option value="all"${state.topic==="all"?" selected":""}>All Topics</option>
+        ${D.topics.map(t=>`<option value="${t.id}"${state.topic===t.id?" selected":""}>${t.name}</option>`).join("")}
+      </select>
+      <select onchange="setDiff(this.value)" style="font-size:12px;padding:5px 8px">
+        <option value="all"${state.diff==="all"?" selected":""}>All Levels</option>
+        ${["Easy","Medium","Hard"].map(d=>`<option value="${d}"${state.diff===d?" selected":""}>${d}</option>`).join("")}
+      </select>
+    </div>
+
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">
+      Showing ${Math.min(total,(state.page-1)*PER+1)}–${Math.min(total,state.page*PER)} of ${total} questions
+    </div>
+
+    <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:24px 1fr 68px 130px 100px 58px;gap:0;background:var(--color-background-secondary);padding:7px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.06em">
+        <span>#</span><span>Question / Hint</span><span>Level</span><span>Pattern</span><span>Companies</span><span>Link</span>
+      </div>
+      ${slice.length===0?`<div style="padding:2rem;text-align:center;color:var(--color-text-secondary);font-size:13px">No questions found. Try adjusting filters.</div>`:""}
+      ${slice.map((q,i)=>`
+        <div style="display:grid;grid-template-columns:24px 1fr 68px 130px 100px 58px;gap:0;padding:9px 10px;border-top:0.5px solid var(--color-border-tertiary);background:${i%2===0?"var(--color-background-primary)":"var(--color-background-secondary)"};align-items:start">
+          <span style="font-size:10px;color:var(--color-text-tertiary);padding-top:2px">${(state.page-1)*PER+i+1}</span>
+          <div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:2px">
+              ${q.name}
+              ${q.must?`<span style="margin-left:4px;font-size:9px;background:#E6F1FB;color:#0C447C;border-radius:3px;padding:1px 4px">must-do</span>`:""}
+              ${q.faang?`<span style="margin-left:3px;font-size:9px;background:#EEEDFE;color:#3C3489;border-radius:3px;padding:1px 4px">FAANG</span>`:""}
+            </div>
+            <div style="font-size:10px;color:var(--color-text-secondary)">${q.hint}</div>
+          </div>
+          <span style="font-size:10px;font-weight:500;color:${dColor[q.d]};background:${dBg[q.d]};border-radius:4px;padding:2px 5px;display:inline-block;text-align:center;margin-top:1px">${q.d}</span>
+          <span style="font-size:10px;color:var(--color-text-secondary);padding-top:2px">${q.pat}</span>
+          <div style="font-size:10px;color:var(--color-text-secondary)">
+            ${q.co.slice(0,3).map(c=>`<span style="display:inline-block;margin-right:2px;margin-bottom:2px;background:var(--color-background-tertiary);border-radius:3px;padding:1px 3px">${c}</span>`).join("")}
+            ${q.co.length>3?`<span style="font-size:9px;color:var(--color-text-tertiary)">+${q.co.length-3}</span>`:""}
+          </div>
+          <span style="font-size:10px">
+            ${q.lc.startsWith("LC")?`<a href="https://leetcode.com/problems" target="_blank">${q.lc}</a>`:`<span style="color:var(--color-text-tertiary)">${q.lc}</span>`}
+          </span>
+        </div>`).join("")}
+    </div>
+
+    ${pages>1?`<div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+      <button onclick="goPage(${state.page-1})" ${state.page===1?"disabled":""} style="padding:4px 10px;font-size:12px">← Prev</button>
+      ${Array.from({length:pages},(_,i)=>i+1).filter(p=>Math.abs(p-state.page)<=2||p===1||p===pages).reduce((acc,p,idx,arr)=>{
+        if(idx>0&&arr[idx-1]!==p-1)acc+=`<span style="padding:0 4px;color:var(--color-text-tertiary);font-size:12px">…</span>`;
+        acc+=`<button onclick="goPage(${p})" style="padding:4px 8px;font-size:12px;${state.page===p?"border:2px solid var(--color-border-info);background:var(--color-background-info);color:var(--color-text-info)":""}">${p}</button>`;
+        return acc;
+      },"")}
+      <button onclick="goPage(${state.page+1})" ${state.page===pages?"disabled":""} style="padding:4px 10px;font-size:12px">Next →</button>
+    </div>`:""}
+
+    <div style="font-size:15px;font-weight:500;margin-bottom:10px">30-day roadmap</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px;margin-bottom:20px">
+      ${roadmap.map(r=>`
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:11px 13px;border:0.5px solid var(--color-border-tertiary)">
+          <div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:2px">${r.w}</div>
+          <div style="font-size:12px;font-weight:500;margin-bottom:7px">${r.t}</div>
+          ${r.tasks.map(t=>`<div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;display:flex;gap:4px"><i class="ti ti-check" style="font-size:12px;color:#1D9E75;flex-shrink:0;margin-top:1px" aria-hidden="true"></i>${t}</div>`).join("")}
+        </div>`).join("")}
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin-bottom:20px">
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:13px;border:0.5px solid var(--color-border-tertiary)">
+        <div style="font-size:13px;font-weight:500;margin-bottom:9px">Interview tips</div>
+        ${tips.map(t=>`<div style="margin-bottom:7px"><span style="font-size:11px;font-weight:500">${t.t}: </span><span style="font-size:11px;color:var(--color-text-secondary)">${t.d}</span></div>`).join("")}
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:13px;border:0.5px solid var(--color-border-tertiary)">
+        <div style="font-size:13px;font-weight:500;margin-bottom:9px">Common mistakes to avoid</div>
+        ${mistakes.map(m=>`<div style="display:flex;gap:5px;margin-bottom:5px;font-size:11px;color:var(--color-text-secondary)"><i class="ti ti-x" style="font-size:12px;color:#A32D2D;flex-shrink:0;margin-top:1px" aria-hidden="true"></i>${m}</div>`).join("")}
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:500;margin-bottom:9px">Best platforms for practice</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px">
+      ${platforms.map(p=>`
+        <a href="${p.url}" target="_blank" style="text-decoration:none;display:block;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:9px 11px">
+          <div style="font-size:12px;font-weight:500;margin-bottom:3px">${p.n}</div>
+          <span style="font-size:9px;background:var(--color-background-tertiary);color:var(--color-text-secondary);border-radius:3px;padding:1px 5px;display:inline-block;margin-bottom:4px">${p.type}</span>
+          <div style="font-size:10px;color:var(--color-text-secondary)">${p.d}</div>
+        </a>`).join("")}
+    </div>
+  </div>`;
+}
+
+window.setTab=function(v){state.tab=v;state.page=1;render()};
+window.setTopic=function(v){state.topic=v;state.page=1;render()};
+window.setDiff=function(v){state.diff=v;state.page=1;render()};
+window.setSearch=function(v){state.search=v;state.page=1;render()};
+window.goPage=function(p){const f=getFiltered();const pages=Math.ceil(f.length/PER);state.page=Math.max(1,Math.min(pages,p));render()};
+
+render();
+</script>
+</body>
+</html>
