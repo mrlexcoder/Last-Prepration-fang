@@ -1,0 +1,15 @@
+# Java compiled files
+*.class
+*.jar
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
