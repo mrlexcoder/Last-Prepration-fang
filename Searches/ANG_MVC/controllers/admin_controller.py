@@ -1,42 +1,36 @@
 """
 Admin endpoints:
-  POST /admin/refresh-connectors  — hot-reload registry.json
-  GET  /admin/agi-status          — snapshot of AGI layer state
+  POST /admin/refresh-connectors  — hot-reload registry.json into AppState
+  GET  /admin/agi-status          — snapshot of all AGI layer components
   GET  /admin/cache-stats         — InfinityCache stats
 """
 
-import json
 import logging
-from pathlib import Path
-
 from fastapi import APIRouter, HTTPException
+from core.quantum_router import reload_registry
+from core.state import state
 
 logger = logging.getLogger("ang.admin")
 admin_router = APIRouter(prefix="/admin")
 
-REGISTRY_PATH = Path(__file__).resolve().parent.parent / "connectors" / "registry.json"
-
-# Shared AGI singletons — imported lazily to avoid circular deps
-_agi_instances: dict = {}
-
 
 def register_agi(world_model=None, goal_engine=None, meta_cognition=None, cache=None):
-    """Called from app.py to inject AGI layer references."""
+    """Called from app.py lifespan to inject AGI layer into shared state."""
     if world_model:
-        _agi_instances["world_model"] = world_model
+        state.world_model = world_model
     if goal_engine:
-        _agi_instances["goal_engine"] = goal_engine
+        state.goal_engine = goal_engine
     if meta_cognition:
-        _agi_instances["meta_cognition"] = meta_cognition
+        state.meta_cognition = meta_cognition
     if cache:
-        _agi_instances["cache"] = cache
+        state.cache = cache
 
 
 @admin_router.post("/refresh-connectors")
 async def refresh_connectors():
-    """Hot-reload connectors/registry.json without restarting the service."""
+    """Hot-reload connectors/registry.json — no restart needed."""
     try:
-        data = json.loads(REGISTRY_PATH.read_text())
+        data = reload_registry()
         count = len(data.get("adapters", []))
         logger.info("connectors refreshed: %d adapters", count)
         return {"refreshed": True, "adapter_count": count, "adapters": data.get("adapters", [])}
@@ -47,17 +41,15 @@ async def refresh_connectors():
 
 @admin_router.get("/agi-status")
 async def agi_status():
-    """Return a snapshot of all AGI layer components."""
-    result = {}
-    for key in ("world_model", "goal_engine", "meta_cognition"):
-        obj = _agi_instances.get(key)
-        result[key] = obj.snapshot() if obj and hasattr(obj, "snapshot") else "not_initialized"
-    return result
+    return {
+        "world_model": state.world_model.snapshot() if state.world_model else "not_initialized",
+        "goal_engine": state.goal_engine.snapshot() if state.goal_engine else "not_initialized",
+        "meta_cognition": state.meta_cognition.snapshot() if state.meta_cognition else "not_initialized",
+    }
 
 
 @admin_router.get("/cache-stats")
 async def cache_stats():
-    cache = _agi_instances.get("cache")
-    if not cache:
+    if not state.cache:
         return {"status": "not_initialized"}
-    return cache.stats()
+    return state.cache.stats()
