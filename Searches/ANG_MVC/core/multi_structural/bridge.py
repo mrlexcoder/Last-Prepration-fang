@@ -44,23 +44,30 @@ class MultiStructuralBridge:
         user_input = payload.get("input", "")
         history = payload.get("history", [])
 
-        # Inject recent memory from cache
+        # Inject recent memory — filter out stub/low-quality entries
         context_snippets = []
         if self._cache:
             hits = self._cache.search(user_input, top_k=3)
-            context_snippets = [h["summary"] for h in hits]
+            context_snippets = [
+                h["summary"] for h in hits
+                if not h["summary"].startswith("[stub]")
+                and not h["summary"].startswith("[hf-stub]")
+                and not h["summary"].startswith("[llama-stub]")
+                and len(h["summary"]) > 20
+            ]
 
         prompt = self._build_chat_prompt(user_input, history, context_snippets)
         result = await self._infer(prompt)
+        answer = result.get("output", "")
 
-        # Store exchange in cache
-        if self._cache:
+        # Store only the clean user question + answer (not the full constructed prompt)
+        if self._cache and answer and not answer.startswith("[stub]"):
             self._cache.store(
-                text=f"Q: {user_input}\nA: {result.get('output', '')}",
-                summary=result.get("output", "")[:120],
+                text=f"Q: {user_input}\nA: {answer}",
+                summary=answer[:120],
             )
 
-        return {"mode": "chat", "output": result.get("output"), "confidence": result.get("confidence")}
+        return {"mode": "chat", "output": answer, "confidence": result.get("confidence")}
 
     async def _mode_search(self, payload: dict) -> dict:
         """RAG-style: retrieve from cache then augment prompt."""

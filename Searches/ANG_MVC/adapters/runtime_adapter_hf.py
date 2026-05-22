@@ -1,13 +1,13 @@
 """
-runtime_adapter_hf — HuggingFace Transformers runtime adapter.
+runtime_adapter_hf — HuggingFace Transformers adapter (Qwen2.5 + any HF model).
 
-Hardware-aware:
-  - Uses CUDA if available, falls back to CPU.
-  - Loads model lazily on first call (no startup penalty).
-  - Graceful fallback to stub output if transformers not installed.
+Uses the model's chat template for proper instruction-following.
+Hardware-aware: CUDA if available, else CPU.
+Lazy-loads on first call. Graceful stub fallback if transformers not installed.
 
-Default model: Qwen/Qwen2.5-0.5B-Instruct (tiny, CPU-runnable)
-Override via env: ANG_HF_MODEL=<model_id>
+Config via env:
+  ANG_HF_MODEL      — model id (default: Qwen/Qwen2.5-0.5B-Instruct)
+  ANG_HF_MAX_TOKENS — max new tokens (default: 512)
 """
 
 import asyncio
@@ -18,77 +18,92 @@ from functools import lru_cache
 
 logger = logging.getLogger("ang.adapter.hf")
 
-# Model to load — override with env var for larger models
 DEFAULT_MODEL = os.getenv("ANG_HF_MODEL", "Qwen/Qwen2.5-0.5B-Instruct")
-MAX_NEW_TOKENS = int(os.getenv("ANG_HF_MAX_TOKENS", "256"))
+MAX_NEW_TOKENS = int(os.getenv("ANG_HF_MAX_TOKENS", "512"))
 
 
 @lru_cache(maxsize=1)
-def _load_pipeline():
-    """Load the HF pipeline once and cache it."""
+def _load_model():
+    """Load tokenizer + model once, cache forever."""
     try:
         import torch
-        from transformers import pipeline as hf_pipeline
+        from transformers import AutoModelForCausalLM, AutoTokenizer
 
-        device = 0 if torch.cuda.is_available() else -1
-        device_name = "CUDA" if device == 0 else "CPU"
-        logger.info("loading HF model %s on %s", DEFAULT_MODEL, device_name)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        logger.info("loading %s on %s", DEFAULT_MODEL, device)
 
-        pipe = hf_pipeline(
-            "text-generation",
-            model=DEFAULT_MODEL,
-            device=device,
+        tokenizer = AutoTokenizer.from_pretrained(
+            DEFAULT_MODEL, trust_remote_code=True
+        )
+        model = AutoModelForCausalLM.from_pretrained(
+            DEFAULT_MODEL,
             torch_dtype="auto",
+            device_map="auto",
             trust_remote_code=True,
         )
-        logger.info("HF model loaded: %s", DEFAULT_MODEL)
-        return pipe, device_name
+        model.eval()
+        logger.info("model loaded: %s on %s", DEFAULT_MODEL, device)
+        return tokenizer, model, device
     except Exception as exc:
-        logger.warning("HF pipeline load failed (%s) — stub mode active", exc)
-        return None, "stub"
+        logger.warning("HF model load failed (%s) — stub mode", exc)
+        return None, None, "stub"
 
 
 async def infer(prompt: str) -> dict:
     loop = asyncio.get_event_loop()
     start = time.perf_counter()
-
-    # Run blocking inference in thread pool to keep FastAPI non-blocking
     result = await loop.run_in_executor(None, _blocking_infer, prompt)
-
-    latency_ms = (time.perf_counter() - start) * 1000
-    result["meta"]["latency_ms"] = round(latency_ms, 1)
+    result["meta"]["latency_ms"] = round((time.perf_counter() - start) * 1000, 1)
     return result
 
 
 def _blocking_infer(prompt: str) -> dict:
-    pipe, device_name = _load_pipeline()
+    tokenizer, model, device = _load_model()
 
-    if pipe is None:
-        # Graceful stub fallback
+    if model is None:
         return {
-            "output": f"[hf-stub] {prompt[:80]}",
-            "confidence": 0.70,
+            "output": f"[hf-stub] transformers not ready. Prompt: {prompt[:60]}",
+            "confidence": 0.65,
             "meta": {"provider": "hf-stub", "model": DEFAULT_MODEL, "device": "stub"},
         }
 
     try:
-        outputs = pipe(
-            prompt,
-            max_new_tokens=MAX_NEW_TOKENS,
-            do_sample=True,
-            temperature=0.7,
-            pad_token_id=pipe.tokenizer.eos_token_id,
+        import torch
+
+        # Build chat messages — use system + user format for instruction models
+        messages = [
+            {"role": "system", "content": "You are AuroraNeuroGrid, a helpful and concise AI assistant."},
+            {"role": "user", "content": prompt},
+        ]
+
+        # Apply chat template
+        text = tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True,
         )
-        generated = outputs[0]["generated_text"]
-        # Strip the prompt prefix if the model echoes it
-        if generated.startswith(prompt):
-            generated = generated[len(prompt):].strip()
+        inputs = tokenizer([text], return_tensors="pt").to(model.device)
+
+        with torch.no_grad():
+            output_ids = model.generate(
+                **inputs,
+                max_new_tokens=MAX_NEW_TOKENS,
+                do_sample=True,
+                temperature=0.7,
+                top_p=0.9,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+
+        # Decode only the newly generated tokens (strip the input)
+        new_tokens = output_ids[0][inputs["input_ids"].shape[1]:]
+        answer = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
 
         return {
-            "output": generated,
-            "confidence": 0.82,
-            "meta": {"provider": "huggingface", "model": DEFAULT_MODEL, "device": device_name},
+            "output": answer,
+            "confidence": 0.88,
+            "meta": {"provider": "huggingface", "model": DEFAULT_MODEL, "device": device},
         }
+
     except Exception as exc:
         logger.error("HF inference error: %s", exc)
         return {
@@ -99,5 +114,5 @@ def _blocking_infer(prompt: str) -> dict:
 
 
 async def health() -> dict:
-    _, device_name = _load_pipeline()
-    return {"adapter": "runtime_adapter_hf", "model": DEFAULT_MODEL, "device": device_name}
+    _, _, device = _load_model()
+    return {"adapter": "runtime_adapter_hf", "model": DEFAULT_MODEL, "device": device}
