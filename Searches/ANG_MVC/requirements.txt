@@ -12,5 +12,5 @@ numpy>=1.24
 
 # HuggingFace + Qwen adapter
 transformers==4.51.3
-torch==2.7.0
+torch==2.8.0
 accelerate==1.7.0
