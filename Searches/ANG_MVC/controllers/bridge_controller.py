@@ -23,6 +23,7 @@ class BridgeRequest(BaseModel):
     history: Optional[list] = None
     tools: Optional[list] = None
     steps: Optional[list] = None
+    runtime_hint: Optional[str] = None
 
 
 @bridge_router.post("/bridge")

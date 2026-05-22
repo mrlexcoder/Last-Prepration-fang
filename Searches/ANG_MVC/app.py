@@ -61,10 +61,10 @@ async def lifespan(app: FastAPI):
         ],
     )
 
-    # Bridge wraps neurone mesh with a clean async infer function
-    async def _infer_fn(prompt: str) -> dict:
+    # Bridge wraps neurone mesh — reads runtime_hint from payload if provided
+    async def _infer_fn(prompt: str, runtime_hint: str | None = None) -> dict:
         from core.quantum_router import select_runtime
-        runtime = select_runtime()
+        runtime = select_runtime(runtime_hint=runtime_hint)
         return await run_neurone_mesh(runtime, prompt, mode="bridge")
 
     bridge = MultiStructuralBridge(infer_fn=_infer_fn, cache=cache)

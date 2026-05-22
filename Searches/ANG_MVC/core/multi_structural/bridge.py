@@ -24,9 +24,17 @@ class MultiStructuralBridge:
 
     MODES = ("chat", "search", "tools", "pipeline")
 
-    def __init__(self, infer_fn: InferFn, cache=None):
+    def __init__(self, infer_fn, cache=None):
         self._infer = infer_fn
-        self._cache = cache   # optional InfinityCache instance
+        self._cache = cache
+
+    async def _call(self, prompt: str, runtime_hint: str | None = None) -> dict:
+        """Call infer_fn, passing runtime_hint if the function accepts it."""
+        import inspect
+        sig = inspect.signature(self._infer)
+        if "runtime_hint" in sig.parameters:
+            return await self._infer(prompt, runtime_hint=runtime_hint)
+        return await self._infer(prompt)
 
     async def execute(self, mode: str, payload: dict) -> dict:
         if mode not in self.MODES:
@@ -40,11 +48,10 @@ class MultiStructuralBridge:
     # ------------------------------------------------------------------ #
 
     async def _mode_chat(self, payload: dict) -> dict:
-        """Conversational turn with optional memory injection."""
         user_input = payload.get("input", "")
         history = payload.get("history", [])
+        hint = payload.get("runtime_hint")
 
-        # Inject recent memory — filter out stub/low-quality entries
         context_snippets = []
         if self._cache:
             hits = self._cache.search(user_input, top_k=3)
@@ -57,21 +64,21 @@ class MultiStructuralBridge:
             ]
 
         prompt = self._build_chat_prompt(user_input, history, context_snippets)
-        result = await self._infer(prompt)
+        result = await self._call(prompt, runtime_hint=hint)
         answer = result.get("output", "")
 
-        # Store only the clean user question + answer (not the full constructed prompt)
         if self._cache and answer and not answer.startswith("[stub]"):
             self._cache.store(
                 text=f"Q: {user_input}\nA: {answer}",
                 summary=answer[:120],
             )
 
-        return {"mode": "chat", "output": answer, "confidence": result.get("confidence")}
+        return {"mode": "chat", "output": answer, "confidence": result.get("confidence"),
+                "runtime": result.get("meta", {}).get("provider", "unknown")}
 
     async def _mode_search(self, payload: dict) -> dict:
-        """RAG-style: retrieve from cache then augment prompt."""
         query = payload.get("input", "")
+        hint = payload.get("runtime_hint")
         hits = []
         if self._cache:
             hits = self._cache.search(query, top_k=5)
@@ -81,7 +88,7 @@ class MultiStructuralBridge:
             f"Context from memory:\n{context}\n\n"
             f"Answer the following based on the context above:\n{query}"
         )
-        result = await self._infer(prompt)
+        result = await self._call(prompt, runtime_hint=hint)
         return {
             "mode": "search",
             "output": result.get("output"),
@@ -90,8 +97,8 @@ class MultiStructuralBridge:
         }
 
     async def _mode_tools(self, payload: dict) -> dict:
-        """Tool-use mode: parse tool calls from model output."""
         user_input = payload.get("input", "")
+        hint = payload.get("runtime_hint")
         available_tools = payload.get("tools", [])
         tools_desc = "\n".join(f"- {t}" for t in available_tools) or "No tools registered."
         prompt = (
@@ -99,8 +106,7 @@ class MultiStructuralBridge:
             f"Decide which tool to call (or none) and explain your reasoning.\n"
             f"Request: {user_input}"
         )
-        result = await self._infer(prompt)
-        # Simple heuristic: detect tool name in output
+        result = await self._call(prompt, runtime_hint=hint)
         called_tool = next(
             (t for t in available_tools if t.lower() in result.get("output", "").lower()),
             None,
@@ -113,13 +119,13 @@ class MultiStructuralBridge:
         }
 
     async def _mode_pipeline(self, payload: dict) -> dict:
-        """Multi-step pipeline: run a list of prompt steps sequentially."""
         steps = payload.get("steps", [payload.get("input", "")])
+        hint = payload.get("runtime_hint")
         results = []
         last_output = ""
         for i, step in enumerate(steps):
             prompt = step if i == 0 else f"Previous: {last_output}\nNext step: {step}"
-            result = await self._infer(prompt)
+            result = await self._call(prompt, runtime_hint=hint)
             last_output = result.get("output", "")
             results.append({"step": i + 1, "prompt": step, "output": last_output})
         return {
