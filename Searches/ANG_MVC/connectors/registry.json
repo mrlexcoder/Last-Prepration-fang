@@ -1,0 +1,20 @@
+{
+  "adapters": [
+    {
+      "id": "runtime_adapter_stub",
+      "name": "runtime_adapter_stub",
+      "entrypoint": "adapters.runtime_adapter_stub:infer",
+      "capabilities": ["completion"],
+      "resourceHints": {"cpu": 1, "mem_gb": 1},
+      "reported_latency_ms": 15
+    },
+    {
+      "id": "runtime_adapter_qwen_stub",
+      "name": "qwen-2.5-4b-instruct",
+      "entrypoint": "adapters.runtime_adapter_qwen_stub:infer",
+      "capabilities": ["instruction", "completion"],
+      "resourceHints": {"cpu": 4, "gpu": 0, "mem_gb": 4},
+      "reported_latency_ms": 50
+    }
+  ]
+}
