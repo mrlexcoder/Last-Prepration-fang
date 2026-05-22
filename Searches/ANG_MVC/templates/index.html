@@ -3,72 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AuroraNeuroGrid MVC</title>
+  <title>AuroraNeuroGrid</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-  <main class="container">
-    <header>
-      <h1>AuroraNeuroGrid</h1>
-      <p class="tagline">Brain-Scale AI Fabric — quantum-informed routing · neurone mesh · infinite-memory caching</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="logo">⬡ ANG</span>
+      <button class="new-chat-btn" id="newChatBtn">+ New chat</button>
+    </div>
+
+    <nav class="chat-history" id="chatHistory">
+      <!-- populated by JS -->
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="model-badge" id="modelBadge">stub</div>
+      <select class="model-select" id="modelSelect">
+        <option value="runtime_adapter_stub">Fast Stub</option>
+        <option value="qwen-2.5-4b-instruct">Qwen 2.5</option>
+        <option value="huggingface-transformers">HuggingFace</option>
+        <option value="llama.cpp">llama.cpp</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+      <div class="mode-tabs" id="modeTabs">
+        <button class="tab active" data-mode="chat">Chat</button>
+        <button class="tab" data-mode="search">Search</button>
+        <button class="tab" data-mode="loop">Loop</button>
+        <button class="tab" data-mode="pipeline">Pipeline</button>
+        <button class="tab" data-mode="tools">Tools</button>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="agiBtn" title="AGI Status">🧠</button>
+        <button class="icon-btn" id="cacheBtn" title="Cache Stats">💾</button>
+      </div>
     </header>
 
-    <section class="panel">
-      <div class="row">
-        <label>
-          Mode
-          <select id="modeSelect">
-            <option value="infer">Single Infer</option>
-            <option value="loop">Automation Loop</option>
-            <option value="chat">Chat (memory)</option>
-            <option value="search">Search (RAG)</option>
-            <option value="tools">Tools</option>
-            <option value="pipeline">Pipeline</option>
-          </select>
-        </label>
-        <label>
-          Runtime hint
-          <input id="runtimeHint" type="text" placeholder="llama.cpp / qwen-2.5-4b-instruct" />
-        </label>
+    <!-- CHAT WINDOW -->
+    <div class="chat-window" id="chatWindow">
+      <!-- Welcome screen shown when no messages -->
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">⬡</div>
+        <h1>AuroraNeuroGrid</h1>
+        <p>Brain-Scale AI Fabric</p>
+        <div class="welcome-chips">
+          <button class="chip" data-prompt="Explain quantum-informed routing in AI systems">Explain quantum routing</button>
+          <button class="chip" data-prompt="What is a neurone mesh orchestrator?">Neurone mesh</button>
+          <button class="chip" data-prompt="How does infinite memory caching work?">Infinity cache</button>
+          <button class="chip" data-prompt="Show me the AGI layer architecture">AGI layer</button>
+        </div>
       </div>
+      <!-- Messages injected here -->
+      <div class="messages" id="messages"></div>
+    </div>
 
-      <label for="inputText">Input / Prompt</label>
-      <textarea id="inputText" placeholder="Ask the system anything...">Explain the next action for a prediction network.</textarea>
-
-      <div class="row" id="inferOptions">
-        <label>
-          Latency budget (ms)
-          <input id="latencyBudget" type="number" value="200" min="10" />
-        </label>
-        <label>
-          Max loop iterations
-          <input id="maxIterations" type="number" value="3" min="1" max="10" />
-        </label>
+    <!-- INPUT BAR -->
+    <div class="input-area">
+      <!-- Loop / Pipeline options (shown contextually) -->
+      <div class="extra-opts" id="extraOpts" style="display:none">
+        <label>Iterations <input type="number" id="maxIter" value="3" min="1" max="10" /></label>
+        <label>Threshold <input type="number" id="confThresh" value="0.85" min="0" max="1" step="0.05" /></label>
+        <label>Steps <input type="text" id="pipeSteps" placeholder="step1, step2, step3" /></label>
       </div>
-      <div class="row">
-        <label>
-          Confidence threshold
-          <input id="confidenceThreshold" type="number" value="0.85" min="0" max="1" step="0.05" />
-        </label>
-        <label>
-          Pipeline steps (comma-separated)
-          <input id="pipelineSteps" type="text" placeholder="step1, step2, step3" />
-        </label>
+      <div class="input-row">
+        <textarea id="inputBox" placeholder="Message AuroraNeuroGrid…" rows="1"></textarea>
+        <button class="send-btn" id="sendBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
       </div>
-
-      <div class="btn-row">
-        <button id="executeBtn">Execute</button>
-        <button id="connectorsBtn" class="ghost">List connectors</button>
-        <button id="agiBtn" class="ghost">AGI status</button>
-        <button id="cacheBtn" class="ghost">Cache stats</button>
+      <div class="input-footer">
+        <span id="modeLabel">Mode: <b>chat</b></span>
+        <span id="runtimeLabel">Runtime: <b>auto</b></span>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="panel">
-      <h2>Result</h2>
-      <pre id="resultOutput">Ready.</pre>
-    </section>
-  </main>
   <script src="/static/main.js"></script>
 </body>
 </html>
