@@ -15,6 +15,24 @@
       "capabilities": ["instruction", "completion"],
       "resourceHints": {"cpu": 4, "gpu": 0, "mem_gb": 4},
       "reported_latency_ms": 50
+    },
+    {
+      "id": "runtime_adapter_hf",
+      "name": "huggingface-transformers",
+      "entrypoint": "adapters.runtime_adapter_hf:infer",
+      "capabilities": ["completion", "instruction", "chat"],
+      "resourceHints": {"cpu": 4, "gpu": 1, "mem_gb": 8},
+      "reported_latency_ms": 800,
+      "note": "Set ANG_HF_MODEL env var to override model. Falls back to stub if transformers not installed."
+    },
+    {
+      "id": "runtime_adapter_llama",
+      "name": "llama.cpp",
+      "entrypoint": "adapters.runtime_adapter_llama:infer",
+      "capabilities": ["completion", "chat"],
+      "resourceHints": {"cpu": 4, "gpu": 0, "mem_gb": 8},
+      "reported_latency_ms": 400,
+      "note": "Set ANG_LLAMA_BIN and ANG_LLAMA_MODEL env vars. Falls back to stub if not configured."
     }
   ]
 }

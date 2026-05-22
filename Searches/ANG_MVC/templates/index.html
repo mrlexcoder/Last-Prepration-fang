@@ -9,41 +9,62 @@
 <body>
   <main class="container">
     <header>
-      <h1>AuroraNeuroGrid MVC</h1>
-      <p>Quantum-informed routing · Neurone mesh orchestration · Automation loop engine</p>
+      <h1>AuroraNeuroGrid</h1>
+      <p class="tagline">Brain-Scale AI Fabric — quantum-informed routing · neurone mesh · infinite-memory caching</p>
     </header>
 
     <section class="panel">
-      <label for="inputText">Input prompt</label>
-      <textarea id="inputText" placeholder="Ask the system anything...">Explain the next action for a prediction network.</textarea>
       <div class="row">
         <label>
-          Latency budget (ms)
-          <input id="latencyBudget" type="number" value="120" min="10" />
+          Mode
+          <select id="modeSelect">
+            <option value="infer">Single Infer</option>
+            <option value="loop">Automation Loop</option>
+            <option value="chat">Chat (memory)</option>
+            <option value="search">Search (RAG)</option>
+            <option value="tools">Tools</option>
+            <option value="pipeline">Pipeline</option>
+          </select>
         </label>
         <label>
           Runtime hint
-          <input id="runtimeHint" type="text" placeholder="qwen-2.5-4b-instruct" />
+          <input id="runtimeHint" type="text" placeholder="llama.cpp / qwen-2.5-4b-instruct" />
         </label>
       </div>
-      <div class="row">
+
+      <label for="inputText">Input / Prompt</label>
+      <textarea id="inputText" placeholder="Ask the system anything...">Explain the next action for a prediction network.</textarea>
+
+      <div class="row" id="inferOptions">
+        <label>
+          Latency budget (ms)
+          <input id="latencyBudget" type="number" value="200" min="10" />
+        </label>
         <label>
           Max loop iterations
           <input id="maxIterations" type="number" value="3" min="1" max="10" />
         </label>
+      </div>
+      <div class="row">
         <label>
           Confidence threshold
           <input id="confidenceThreshold" type="number" value="0.85" min="0" max="1" step="0.05" />
         </label>
+        <label>
+          Pipeline steps (comma-separated)
+          <input id="pipelineSteps" type="text" placeholder="step1, step2, step3" />
+        </label>
       </div>
+
       <div class="btn-row">
-        <button id="invokeBtn">Execute (single)</button>
-        <button id="loopBtn" class="secondary">Execute (loop)</button>
+        <button id="executeBtn">Execute</button>
         <button id="connectorsBtn" class="ghost">List connectors</button>
+        <button id="agiBtn" class="ghost">AGI status</button>
+        <button id="cacheBtn" class="ghost">Cache stats</button>
       </div>
     </section>
 
-    <section class="panel" id="outputPanel">
+    <section class="panel">
       <h2>Result</h2>
       <pre id="resultOutput">Ready.</pre>
     </section>

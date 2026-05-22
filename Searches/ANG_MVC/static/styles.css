@@ -1,88 +1,128 @@
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: #081229;
-  color: #f7f8fc;
+  background: #060e1f;
+  color: #f0f4ff;
 }
+
 .container {
-  max-width: 920px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 36px 24px;
 }
+
 header h1 {
-  margin: 0 0 8px;
-  font-size: 2.4rem;
+  margin: 0 0 6px;
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #7eb3ff, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-header p {
-  color: #abadc7;
-  margin: 0 0 24px;
+
+.tagline {
+  color: #7a82a8;
+  margin: 0 0 28px;
+  font-size: 0.9rem;
 }
+
 .panel {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
   padding: 24px;
   margin-bottom: 18px;
 }
+
+.panel h2 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  color: #8899cc;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 textarea {
   width: 100%;
-  min-height: 140px;
+  min-height: 130px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.12);
   background: rgba(255,255,255,0.04);
-  color: #f0f4ff;
+  color: #e8eeff;
   padding: 14px;
   resize: vertical;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-top: 8px;
 }
+
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 14px;
 }
+
 label {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-size: 0.96rem;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: #8899cc;
 }
-input[type="number"], input[type="text"] {
+
+input[type="number"],
+input[type="text"],
+select {
   width: 100%;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.04);
-  color: #f7f8fc;
-  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: #f0f4ff;
+  padding: 9px 12px;
+  font-size: 0.93rem;
+  font-family: inherit;
 }
+
+select option { background: #0d1a35; }
+
 .btn-row {
   display: flex;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 20px;
   flex-wrap: wrap;
 }
+
 button {
-  background: #5f7dff;
   border: none;
-  border-radius: 14px;
-  color: white;
-  padding: 12px 18px;
+  border-radius: 12px;
+  padding: 11px 20px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.15s;
 }
-button:hover { background: #8aa4ff; }
-button.secondary {
-  background: #3a4a8a;
+
+button:not(.ghost) {
+  background: linear-gradient(135deg, #4f7cff, #8b5cf6);
+  color: #fff;
 }
-button.secondary:hover { background: #5060b0; }
+button:not(.ghost):hover { background: linear-gradient(135deg, #6b93ff, #a78bfa); }
+
 button.ghost {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #abadc7;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #7a82a8;
 }
-button.ghost:hover { background: rgba(255,255,255,0.06); color: #f7f8fc; }
+button.ghost:hover { background: rgba(255,255,255,0.06); color: #c0caee; }
+
 pre {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
-  color: #d9e4ff;
+  color: #b8c8f0;
+  font-size: 0.88rem;
+  line-height: 1.6;
 }
