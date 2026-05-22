@@ -18,10 +18,10 @@ async def execute_request(request: InferRequest) -> dict:
     output = result.get("output", "")
     confidence = result.get("confidence", 0.0)
 
-    # Store in InfinityCache for future RAG retrieval
+    # Store in InfinityCache only if output is real (not a stub placeholder)
     try:
         from core.state import state
-        if state.cache:
+        if state.cache and output and not output.startswith("[stub]") and not output.startswith("[hf-stub]"):
             state.cache.store(
                 text=f"Q: {request.input}\nA: {output}",
                 summary=output[:120],
