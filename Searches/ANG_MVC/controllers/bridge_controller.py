@@ -1,25 +1,20 @@
 """
-Bridge controller — exposes Multi-Structural Bridge modes via HTTP.
-
-POST /api/bridge
-  body: { "mode": "chat|search|tools|pipeline", "input": "...", ...mode-specific fields }
+Bridge controller — Multi-Structural Bridge HTTP interface.
+POST /api/bridge  { "mode": "chat|search|tools|pipeline", "input": "...", ... }
 """
 
 import logging
+from typing import Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Any, Optional
+from core.state import state
 
 logger = logging.getLogger("ang.bridge_controller")
 bridge_router = APIRouter()
 
-# Injected at startup from app.py
-_bridge_instance = None
-
 
 def register_bridge(bridge):
-    global _bridge_instance
-    _bridge_instance = bridge
+    state.bridge = bridge
 
 
 class BridgeRequest(BaseModel):
@@ -32,12 +27,11 @@ class BridgeRequest(BaseModel):
 
 @bridge_router.post("/bridge")
 async def bridge_execute(request: BridgeRequest):
-    if _bridge_instance is None:
+    if state.bridge is None:
         raise HTTPException(status_code=503, detail="Bridge not initialized")
     try:
         payload = request.model_dump(exclude_none=True)
-        result = await _bridge_instance.execute(mode=request.mode, payload=payload)
-        return result
+        return await state.bridge.execute(mode=request.mode, payload=payload)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
