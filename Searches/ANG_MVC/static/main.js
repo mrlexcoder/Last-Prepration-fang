@@ -26,6 +26,9 @@ const cacheBtn      = document.getElementById('cacheBtn');
 
 // ── Init ───────────────────────────────────────────────────────────────
 newSession();
+// Sync badge/label with default selected model
+modelBadge.textContent = modelSelect.options[modelSelect.selectedIndex].text;
+runtimeLabel.innerHTML = `Runtime: <b>${modelSelect.value}</b>`;
 
 // ── Session management ─────────────────────────────────────────────────
 function newSession() {
@@ -157,10 +160,11 @@ async function send() {
 
 // ── API calls ──────────────────────────────────────────────────────────
 async function callApi(text) {
+  // null means "auto-select" (quantum router picks lowest latency)
   const hint = modelSelect.value === 'runtime_adapter_stub' ? null : modelSelect.value;
 
   if (currentMode === 'chat' || currentMode === 'search') {
-    return postJson('/api/bridge', { mode: currentMode, input: text });
+    return postJson('/api/bridge', { mode: currentMode, input: text, runtime_hint: hint });
   }
   if (currentMode === 'loop') {
     return postJson('/api/loop', {
@@ -173,15 +177,16 @@ async function callApi(text) {
   if (currentMode === 'pipeline') {
     const raw = document.getElementById('pipeSteps').value.trim();
     const steps = raw ? raw.split(',').map(s => s.trim()) : [text];
-    return postJson('/api/bridge', { mode: 'pipeline', input: text, steps });
+    return postJson('/api/bridge', { mode: 'pipeline', input: text, steps, runtime_hint: hint });
   }
   if (currentMode === 'tools') {
     return postJson('/api/bridge', {
       mode: 'tools', input: text,
       tools: ['web_search', 'calculator', 'code_executor', 'memory_lookup'],
+      runtime_hint: hint,
     });
   }
-  // default: single infer
+  // Single Infer mode
   return postJson('/api/infer', { input: text, latency_budget_ms: 200, runtime_hint: hint });
 }
 
@@ -212,7 +217,9 @@ function formatOutput(result) {
 
 function buildMeta(result) {
   const parts = [];
-  if (result.runtime) parts.push({ icon: '⚙️', text: result.runtime.replace('runtime_adapter_', '') });
+  // provider comes from result.runtime (bridge) or result.meta.provider (infer)
+  const provider = result.runtime || result.meta?.provider;
+  if (provider) parts.push({ icon: '⚙️', text: provider });
   if (result.confidence != null) parts.push({ icon: '📊', text: `conf ${(result.confidence * 100).toFixed(0)}%` });
   if (result.meta?.latency_ms) parts.push({ icon: '⚡', text: `${result.meta.latency_ms}ms` });
   if (result.iterations) parts.push({ icon: '🔁', text: `${result.iterations} iter` });
