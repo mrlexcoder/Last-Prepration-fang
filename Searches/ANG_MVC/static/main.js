@@ -1,60 +1,82 @@
-const invokeBtn = document.getElementById('invokeBtn');
-const loopBtn = document.getElementById('loopBtn');
-const connectorsBtn = document.getElementById('connectorsBtn');
 const resultOutput = document.getElementById('resultOutput');
 
-function getInputs() {
-  return {
-    input: document.getElementById('inputText').value.trim(),
-    latency_budget_ms: Number(document.getElementById('latencyBudget').value),
-    runtime_hint: document.getElementById('runtimeHint').value.trim() || null,
-    max_iterations: Number(document.getElementById('maxIterations').value),
-    confidence_threshold: Number(document.getElementById('confidenceThreshold').value),
-  };
-}
+function val(id) { return document.getElementById(id).value.trim(); }
+function numVal(id) { return Number(document.getElementById(id).value); }
 
-async function callApi(url, body) {
-  const response = await fetch(url, {
+async function post(url, body) {
+  const r = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  if (!response.ok) {
-    const err = await response.json();
-    throw new Error(err.detail || 'Request failed');
-  }
-  return response.json();
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.detail || 'Request failed');
+  return data;
 }
 
-invokeBtn.addEventListener('click', async () => {
-  const { input, latency_budget_ms, runtime_hint } = getInputs();
-  resultOutput.textContent = 'Executing...';
+async function get(url) {
+  const r = await fetch(url);
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.detail || 'Request failed');
+  return data;
+}
+
+function show(data) {
+  resultOutput.textContent = JSON.stringify(data, null, 2);
+}
+
+document.getElementById('executeBtn').addEventListener('click', async () => {
+  const mode = val('modeSelect');
+  const input = val('inputText');
+  const runtimeHint = val('runtimeHint') || null;
+  resultOutput.textContent = `Running [${mode}]...`;
+
   try {
-    const data = await callApi('/api/infer', { input, latency_budget_ms, runtime_hint });
-    resultOutput.textContent = JSON.stringify(data, null, 2);
+    let data;
+    if (mode === 'infer') {
+      data = await post('/api/infer', {
+        input,
+        latency_budget_ms: numVal('latencyBudget'),
+        runtime_hint: runtimeHint,
+      });
+    } else if (mode === 'loop') {
+      data = await post('/api/loop', {
+        input,
+        max_iterations: numVal('maxIterations'),
+        confidence_threshold: numVal('confidenceThreshold'),
+        runtime_hint: runtimeHint,
+      });
+    } else if (mode === 'pipeline') {
+      const rawSteps = val('pipelineSteps');
+      const steps = rawSteps ? rawSteps.split(',').map(s => s.trim()) : [input];
+      data = await post('/api/bridge', { mode: 'pipeline', input, steps });
+    } else if (mode === 'tools') {
+      data = await post('/api/bridge', {
+        mode: 'tools',
+        input,
+        tools: ['web_search', 'calculator', 'code_executor', 'memory_lookup'],
+      });
+    } else {
+      // chat, search
+      data = await post('/api/bridge', { mode, input });
+    }
+    show(data);
   } catch (e) {
     resultOutput.textContent = `Error: ${e.message}`;
   }
 });
 
-loopBtn.addEventListener('click', async () => {
-  const { input, runtime_hint, max_iterations, confidence_threshold } = getInputs();
-  resultOutput.textContent = 'Running automation loop...';
-  try {
-    const data = await callApi('/api/loop', { input, runtime_hint, max_iterations, confidence_threshold });
-    resultOutput.textContent = JSON.stringify(data, null, 2);
-  } catch (e) {
-    resultOutput.textContent = `Error: ${e.message}`;
-  }
+document.getElementById('connectorsBtn').addEventListener('click', async () => {
+  resultOutput.textContent = 'Loading...';
+  try { show(await get('/api/connectors')); } catch (e) { resultOutput.textContent = `Error: ${e.message}`; }
 });
 
-connectorsBtn.addEventListener('click', async () => {
-  resultOutput.textContent = 'Loading connectors...';
-  try {
-    const response = await fetch('/api/connectors');
-    const data = await response.json();
-    resultOutput.textContent = JSON.stringify(data, null, 2);
-  } catch (e) {
-    resultOutput.textContent = `Error: ${e.message}`;
-  }
+document.getElementById('agiBtn').addEventListener('click', async () => {
+  resultOutput.textContent = 'Loading...';
+  try { show(await get('/admin/agi-status')); } catch (e) { resultOutput.textContent = `Error: ${e.message}`; }
+});
+
+document.getElementById('cacheBtn').addEventListener('click', async () => {
+  resultOutput.textContent = 'Loading...';
+  try { show(await get('/admin/cache-stats')); } catch (e) { resultOutput.textContent = `Error: ${e.message}`; }
 });
