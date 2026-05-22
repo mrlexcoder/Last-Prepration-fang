@@ -55,6 +55,27 @@ Core components
 10. Security & Governance
    - Encrypted local storage for secrets, user consent for data retention, sandboxing for tool execution.
 
+AGI Enhancement Layer — what ANG still must add
+- True world model: a reality simulation layer and causal state graph, not only token prediction.
+- Genuine learning: continuous self-model refinement, replay, and cognition updates.
+- Independent goal formation: a motivation engine that generates, ranks, and adapts objectives.
+- Abstract self-reflection: a meta-cognition layer with internal belief tracking, recursive critique, and strategy revision.
+
+True AGI modules
+- `world-model-engine` — builds a structured world state from observations, log streams, and knowledge graphs.
+- `reality-simulator` — predicts action outcomes, supports counterfactuals, and validates future scenarios.
+- `causal-graph-store` — stores cause/effect relationships and supports causal inference and explanation.
+- `learner-core` — continuous learning, memory replay, and self-updating heuristics across agents.
+- `goal-engine` — hierarchical goal creation, intrinsic reward, and adaptive motivation.
+- `meta-cognition` — introspection, plan revision, confidence tracking, and recursive self-evaluation.
+
+Open-source AGI building blocks to integrate
+- `BabyAGI` / `AutoGPT` style task generation and autonomous goal chaining.
+- `Reflexion` style self-critique and reflection loops.
+- `Voyager` style self-improvement through exploration and environment grounding.
+- `Llama-Index` / `llama_index` for rich retrieval + knowledge graph state.
+- `OpenCog` / symbolic reasoning bridges for causal structures.
+
 Pro-level naming conventions (module examples)
 - `quantum-router` — model selection and scheduler
 - `neurone-mesh` — orchestration core (LangChain integration)
