@@ -64,6 +64,7 @@ Evaluation loops are only the start. True AGI-style self-reflection must add:
 
 ### 3.3 World modeling and simulation
 - `llama_index` — knowledge graph-style retrieval and structured state
+- `RWKV-LM` — future prediction sequence architecture for next-state inference and online reasoning
 - `OpenCog` / `Neo4j` style causal graphs for relationships
 - `Gym` / `MiniGrid` style simulation patterns for environment testbeds
 

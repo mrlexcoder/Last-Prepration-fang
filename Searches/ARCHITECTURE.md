@@ -28,6 +28,7 @@ Core components
 
 4. Model Farm (Runtimes)
    - `llama.cpp` / `alpaca.cpp` (CPU-optimized local inference)
+   - Qwen `Qwen2.5-4B-Instruct` for instruction-tuned local inference and advanced prompting.
    - Hugging Face Transformers (GPU/FP16 if available)
    - Containerized runtimes (FastChat, GPT4All wrappers)
    - Runtime Adapter interface: standardize calls, batching, token limits, and streaming.
@@ -128,6 +129,7 @@ Reference free repos to wire in
 - Transformers — https://github.com/huggingface/transformers
 - FAISS — https://github.com/facebookresearch/faiss
 - Chroma — https://github.com/chroma-core/chroma
+- RWKV‑LM — https://github.com/BlinkDL/RWKV-LM  # future-prediction network architecture for sequence forecasting, next-step inference, and continual auto-thinking.
 
 Next steps
 - Add `architecture.mmd` mermaid diagram and deployment examples in `deploy_example.md`.
