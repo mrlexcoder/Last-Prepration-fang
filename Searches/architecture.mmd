@@ -1,0 +1,35 @@
+%% Mermaid architecture for AuroraNeuroGrid (ANG)
+flowchart LR
+  subgraph Ingress
+    A[Client UI (Gradio/Streamlit)] -->|HTTP| API[FastAPI]
+  end
+
+  subgraph Core
+    API --> QR[Quantum Router]
+    QR --> NM[Neurone Mesh (Orchestrator)]
+    NM --> MF[Model Farm]
+    NM --> MS[Multi-Structural Bridge]
+    NM --> IC[Infinity Cache (Vector DB)]
+    NM --> ALE[Automation Loop Engine]
+  end
+
+  subgraph Runtimes
+    MF --> R1[runtime-adapter-llama.cpp]
+    MF --> R2[runtime-adapter-hf]
+    MF --> R3[runtime-adapter-fastchat]
+  end
+
+  subgraph Storage
+    IC --> VDB[FAISS/Chroma on NVMe]
+    StorageLogs[Logs & Metrics] -->|prometheus/otel| Ops[Observability]
+  end
+
+  MS --> Tools[External Tools & Connectors]
+  Tools -->|UDS| R1
+  ALE -->|action| Tools
+  Ops --> API
+
+  style QR fill:#f0f8ff,stroke:#036,stroke-width:1px
+  style NM fill:#f6ffed,stroke:#073,stroke-width:1px
+  style MF fill:#fff3e0,stroke:#a63,stroke-width:1px
+  style IC fill:#eef7ff,stroke:#06a,stroke-width:1px
