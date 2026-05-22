@@ -1,0 +1,7 @@
+{
+  "name": "qwen-2.5-4b-instruct",
+  "repo_url": "https://github.com/idear-digital/qwen-2.5-4b-instruct",
+  "entrypoint": "runtime_adapters.runtime_adapter_qwen:infer",
+  "capabilities": ["completion","instruction"],
+  "resourceHints": {"cpu": 8, "gpu": 1, "mem_gb": 16}
+}

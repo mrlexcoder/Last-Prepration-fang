@@ -1,0 +1,12 @@
+{
+  "adapters": [
+    {
+      "id": "runtime_adapter_stub",
+      "name": "runtime_adapter_stub",
+      "entrypoint": "runtime_adapters.runtime_adapter_stub:infer",
+      "capabilities": ["completion"],
+      "resourceHints": {"cpu": 1, "mem_gb": 1},
+      "reported_latency_ms": 20
+    }
+  ]
+}
