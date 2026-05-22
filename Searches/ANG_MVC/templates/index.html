@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuroraNeuroGrid MVC</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>AuroraNeuroGrid MVC</h1>
+      <p>Fast execution-layer demo with runtime selection and MVC separation.</p>
+    </header>
+
+    <section class="panel">
+      <label for="inputText">Input prompt</label>
+      <textarea id="inputText" placeholder="Ask the system anything...">Explain the next action for a prediction network.</textarea>
+      <div class="row">
+        <label>
+          Latency budget (ms)
+          <input id="latencyBudget" type="number" value="120" min="10" />
+        </label>
+        <label>
+          Runtime hint
+          <input id="runtimeHint" type="text" placeholder="qwen-2.5-4b-instruct" />
+        </label>
+      </div>
+      <button id="invokeBtn">Execute</button>
+    </section>
+
+    <section class="panel" id="outputPanel">
+      <h2>Result</h2>
+      <pre id="resultOutput">Ready.</pre>
+    </section>
+  </main>
+  <script src="/static/main.js"></script>
+</body>
+</html>
