@@ -1,0 +1,92 @@
+{
+  "threads": [
+    {
+      "id": "thread-1",
+      "title": "API error handling pattern",
+      "module": "code",
+      "updatedAt": "2026-05-22T10:00:00Z",
+      "messages": [
+        {
+          "id": "m1",
+          "role": "user",
+          "content": "How should I structure API error handling in a React app?",
+          "createdAt": "2026-05-22T09:58:00Z",
+          "status": "complete"
+        },
+        {
+          "id": "m2",
+          "role": "assistant",
+          "content": "Use a thin API client with typed errors, map HTTP status to user-facing messages, and surface retries only for transient failures (5xx, network). Keep UI state explicit: idle, loading, success, error, empty.",
+          "createdAt": "2026-05-22T09:59:00Z",
+          "status": "complete",
+          "thinking": {
+            "visible": true,
+            "collapsed": true,
+            "durationMs": 2840,
+            "steps": [
+              {
+                "id": "t1",
+                "label": "Understanding the request",
+                "content": "User wants React-specific patterns for API errors, not generic backend advice.",
+                "status": "done"
+              },
+              {
+                "id": "t2",
+                "label": "Considering architecture",
+                "content": "Central fetch wrapper + error class + React Query or Zustand for request state.",
+                "status": "done"
+              },
+              {
+                "id": "t3",
+                "label": "Drafting response",
+                "content": "Focus on practical layers: client, mapping, UI states, retry policy.",
+                "status": "done"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "thread-2",
+      "title": "Neural module routing",
+      "module": "analysis",
+      "updatedAt": "2026-05-22T08:30:00Z",
+      "messages": [
+        {
+          "id": "m3",
+          "role": "user",
+          "content": "Explain how multiple AI modules can share one thread context.",
+          "createdAt": "2026-05-22T08:28:00Z",
+          "status": "complete"
+        },
+        {
+          "id": "m4",
+          "role": "assistant",
+          "content": "A single thread stores ordered messages; each module reads the same context window but applies its own system prompt and tools. Route by intent detection or explicit user module selection.",
+          "createdAt": "2026-05-22T08:29:00Z",
+          "status": "complete",
+          "thinking": {
+            "visible": true,
+            "collapsed": true,
+            "durationMs": 1920,
+            "steps": [
+              {
+                "id": "t4",
+                "label": "Parsing multi-module setup",
+                "content": "Shared thread ID, module tag per assistant turn, optional tool schemas per module.",
+                "status": "done"
+              },
+              {
+                "id": "t5",
+                "label": "Formulating answer",
+                "content": "Clarify context window, routing, and UI module switcher.",
+                "status": "done"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
