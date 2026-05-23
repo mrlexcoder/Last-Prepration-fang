@@ -10,6 +10,8 @@ if TYPE_CHECKING:
     from core.infinity_cache import InfinityCache
     from core.multi_structural import MultiStructuralBridge
     from core.agi import WorldModel, GoalEngine, MetaCognition
+    from core.adapter_pool import WarmAdapterPool
+    from core.cmu_router import CognitiveMotorRouter
 
 
 class AppState:
@@ -18,6 +20,8 @@ class AppState:
     goal_engine: "GoalEngine | None" = None
     meta_cognition: "MetaCognition | None" = None
     bridge: "MultiStructuralBridge | None" = None
+    adapter_pool: "WarmAdapterPool | None" = None   # v3 — Warm Adapter Pool (P0)
+    cmu_router: "CognitiveMotorRouter | None" = None  # v3 Pro — decides multiple-calc paths
     # Hot-reloadable registry cache
     _registry: dict | None = None
 
