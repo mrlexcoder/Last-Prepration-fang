@@ -1,0 +1,14 @@
+#!/bin/bash
+# Simple wrapper so you can do: ./agi start
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+case "$1" in
+  start)
+    python3 "$SCRIPT_DIR/scripts/start.py"
+    ;;
+  *)
+    echo "Usage: $0 start"
+    echo "Example: ./agi start"
+    ;;
+esac
