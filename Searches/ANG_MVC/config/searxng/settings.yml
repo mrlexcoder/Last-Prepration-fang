@@ -1,0 +1,149 @@
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "ANG Search"
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "en"
+  formats:
+    - html
+    - json
+
+server:
+  secret_key: "ang-searxng-secret-change-me"
+  bind_address: "0.0.0.0"
+  port: 8080
+  base_url: false
+  image_proxy: false
+
+ui:
+  static_use_hash: true
+  default_theme: simple
+  results_on_new_tab: false
+
+# Enable maximum engines for broadest coverage
+engines:
+  - name: google
+    engine: google
+    shortcut: g
+    categories: [general, news]
+    disabled: false
+
+  - name: bing
+    engine: bing
+    shortcut: b
+    categories: [general, news]
+    disabled: false
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: d
+    categories: [general, news]
+    disabled: false
+
+  - name: brave
+    engine: brave
+    shortcut: br
+    categories: [general, news]
+    disabled: false
+
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: w
+    categories: [general]
+    disabled: false
+
+  - name: arxiv
+    engine: arxiv
+    shortcut: ax
+    categories: [science]
+    disabled: false
+
+  - name: github
+    engine: github
+    shortcut: gh
+    categories: [it]
+    disabled: false
+
+  - name: stackoverflow
+    engine: stackoverflow
+    shortcut: so
+    categories: [it]
+    disabled: false
+
+  - name: reddit
+    engine: reddit
+    shortcut: r
+    categories: [general, news]
+    disabled: false
+
+  - name: hackernews
+    engine: hackernews
+    shortcut: hn
+    categories: [it, news]
+    disabled: false
+
+  - name: yahoo
+    engine: yahoo
+    shortcut: y
+    categories: [general, news]
+    disabled: false
+
+  - name: startpage
+    engine: startpage
+    shortcut: sp
+    categories: [general]
+    disabled: false
+
+  - name: mojeek
+    engine: mojeek
+    shortcut: mj
+    categories: [general]
+    disabled: false
+
+  - name: qwant
+    engine: qwant
+    shortcut: q
+    categories: [general, news]
+    disabled: false
+
+  - name: presearch
+    engine: presearch
+    shortcut: ps
+    categories: [general]
+    disabled: false
+
+  - name: pubmed
+    engine: pubmed
+    shortcut: pm
+    categories: [science]
+    disabled: false
+
+  - name: semantic scholar
+    engine: semantic_scholar
+    shortcut: ss
+    categories: [science]
+    disabled: false
+
+  - name: wolframalpha
+    engine: wolframalpha_noapi
+    shortcut: wa
+    categories: [general, science]
+    disabled: false
+
+  - name: currency
+    engine: currency_convert
+    shortcut: cc
+    categories: [general]
+    disabled: false
+
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 6.0
+  useragent_suffix: ""
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
