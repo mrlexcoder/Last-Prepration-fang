@@ -14,7 +14,7 @@ logger = logging.getLogger("ang.admin")
 admin_router = APIRouter(prefix="/admin")
 
 
-def register_agi(world_model=None, goal_engine=None, meta_cognition=None, cache=None):
+def register_agi(world_model=None, goal_engine=None, meta_cognition=None, cache=None, cmu_router=None):
     """Called from app.py lifespan to inject AGI layer into shared state."""
     if world_model:
         state.world_model = world_model
@@ -24,6 +24,8 @@ def register_agi(world_model=None, goal_engine=None, meta_cognition=None, cache=
         state.meta_cognition = meta_cognition
     if cache:
         state.cache = cache
+    if cmu_router:
+        state.cmu_router = cmu_router
 
 
 @admin_router.post("/refresh-connectors")
@@ -53,3 +55,65 @@ async def cache_stats():
     if not state.cache:
         return {"status": "not_initialized"}
     return state.cache.stats()
+
+
+@admin_router.get("/storage-stats")
+async def storage_stats():
+    """Stats from Go store + Rust ring buffer."""
+    try:
+        from core.storage_client import get_storage
+        return get_storage().storage_stats()
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+@admin_router.get("/mem0-status")
+async def mem0_status():
+    try:
+        from core.mem0_layer import get_mem0
+        mem = get_mem0()
+        return {"available": mem.available, "backend": "mem0" if mem.available else "go_store"}
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+@admin_router.get("/letta-agents")
+async def letta_agents():
+    try:
+        from core.letta_agent import get_letta
+        letta = get_letta()
+        return {"available": letta.available, "agents": letta.list_agents()}
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+@admin_router.get("/training-status")
+async def training_status():
+    """Current training queue size and latest adapter."""
+    try:
+        from core.storage_client import get_storage
+        from pathlib import Path
+        import os
+        storage = get_storage()
+        samples = storage.get_training_queue(min_quality=0.75)
+        adapter_dir = Path(os.getenv("ANG_ADAPTER_DIR", "/data/ang_adapters"))
+        latest = ""
+        marker = adapter_dir / "latest_adapter.txt"
+        if marker.exists():
+            latest = marker.read_text().strip()
+        return {
+            "queued_samples": len(samples),
+            "min_quality": 0.75,
+            "latest_adapter": latest,
+            "auto_train_enabled": os.getenv("ANG_AUTO_TRAIN", "0") == "1",
+        }
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+@admin_router.get("/adapter-pool")
+async def adapter_pool_status():
+    """v3 — WarmAdapterPool status (P0 critical component)."""
+    if not state.adapter_pool:
+        return {"status": "not_initialized", "message": "WarmAdapterPool not enabled in this run"}
+    return await state.adapter_pool.health()

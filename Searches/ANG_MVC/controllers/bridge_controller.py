@@ -24,6 +24,11 @@ class BridgeRequest(BaseModel):
     tools: Optional[list] = None
     steps: Optional[list] = None
     runtime_hint: Optional[str] = None
+    user_id: Optional[str] = "default"
+    session_id: Optional[str] = None
+    use_letta: Optional[bool] = False
+    use_ensemble: Optional[bool] = False  # fast single-model by default for normal chat; ensemble only when explicitly requested or in agentscope mode
+    force_live: Optional[bool] = False
 
 
 @bridge_router.post("/bridge")
