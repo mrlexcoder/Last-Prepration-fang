@@ -1,0 +1,10 @@
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/storage/rust_ringbuf/target/release/deps/lock_api-52c2a7b84d1b49e5.d: /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/lib.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/mutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/remutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/rwlock.rs
+
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/storage/rust_ringbuf/target/release/deps/liblock_api-52c2a7b84d1b49e5.rlib: /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/lib.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/mutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/remutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/rwlock.rs
+
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/storage/rust_ringbuf/target/release/deps/liblock_api-52c2a7b84d1b49e5.rmeta: /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/lib.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/mutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/remutex.rs /home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/rwlock.rs
+
+/home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/lib.rs:
+/home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/mutex.rs:
+/home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/remutex.rs:
+/home/mrlexcoder/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/src/rwlock.rs:

@@ -1,0 +1,75 @@
+syntax = "proto3";
+package ang_store;
+option go_package = "ang_store/proto;proto";
+
+service ANGStore {
+  // KV
+  rpc Set(SetRequest) returns (SetResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc Scan(ScanRequest) returns (ScanResponse);
+
+  // Memory / Conversations
+  rpc StoreMemory(StoreMemoryRequest) returns (StoreMemoryResponse);
+  rpc GetMemory(GetMemoryRequest) returns (GetMemoryResponse);
+
+  // Training data
+  rpc StoreTrainingSample(StoreTrainingSampleRequest) returns (StoreTrainingSampleResponse);
+  rpc GetTrainingSamples(GetTrainingSamplesRequest) returns (GetTrainingSamplesResponse);
+
+  // Stats
+  rpc Stats(StatsRequest) returns (StatsResponse);
+}
+
+// ── KV ──────────────────────────────────────────────────────────────────────
+message SetRequest   { string key = 1; bytes value = 2; int64 ttl_seconds = 3; }
+message SetResponse  { bool ok = 1; string error = 2; }
+message GetRequest   { string key = 1; }
+message GetResponse  { bool found = 1; bytes value = 2; string error = 3; }
+message DeleteRequest  { string key = 1; }
+message DeleteResponse { bool ok = 1; string error = 2; }
+message KVPair       { string key = 1; bytes value = 2; }
+message ScanRequest  { string prefix = 1; int32 limit = 2; }
+message ScanResponse { repeated KVPair pairs = 1; string error = 2; }
+
+// ── Memory ───────────────────────────────────────────────────────────────────
+message StoreMemoryRequest {
+  string session_id = 1;
+  string role       = 2;
+  string content    = 3;
+  map<string, string> metadata = 4;
+}
+message StoreMemoryResponse { bool ok = 1; string entry_id = 2; string error = 3; }
+
+message GetMemoryRequest  { string session_id = 1; int32 limit = 2; }
+message MemoryEntry {
+  string id         = 1;
+  string session_id = 2;
+  string role       = 3;
+  string content    = 4;
+  int64  timestamp  = 5;
+}
+message GetMemoryResponse { repeated MemoryEntry entries = 1; string error = 2; }
+
+// ── Training ─────────────────────────────────────────────────────────────────
+message StoreTrainingSampleRequest {
+  string prompt     = 1;
+  string completion = 2;
+  float  quality    = 3;
+  string source     = 4;
+}
+message StoreTrainingSampleResponse { bool ok = 1; string sample_id = 2; string error = 3; }
+
+message GetTrainingSamplesRequest { int32 limit = 1; float min_quality = 2; }
+message TrainingSample {
+  string id         = 1;
+  string prompt     = 2;
+  string completion = 3;
+  float  quality    = 4;
+  string source     = 5;
+}
+message GetTrainingSamplesResponse { repeated TrainingSample samples = 1; string error = 2; }
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+message StatsRequest  {}
+message StatsResponse { int64 lsm_size_bytes = 1; int64 vlog_size_bytes = 2; int64 timestamp = 3; }

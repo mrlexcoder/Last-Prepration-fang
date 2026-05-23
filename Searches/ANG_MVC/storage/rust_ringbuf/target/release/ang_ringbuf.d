@@ -1,0 +1,1 @@
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/storage/rust_ringbuf/target/release/ang_ringbuf: /opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/storage/rust_ringbuf/src/main.rs
