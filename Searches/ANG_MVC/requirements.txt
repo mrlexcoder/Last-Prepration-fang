@@ -36,4 +36,4 @@ mem0ai==0.1.29
 # gRPC (Go store client)
 grpcio==1.63.0
 grpcio-tools==1.63.0
-protobuf==5.26.1
+protobuf==5.29.6
