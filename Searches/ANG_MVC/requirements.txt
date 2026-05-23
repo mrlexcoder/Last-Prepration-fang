@@ -16,7 +16,7 @@ sentence-transformers==2.7.0
 qdrant-client==1.9.1
 
 # HuggingFace + quantization (bitsandbytes required for 4-bit + 50% limit)
-transformers==4.51.3
+transformers==5.0.0rc3
 accelerate==1.7.0
 datasets==2.19.0
 bitsandbytes==0.43.1
