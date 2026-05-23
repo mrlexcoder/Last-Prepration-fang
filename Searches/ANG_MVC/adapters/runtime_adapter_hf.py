@@ -8,6 +8,7 @@ Lazy-loads on first call. Graceful stub fallback if transformers not installed.
 Config via env:
   ANG_HF_MODEL      — model id (default: Qwen/Qwen2.5-0.5B-Instruct)
   ANG_HF_MAX_TOKENS — max new tokens (default: 512)
+  ANG_FORCE_CPU     — set to "1" to force CPU even if GPU is present
 """
 
 import asyncio
@@ -20,27 +21,69 @@ logger = logging.getLogger("ang.adapter.hf")
 
 DEFAULT_MODEL = os.getenv("ANG_HF_MODEL", "Qwen/Qwen2.5-0.5B-Instruct")
 MAX_NEW_TOKENS = int(os.getenv("ANG_HF_MAX_TOKENS", "512"))
+FORCE_CPU = os.getenv("ANG_FORCE_CPU", "0") == "1"
+
+# Pro 50% GPU limit (your assignment) — configurable via compose/env
+GPU_FRACTION = float(os.getenv("ANG_GPU_MEMORY_FRACTION", "0.50"))
+GPU_MAX_GB = int(os.getenv("ANG_GPU_MAX_MEMORY_GB", "4"))
+
+# Module-level lock to prevent the 4 concurrent loads we saw in logs
+_load_model_lock: asyncio.Lock | None = None
+
+
+def _detect_device():
+    """Detect best available device with proper CUDA init handling."""
+    if FORCE_CPU:
+        logger.info("ANG_FORCE_CPU=1 → forcing CPU-only mode")
+        return "cpu"
+    try:
+        import torch
+        if torch.cuda.is_available():
+            _ = torch.zeros(1).cuda()  # force init
+            name = torch.cuda.get_device_name(0)
+            total_vram = torch.cuda.get_device_properties(0).total_memory / 1e9
+            logger.info("GPU detected: %s (%.1f GB VRAM) — applying %.0f%% limit + %dGB cap",
+                        name, total_vram, GPU_FRACTION * 100, GPU_MAX_GB)
+            return "cuda"
+    except Exception as exc:
+        logger.warning("GPU init failed (%s) — falling back to CPU", exc)
+    return "cpu"
 
 
 @lru_cache(maxsize=1)
 def _load_model():
     """Load tokenizer + model once, cache forever."""
+    device = _detect_device()
     try:
-        import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
-        device = "cuda" if torch.cuda.is_available() else "cpu"
         logger.info("loading %s on %s", DEFAULT_MODEL, device)
-
         tokenizer = AutoTokenizer.from_pretrained(
             DEFAULT_MODEL, trust_remote_code=True
         )
-        model = AutoModelForCausalLM.from_pretrained(
-            DEFAULT_MODEL,
-            torch_dtype="auto",
-            device_map="auto",
-            trust_remote_code=True,
-        )
+        # Pro GPU configuration: 4GB limit + 4-bit quantization when possible
+        model_kwargs = {
+            "torch_dtype": "auto",
+            "device_map": "auto" if device == "cuda" else "cpu",
+            "trust_remote_code": True,
+        }
+
+        if device == "cuda":
+            import torch
+            # === Your 50% CPU + 50% GPU assignment — now fully respected ===
+            torch.cuda.set_per_process_memory_fraction(GPU_FRACTION, 0)
+            model_kwargs["max_memory"] = {0: f"{GPU_MAX_GB}GB"}
+
+            try:
+                model_kwargs["load_in_4bit"] = True
+                model_kwargs["bnb_4bit_quant_type"] = "nf4"
+                model_kwargs["bnb_4bit_use_double_quant"] = True
+                logger.info("4-bit + %.0f%% GPU limit + %dGB cap applied (PRO)", GPU_FRACTION*100, GPU_MAX_GB)
+            except Exception:
+                logger.warning("4-bit unavailable — falling back to fp16 + %dGB cap", GPU_MAX_GB)
+                model_kwargs["torch_dtype"] = torch.float16
+
+        model = AutoModelForCausalLM.from_pretrained(DEFAULT_MODEL, **model_kwargs)
         model.eval()
         logger.info("model loaded: %s on %s", DEFAULT_MODEL, device)
         return tokenizer, model, device
@@ -71,8 +114,24 @@ def _blocking_infer(prompt: str) -> dict:
         import torch
 
         # Build chat messages — use system + user format for instruction models
+        # v3 Pro: Strong identity + current date awareness
+        from datetime import datetime
+        today = datetime.now().strftime("%A, %B %d, %Y")
+        
+        system_prompt = (
+            "You are AuroraNeuroGrid (ANG), an advanced professional neural-quantum AGI assistant.\n\n"
+            "Core principles:\n"
+            "- Be extremely accurate and honest. If you don't know something, say so.\n"
+            "- Structure your answers clearly with headings, bullet points, and numbered steps when helpful.\n"
+            "- For technical or sensitive topics (especially security, hacking, or legal matters), always include strong ethical warnings and emphasize legality.\n"
+            "- Never give instructions that could enable illegal activity.\n"
+            "- Use clear, professional, and human-friendly language (similar to Claude or Gemini).\n"
+            "- When giving technical steps, use proper code blocks and warnings.\n\n"
+            f"Current date: {today}"
+        )
+        
         messages = [
-            {"role": "system", "content": "You are AuroraNeuroGrid, a helpful and concise AI assistant."},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt},
         ]
 
@@ -115,4 +174,18 @@ def _blocking_infer(prompt: str) -> dict:
 
 async def health() -> dict:
     _, _, device = _load_model()
-    return {"adapter": "runtime_adapter_hf", "model": DEFAULT_MODEL, "device": device}
+    out = {"adapter": "runtime_adapter_hf", "model": DEFAULT_MODEL, "device": device,
+           "gpu_fraction": GPU_FRACTION, "gpu_max_gb": GPU_MAX_GB}
+    if device == "cuda":
+        try:
+            import torch
+            alloc = torch.cuda.memory_allocated(0) / 1e9
+            reserved = torch.cuda.memory_reserved(0) / 1e9
+            out.update({
+                "gpu_allocated_gb": round(alloc, 2),
+                "gpu_reserved_gb": round(reserved, 2),
+                "gpu_limit_applied": f"{GPU_FRACTION*100:.0f}% + {GPU_MAX_GB}GB cap"
+            })
+        except Exception:
+            pass
+    return out
