@@ -1,0 +1,20 @@
+[package]
+name = "ang_ringbuf"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ang_ringbuf"
+path = "src/main.rs"
+
+[dependencies]
+memmap2 = "0.9"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+byteorder = "1"

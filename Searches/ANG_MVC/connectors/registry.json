@@ -13,9 +13,9 @@
       "name": "qwen-2.5-4b-instruct",
       "entrypoint": "adapters.runtime_adapter_hf:infer",
       "capabilities": ["completion", "instruction", "chat"],
-      "resourceHints": {"cpu": 4, "gpu": 0, "mem_gb": 4},
-      "reported_latency_ms": 400,
-      "note": "Qwen2.5-0.5B-Instruct via HuggingFace. Override model with ANG_HF_MODEL env var."
+      "resourceHints": {"cpu": 2, "gpu": 1, "mem_gb": 4, "gpu_fraction": 0.5},
+      "reported_latency_ms": 250,
+      "note": "Qwen2.5-0.5B-Instruct on CPU (or GPU when available). Matches frontend runtime_hint. For real GPU use Docker with NVIDIA."
     },
     {
       "id": "runtime_adapter_llama",
@@ -25,6 +25,16 @@
       "resourceHints": {"cpu": 4, "gpu": 0, "mem_gb": 8},
       "reported_latency_ms": 400,
       "note": "Set ANG_LLAMA_BIN and ANG_LLAMA_MODEL env vars."
+    },
+    {
+      "id": "runtime_adapter_agentscope",
+      "name": "agentscope-qwen",
+      "entrypoint": "adapters.runtime_adapter_agentscope:infer",
+      "capabilities": ["multi_agent", "react", "planning", "tool_use", "orchestration"],
+      "resourceHints": {"cpu": 6, "gpu": 0, "mem_gb": 6},
+      "reported_latency_ms": 800,
+      "note": "Alibaba AgentScope multi-agent framework powered by the same Qwen model as ANG. Pro-level orchestration layer.",
+      "preload": false
     }
   ]
 }
