@@ -120,3 +120,48 @@ class GoalEngine:
             if g.description.lower() == desc_lower:
                 return 0.1
         return 1.0
+
+    # ------------------------------------------------------------------ #
+    #  v3 Pro: Intrinsic Curiosity Module (drives multiple-calc exploration) #
+    # ------------------------------------------------------------------ #
+
+    class IntrinsicCuriosityModule:
+        """Drives the system to explore uncertain areas — key for true AGI."""
+        def __init__(self, goal_engine_ref):
+            self.ge = goal_engine_ref
+            self.prediction_model = None  # placeholder for future NN predictor
+            self.memory = []
+
+        def curiosity_reward(self, state_vec: list[float] | str) -> float:
+            """
+            High reward for high prediction error (surprise/novelty).
+            Used to prioritize queries that benefit from multiple parallel calculations.
+            """
+            try:
+                import torch
+                import torch.nn.functional as F
+                if not self.memory:
+                    self.memory.append(state_vec if isinstance(state_vec, list) else [hash(state_vec) % 100 / 100.0])
+                    return 1.0
+                # crude prediction error
+                last = self.memory[-1]
+                if isinstance(state_vec, str):
+                    vec = [hash(state_vec) % 100 / 100.0 for _ in range(len(last))]
+                else:
+                    vec = state_vec[:len(last)] + [0.0] * (len(last) - len(state_vec))
+                pred = torch.tensor(last, dtype=torch.float32)
+                actual = torch.tensor(vec, dtype=torch.float32)
+                error = F.mse_loss(pred, actual).item()
+                self.memory.append(vec)
+                if len(self.memory) > 50:
+                    self.memory.pop(0)
+                return min(error * 12.0, 1.0)
+            except Exception:
+                # Fallback without torch
+                novelty = self.ge._novelty_score(str(state_vec)[:80])
+                return min(0.3 + novelty * 0.7, 1.0)
+
+    def get_curiosity(self):
+        if not hasattr(self, "_curiosity"):
+            self._curiosity = self.IntrinsicCuriosityModule(self)
+        return self._curiosity
