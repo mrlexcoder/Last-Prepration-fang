@@ -66,19 +66,34 @@ def select_runtime(
                 return a["id"]
         logger.warning("runtime_hint '%s' not found — falling back to scoring", runtime_hint)
 
-    # 2. Score: lower is better
-    #    score = reported_latency + cpu_cores * 5
-    #    Penalise adapters that exceed latency budget
+    # v3 Pro Scoring (Neural-Quantum preference)
+    # Favor real capable models (instruction/chat) over pure speed stubs
+    # unless the caller explicitly wants ultra-low latency.
     scored = []
     for a in adapters:
         hints = a.get("resourceHints", {})
         latency = a.get("reported_latency_ms", 50)
         cpu = hints.get("cpu", 1)
-        penalty = 1000 if latency > latency_budget_ms else 0
-        score = latency + cpu * 5 + penalty
+        caps = a.get("capabilities", [])
+
+        # Base score
+        score = latency + cpu * 5
+
+        # Strong penalty for exceeding budget
+        if latency > latency_budget_ms:
+            score += 2000
+
+        # v3 Pro: Heavily prefer real capable models (instruction/chat) over stubs
+        is_real = "instruction" in caps or "chat" in caps
+        if is_real:
+            score -= 1500   # very strong preference for real AGI models
+        else:
+            score += 1200   # heavy penalty for dumb stubs when real brains exist
+
         scored.append((score, a))
 
     scored.sort(key=lambda x: x[0])
     chosen = scored[0][1]["id"]
-    logger.debug("runtime selected by score: %s (score=%.0f)", chosen, scored[0][0])
+    logger.info("v3 quantum_router selected: %s (score=%.0f, real_model=%s)", 
+                chosen, scored[0][0], "yes" if "instruction" in scored[0][1].get("capabilities", []) else "no")
     return chosen
