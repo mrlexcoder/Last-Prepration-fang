@@ -1,0 +1,155 @@
+# ANG Full Stack v3 — Podman/Docker + NVIDIA GPU
+# (version key removed — it is obsolete in modern Compose)
+# 50% GPU memory limit + 4-bit inference enabled by default.
+# Set ANG_FORCE_CPU=1 in api environment to force CPU-only.
+
+services:
+
+  # ── Zookeeper ──────────────────────────────────────────────────────────────
+  zookeeper:
+    image: docker.io/confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zk_data:/var/lib/zookeeper/data
+    restart: unless-stopped
+
+  # ── Kafka ──────────────────────────────────────────────────────────────────
+  kafka:
+    image: docker.io/confluentinc/cp-kafka:7.6.1
+    depends_on: [zookeeper]
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 24
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    restart: unless-stopped
+
+  # ── SearXNG ────────────────────────────────────────────────────────────────
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./config/searxng:/etc/searxng:rw
+    environment:
+      SEARXNG_BASE_URL: "http://localhost:8888/"
+      SEARXNG_SECRET_KEY: "ang-searxng-secret-change-me"
+    restart: unless-stopped
+
+  # ── Qdrant ─────────────────────────────────────────────────────────────────
+  qdrant:
+    image: docker.io/qdrant/qdrant:v1.9.2
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  # ── Rust Ring Buffer ───────────────────────────────────────────────────────
+  ringbuf:
+    build:
+      context: ./storage/rust_ringbuf
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      RINGBUF_PORT: "8090"
+      RUST_LOG: "info"
+    restart: unless-stopped
+
+  # ── Go BadgerDB Store ──────────────────────────────────────────────────────
+  go_store:
+    build:
+      context: ./storage/go_store
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    volumes:
+      - ang_data:/data/ang_store
+    restart: unless-stopped
+
+  # ── FastAPI Backend (GPU-enabled) ─────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      - ang_adapters:/data/ang_adapters
+      - ang_cache:/tmp/ang_infinity_cache
+      - hf_cache:/root/.cache/huggingface
+    environment:
+      # Core
+      KAFKA_BROKERS: "kafka:9092"
+      KAFKA_ENABLED: "1"
+      ANG_KAFKA_WORKERS: "1"
+      ANG_LOG_LEVEL: "INFO"
+
+      # GPU / Model (50% limit + 4GB cap as designed)
+      ANG_HF_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
+      ANG_HF_MAX_TOKENS: "512"
+      ANG_FORCE_CPU: "0"                    # set "1" to force CPU even with GPU present
+      ANG_GPU_MEMORY_FRACTION: "0.50"       # 50% of total VRAM (your assignment)
+      ANG_GPU_MAX_MEMORY_GB: "4"            # hard cap at 4GB
+
+      # External services
+      SEARXNG_URL: "http://searxng:8080"
+      SEARXNG_MAX_RESULTS: "20"
+      SCRAPER_CONCURRENCY: "10"
+      WEB_RAG_SCRAPE_TIMEOUT: "5.0"
+      WEB_RAG_MAX_URLS: "8"
+      RINGBUF_URL: "http://ringbuf:8090"
+      GO_STORE_GRPC: "go_store:50051"
+      QDRANT_HOST: "qdrant"
+      QDRANT_PORT: "6333"
+      QDRANT_WEB_COLLECTION: "ang_web_intel"
+      MEM0_API_KEY: ""
+      ANG_LETTA_ENABLED: "0"
+      ANG_AUTO_TRAIN: "0"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - kafka
+      - searxng
+      - qdrant
+      - ringbuf
+      - go_store
+    restart: unless-stopped
+    # For older Docker Compose (< 2.20) also add: runtime: nvidia
+    # (modern versions use the deploy block above)
+
+  # ── React Frontend ─────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./anc_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  zk_data:
+  kafka_data:
+  qdrant_data:
+  ang_data:
+  ang_adapters:
+  ang_cache:
+  hf_cache:          # persistent Hugging Face model cache (recommended)
