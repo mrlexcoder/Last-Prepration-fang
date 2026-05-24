@@ -1,0 +1,132 @@
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/transformers/utils/hub.py:105: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+INFO:     Started server process [73027]
+INFO:     Waiting for application startup.
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:235: UserWarning: 
+NVIDIA GeForce RTX 5050 Laptop GPU with CUDA capability sm_120 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA GeForce RTX 5050 Laptop GPU GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [73027]
+INFO:     Started server process [10795]
+INFO:     Waiting for application startup.
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:235: UserWarning: 
+NVIDIA GeForce RTX 5050 Laptop GPU with CUDA capability sm_120 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA GeForce RTX 5050 Laptop GPU GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [11317]
+INFO:     Waiting for application startup.
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:235: UserWarning: 
+NVIDIA GeForce RTX 5050 Laptop GPU with CUDA capability sm_120 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA GeForce RTX 5050 Laptop GPU GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:43016 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [13187]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [14569]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [15195]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [15832]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [16236]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+INFO:     Started server process [16675]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:35582 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35584 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58936 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59102 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [19121]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:51936 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51936 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58850 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53128 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [20820]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:46198 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39106 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43204 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [21841]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:38886 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [23096]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:46992 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46992 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54392 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39260 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [23870]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:60890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50954 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [24867]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:38948 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59668 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [9481]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8082 (Press CTRL+C to quit)
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+INFO:     127.0.0.1:51252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51252 - "GET /health HTTP/1.1" 200 OK

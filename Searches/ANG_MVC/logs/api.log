@@ -1,0 +1,56 @@
+{"ts": 1779584956.885, "level": "INFO", "logger": "faiss.loader", "msg": "Loading faiss with AVX2 support."}
+{"ts": 1779584956.941, "level": "INFO", "logger": "faiss.loader", "msg": "Successfully loaded faiss with AVX2 support."}
+INFO:     Started server process [75854]
+INFO:     Waiting for application startup.
+{"ts": 1779584957.019, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: loading registry"}
+{"ts": 1779584957.019, "level": "INFO", "logger": "ang.quantum_router", "msg": "registry reloaded: 4 adapters"}
+{"ts": 1779584957.019, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising WarmAdapterPool (v3)"}
+{"ts": 1779584957.019, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading 4 adapters..."}
+{"ts": 1779584957.02, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_stub' loaded and kept warm"}
+{"ts": 1779584957.021, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_hf' loaded and kept warm"}
+{"ts": 1779584957.021, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_llama' loaded and kept warm"}
+{"ts": 1779584958.725, "level": "INFO", "logger": "ang.adapter.agentscope", "msg": "AgentScope (v1.x) + ChatModelBase loaded successfully"}
+{"ts": 1779584958.725, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_agentscope' loaded and kept warm"}
+{"ts": 1779584958.725, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading complete. Warm adapters: ['runtime_adapter_stub', 'runtime_adapter_hf', 'runtime_adapter_llama', 'runtime_adapter_agentscope']"}
+{"ts": 1779584958.725, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising storage clients"}
+{"ts": 1779584958.829, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Mem0 layer"}
+{"ts": 1779584958.83, "level": "WARNING", "logger": "ang.mem0", "msg": "mem0ai not installed \u2014 using Go store fallback"}
+{"ts": 1779584958.83, "level": "INFO", "logger": "ang.mem0", "msg": "Mem0 unavailable \u2014 using Go store for memory"}
+{"ts": 1779584958.83, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising InfinityCache"}
+{"ts": 1779584968.21, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "No device provided, using cuda:0"}
+{"ts": 1779584969.156, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2."}
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:235: UserWarning: 
+NVIDIA GeForce RTX 5050 Laptop GPU with CUDA capability sm_120 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA GeForce RTX 5050 Laptop GPU GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+{"ts": 1779584974.476, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising AGI layer"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0001 \u2014 Serve accurate, low-latency AI inference with auto-learning"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0002 \u2014 Route requests to optimal runtime adapter"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0003 \u2014 Maintain and query vector memory for context"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0004 \u2014 Run automation loops with confidence evaluation"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0005 \u2014 Reflect on outcomes and update self-model"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0006 \u2014 Continuously fine-tune on high-quality interactions"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0007 \u2014 Run multi-agent ensemble for best answers"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0008 \u2014 Auto-learn from every interaction"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0009 \u2014 Auto-build improvements continuously"}
+{"ts": 1779584974.478, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Pro AGI Master with full system access"}
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+{"ts": 1779584974.62, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: starting Pro AGI Master in full autonomous mode (default)"}
+{"ts": 1779584974.62, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initializing Auto-Learner (3-track learning)"}
+{"ts": 1779584974.622, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: launching PRO ScraperGrid (science/math/biology concept harvester)"}
+{"ts": 1779584974.622, "level": "INFO", "logger": "ang.app", "msg": "ANG startup complete \u2713 - Auto-Learning System Active"}
+[UltraFastDecisionEngine] Starting infinite self-optimization loop...
+[ProAGIMaster] Starting AUTONOMOUS PRO AGI MODE...
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[AutoLearner] Starting continuous learning loop
+{"ts": 1779584974.622, "level": "INFO", "logger": "ang.scraper_grid", "msg": "ScraperGrid v3 PRO starting for science/math/biology concept harvesting..."}
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"ts": 1779584974.77, "level": "INFO", "logger": "ang.app", "msg": "ANG shutdown - saving state for auto-recovery"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [75854]

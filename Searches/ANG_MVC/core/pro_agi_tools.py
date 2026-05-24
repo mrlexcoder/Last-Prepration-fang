@@ -101,8 +101,10 @@ class ProAGITools:
     def push_to_github(self, commit_message: str, branch: str = "master") -> str:
         """Automatically commit and push changes to GitHub using stored PAT."""
         try:
-            # Use the PAT from My.github or environment
-            token = os.getenv("GITHUB_TOKEN", "***REDACTED***")
+            # Use the PAT from environment only
+            token = os.getenv("GITHUB_TOKEN")
+            if not token:
+                return "GitHub token not found in environment variables"
             remote = f"https://mrlexcoder:{token}@github.com/mrlexcoder/Last-Prepration-fang.git"
 
             commands = [
