@@ -1,14 +1,178 @@
 #!/bin/bash
-# Simple wrapper so you can do: ./agi start
+# =============================================================================
+# AURORANEUROGRID v3 PRO - MASTER LAUNCHER
+# Usage: ./agi start     (or just "agi start" if aliased/in PATH)
+#        ./agi stop
+#
+# Starts the COMPLETE system:
+#   - Rust Ring Buffer (8090)
+#   - Go BadgerDB Store (50051 gRPC)
+#   - ANG Backend + ProAGIMaster + Bridge + Auto-Learner (8080)
+#   - PRO Learning Ecosystem (8082)
+#   - Vite Frontend (5173)
+#
+# All components run in detached screen sessions so they survive logout.
+# =============================================================================
+
+set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ROOT="$SCRIPT_DIR"
+cd "$ROOT"
 
-case "$1" in
+LOG_DIR="$ROOT/logs"
+mkdir -p "$LOG_DIR"
+
+# Colors
+GREEN="\033[32m"
+YELLOW="\033[33m"
+CYAN="\033[36m"
+RED="\033[31m"
+RESET="\033[0m"
+
+banner() {
+  echo -e "${CYAN}"
+  echo "╔════════════════════════════════════════════════════════════╗"
+  echo "║   AURORANEUROGRID v3 PRO — FULL SYSTEM LAUNCHER            ║"
+  echo "╚════════════════════════════════════════════════════════════╝"
+  echo -e "${RESET}"
+}
+
+usage() {
+  echo "Usage: $0 start|stop|status"
+  echo "  ./agi start     → launch everything (backend on 8080)"
+  echo "  ./agi stop      → stop all components"
+  echo "  ./agi status    → show running screens and processes"
+}
+
+start_component() {
+  local name="$1"
+  local cmd="$2"
+  screen -dmS "$name" bash -c "$cmd"
+  echo -e "  ${GREEN}✓${RESET}  $name  (screen: $name)"
+}
+
+stop_all() {
+  echo -e "${YELLOW}Stopping all ANG components...${RESET}"
+  screen -ls 2>/dev/null | grep -E '\.ang-(backend|frontend|learning|rust|go)' | cut -d. -f1 | xargs -I{} screen -S {} -X quit 2>/dev/null || true
+  pkill -f "uvicorn app:app" 2>/dev/null || true
+  pkill -f "uvicorn learning_service" 2>/dev/null || true
+  pkill -f "npm run dev" 2>/dev/null || true
+  echo -e "${GREEN}All components stopped.${RESET}"
+}
+
+status() {
+  echo -e "${CYAN}Current ANG screen sessions:${RESET}"
+  screen -ls 2>/dev/null | grep -E 'ang-' || echo "  (none running)"
+  echo
+  echo -e "${CYAN}Key processes:${RESET}"
+  ps aux | grep -E 'uvicorn|ang_ringbuf|ang_store|npm run dev' | grep -v grep || echo "  (no core processes)"
+}
+
+case "${1:-}" in
   start)
-    python3 "$SCRIPT_DIR/scripts/start.py"
+    banner
+
+    echo -e "${YELLOW}[Cleanup] Killing previous instances...${RESET}"
+    stop_all
+    screen -wipe 2>/dev/null || true
+    sleep 1
+
+    # ── 1. Rust Ring Buffer ────────────────────────────────────────────────
+    echo -e "\n${CYAN}[1/5] Rust Ring Buffer (port 8090)${RESET}"
+    RINGBIN="$ROOT/storage/rust_ringbuf/target/release/ang_ringbuf"
+    if [ ! -f "$RINGBIN" ]; then
+      if command -v cargo >/dev/null 2>&1; then
+        echo "    Building Rust ring buffer (first time)..."
+        cargo build --release --manifest-path "$ROOT/storage/rust_ringbuf/Cargo.toml" -q 2>/dev/null || true
+      fi
+    fi
+    if [ -f "$RINGBIN" ]; then
+      start_component "ang-rust" "RINGBUF_PORT=8090 $RINGBIN >> $LOG_DIR/rust.log 2>&1"
+    else
+      echo -e "    ${YELLOW}(Rust binary not found — skipping ring buffer)${RESET}"
+    fi
+
+    # ── 2. Go Store ────────────────────────────────────────────────────────
+    echo -e "\n${CYAN}[2/5] Go BadgerDB Store (port 50051)${RESET}"
+    GOBIN="$ROOT/storage/go_store/ang_store"
+    if [ ! -f "$GOBIN" ]; then
+      if command -v go >/dev/null 2>&1; then
+        echo "    Building Go store (first time)..."
+        (cd "$ROOT/storage/go_store" && go build -o ang_store . 2>/dev/null || true)
+      fi
+    fi
+    if [ -f "$GOBIN" ]; then
+      start_component "ang-go" "$GOBIN --grpc-port 50051 --data-dir /tmp/ang_store_data >> $LOG_DIR/go.log 2>&1"
+    else
+      echo -e "    ${YELLOW}(Go binary not found — skipping persistent store)${RESET}"
+    fi
+
+    # ── 3. Python venv + main backend (8080) ───────────────────────────────
+    echo -e "\n${CYAN}[3/5] ANG Backend + Pro AGI Master + Bridge (port 8080)${RESET}"
+    if [ ! -d ".venv" ]; then
+      echo -e "${RED}ERROR: .venv missing. Run: bash setup_env.sh${RESET}"
+      exit 1
+    fi
+    source .venv/bin/activate
+
+    # === Smart Device Management (RTX 5050 sm_120 aware) ===
+    # We no longer hard-force CPU. DeviceManager will decide safely.
+    # It will try GPU with 50% VRAM limit if possible, otherwise optimized CPU.
+    export ANG_DEVICE_VRAM_FRACTION=0.5
+    export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+
+    # === FULL POWER MODE ===
+    export ANG_AUTO_TRAIN=1
+    export ANG_SCRAPER_ENABLED=1
+    export ANG_KAFKA_WORKERS=0
+    export ANG_LETTA_ENABLED=0
+    export ANG_AUTO_AUTONOMY=1
+
+    start_component "ang-backend" "ANG_DEVICE_VRAM_FRACTION=0.5 ANG_AUTO_TRAIN=1 ANG_SCRAPER_ENABLED=1 ANG_AUTO_AUTONOMY=1 \
+      uvicorn app:app --host 0.0.0.0 --port 8080 --log-level info >> $LOG_DIR/server.log 2>&1"
+
+    # ── 4. Learning Service (8082) ─────────────────────────────────────────
+    echo -e "\n${CYAN}[4/5] PRO Learning Ecosystem (port 8082)${RESET}"
+    start_component "ang-learning" "ANG_DEVICE_VRAM_FRACTION=0.5 \
+      ANG_LEARNING_PORT=8082 \
+      uvicorn learning_service.app:app --host 0.0.0.0 --port 8082 --log-level info >> $LOG_DIR/learning.log 2>&1"
+
+    # ── 5. Frontend ────────────────────────────────────────────────────────
+    echo -e "\n${CYAN}[5/5] Vite Frontend (port 5173)${RESET}"
+    start_component "ang-frontend" "cd anc_frontend && npm run dev -- --port 5173 >> $LOG_DIR/frontend.log 2>&1"
+
+    echo -e "\n${GREEN}════════════════════════════════════════════════════════════${RESET}"
+    echo -e "${GREEN}AURORANEUROGRID v3 PRO — FULL SYSTEM STARTED${RESET}"
+    echo -e "${GREEN}════════════════════════════════════════════════════════════${RESET}"
+    echo
+    echo -e "  Backend (Pro AGI + MultiStructuralBridge):  ${CYAN}http://localhost:8080${RESET}"
+    echo -e "  Health:                                     ${CYAN}http://localhost:8080/api/health${RESET}"
+    echo -e "  Learning Service:                           ${CYAN}http://localhost:8082/health${RESET}"
+    echo -e "  Frontend (UI):                              ${CYAN}http://localhost:5173${RESET}"
+    echo -e "  Rust Ring Buffer:                           ${CYAN}http://localhost:8090/health${RESET}"
+    echo -e "  Go Store (gRPC):                            localhost:50051"
+    echo
+    echo -e "${YELLOW}Attach to live logs (detach with Ctrl+A then D):${RESET}"
+    echo -e "  screen -r ang-backend"
+    echo -e "  screen -r ang-frontend"
+    echo -e "  screen -r ang-learning"
+    echo -e "  screen -r ang-rust"
+    echo -e "  screen -r ang-go"
+    echo
+    echo -e "${YELLOW}Stop everything:${RESET}  ./agi stop"
+    echo -e "${GREEN}════════════════════════════════════════════════════════════${RESET}"
     ;;
+
+  stop)
+    stop_all
+    ;;
+
+  status)
+    status
+    ;;
+
   *)
-    echo "Usage: $0 start"
-    echo "Example: ./agi start"
+    usage
     ;;
 esac

@@ -270,8 +270,8 @@ export function AdminPage() {
               {[
                 { label: 'Open ANC Chat', icon: 'chat', href: '/app', external: false },
                 { label: 'Open ANC Notebook', icon: 'menu_book', href: '/notebook', external: false },
-                { label: 'API Docs (FastAPI)', icon: 'api', href: 'http://localhost:8081/docs', external: true },
-                { label: 'Health Check', icon: 'monitor_heart', href: 'http://localhost:8081/api/health', external: true },
+                { label: 'API Docs (FastAPI)', icon: 'api', href: 'http://localhost:8080/docs', external: true },
+                { label: 'Health Check', icon: 'monitor_heart', href: 'http://localhost:8080/api/health', external: true },
               ].map((action) => (
                 action.external ? (
                   <a

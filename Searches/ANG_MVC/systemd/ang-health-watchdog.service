@@ -1,0 +1,14 @@
+[Unit]
+Description=ANG Health Watchdog (system-wide)
+After=ang-production.service
+Wants=ang-production.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC/scripts/ang_watchdog.sh
+User=mrlexcoder
+Group=mrlexcoder
+Environment=ANG_ROOT=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC
+
+[Install]
+WantedBy=timers.target

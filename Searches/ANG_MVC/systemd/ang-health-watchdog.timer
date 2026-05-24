@@ -1,0 +1,12 @@
+[Unit]
+Description=ANG Health Watchdog Timer — checks services every 30s
+
+[Timer]
+Type=simple
+OnUnitActiveSec=30
+OnBootSec=60
+AccuracySec=10
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -49,7 +49,16 @@ export function MessageBubble({ message, variant = 'default' }: MessageBubblePro
           />
         )}
         <div className="max-w-none">
-          {message.role === 'assistant' ? (
+          {isThinking ? (
+            <div className="flex items-center gap-2 text-text-muted py-1">
+              <div className="flex gap-1">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+              </div>
+              <span className="text-xs font-medium">Thinking…</span>
+            </div>
+          ) : message.role === 'assistant' ? (
             <AnswerRenderer content={message.content} />
           ) : (
             <div className="whitespace-pre-wrap">
@@ -101,9 +110,23 @@ export function MessageBubble({ message, variant = 'default' }: MessageBubblePro
               : 'bg-sidebar border border-border-soft text-text'
           )}
         >
-          {message.content || (isThinking ? '…' : null)}
-          {isStreaming && message.content && (
-            <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse-soft bg-google-blue align-middle" />
+          {isThinking ? (
+            // Nice waiting animation for slow responses
+            <div className="flex items-center gap-2 text-text-muted">
+              <div className="flex gap-1">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+              </div>
+              <span className="text-xs font-medium">Thinking…</span>
+            </div>
+          ) : (
+            <>
+              {message.content}
+              {isStreaming && message.content && (
+                <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse-soft bg-google-blue align-middle" />
+              )}
+            </>
           )}
         </div>
         {!isUser && message.status === 'complete' && message.sources && message.sources.length > 0 && (

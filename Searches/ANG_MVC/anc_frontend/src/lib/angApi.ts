@@ -1,6 +1,6 @@
 /**
  * ANG Backend API client
- * All calls proxy through Vite dev server → http://localhost:8081
+ * All calls proxy through Vite dev server → http://localhost:8080 (CPU-only mode for new RTX 5050)
  */
 
 export type ANGMode = 'chat' | 'search' | 'tools' | 'pipeline' | 'web' | 'agentscope' | 'loop' | 'infer'

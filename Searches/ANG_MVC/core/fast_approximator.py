@@ -15,16 +15,30 @@ import numpy as np
 from typing import Dict, Any, Optional
 import hashlib
 import sys
+import warnings
 from pathlib import Path
+
+from core.device_manager import get_device_manager, get_optimal_embedding_device
+
+dm = get_device_manager()
 _p = str(Path(__file__).parent.parent / "Machine_understanding")
 if _p not in sys.path:
     sys.path.insert(0, _p)
 from core.math.quantum_physics_engine import QuantumPhysicsEngine
+
 try:
     from sentence_transformers import SentenceTransformer
     HAS_EMBED = True
 except ImportError:
     HAS_EMBED = False
+
+# ONNX support (for GPU acceleration on RTX 5050)
+try:
+    from optimum.onnxruntime import ORTModelForFeatureExtraction
+    from transformers import AutoTokenizer
+    HAS_ONNX = True
+except ImportError:
+    HAS_ONNX = False
 
 
 class FastNeuralApproximator:
@@ -37,18 +51,49 @@ class FastNeuralApproximator:
         self.physics = QuantumPhysicsEngine()
         self.cache = cache or {}
         self.embed_model = None
-        if HAS_EMBED:
+        self.embed_backend = "cpu"
+
+        # Try ONNX first (best chance to use RTX 5050 GPU)
+        onnx_model_path = os.path.join(os.path.dirname(__file__), "..", "..", "models", "all-MiniLM-L6-v2-onnx")
+        if HAS_ONNX and os.path.exists(onnx_model_path):
             try:
-                self.embed_model = SentenceTransformer("all-MiniLM-L6-v2")  # tiny & fast
-            except:
+                self.embed_model = ORTModelForFeatureExtraction.from_pretrained(onnx_model_path)
+                self.tokenizer = AutoTokenizer.from_pretrained(onnx_model_path)
+                self.embed_backend = "onnx"
+                logger = __import__("logging").getLogger("ang.fast_approx")
+                logger.info("Embedding model loaded via ONNX Runtime (GPU acceleration enabled)")
+            except Exception as e:
+                logger = __import__("logging").getLogger("ang.fast_approx")
+                logger.warning(f"ONNX embedding failed, falling back: {e}")
+
+        # Fallback to sentence-transformers (CPU)
+        if self.embed_model is None and HAS_EMBED:
+            try:
+                self.embed_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+                self.embed_backend = "pytorch-cpu"
+                logger = __import__("logging").getLogger("ang.fast_approx")
+                logger.info("Embedding model loaded on CPU (PyTorch)")
+            except Exception as e:
                 pass
 
     def _embed(self, text: str) -> np.ndarray:
-        if self.embed_model:
+        if self.embed_model is None:
+            # Fallback: simple hash-based vector
+            h = hashlib.md5(text.encode()).digest()
+            return np.frombuffer(h, dtype=np.uint8).astype(np.float32) / 255.0
+
+        if self.embed_backend == "onnx":
+            # ONNX Runtime path (can use RTX 5050)
+            inputs = self.tokenizer(text, return_tensors="np", padding=True, truncation=True)
+            outputs = self.embed_model(**inputs)
+            embeddings = outputs.last_hidden_state.mean(axis=1)   # mean pooling
+            # Normalize
+            norm = np.linalg.norm(embeddings, axis=1, keepdims=True)
+            return (embeddings / norm).astype(np.float32)[0]
+
+        else:
+            # Sentence-Transformers (CPU)
             return self.embed_model.encode(text, normalize_embeddings=True)
-        # Fallback: simple hash-based vector (poor but works)
-        h = hashlib.md5(text.encode()).digest()
-        return np.frombuffer(h, dtype=np.uint8).astype(np.float32) / 255.0
 
     def _cosine_sim(self, a: np.ndarray, b: np.ndarray) -> float:
         return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-8))

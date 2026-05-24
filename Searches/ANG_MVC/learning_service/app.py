@@ -22,8 +22,15 @@ import asyncio
 import logging
 import random
 import time
+import warnings
 from contextlib import asynccontextmanager
 from typing import Dict, Any
+
+# === CUDA / GPU suppression for RTX 5050 (sm_120) — force CPU-only ===
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TORCH_DEVICE"] = "cpu"
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "")
+warnings.filterwarnings("ignore", category=UserWarning, module="torch.cuda")
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -45,7 +52,7 @@ logger = logging.getLogger("ang.learning_ecosystem")
 
 # Separate port for this service
 LEARNING_PORT = int(os.getenv("ANG_LEARNING_PORT", "8082"))
-MAIN_API = os.getenv("ANG_MAIN_API", "http://localhost:8081")
+MAIN_API = os.getenv("ANG_MAIN_API", "http://localhost:8080")
 
 class LearnRequest(BaseModel):
     domain: str = "auto"

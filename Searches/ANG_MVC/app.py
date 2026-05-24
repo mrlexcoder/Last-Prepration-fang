@@ -13,15 +13,28 @@ import os
 import sys
 import logging
 import asyncio
+import warnings
 from contextlib import asynccontextmanager
 from pathlib import Path
+
+# === CUDA / GPU suppression for RTX 5050 (sm_120) — force CPU-only ===
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TORCH_DEVICE"] = "cpu"
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "")
+warnings.filterwarnings("ignore", category=UserWarning, module="torch.cuda")
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from core.logger import setup_logging
+from core.device_manager import get_device_manager
+
 setup_logging(os.getenv("ANG_LOG_LEVEL", "INFO"))
+
+# Initialize smart device manager (respects 50% VRAM on low memory GPUs)
+dm = get_device_manager(vram_fraction=float(os.getenv("ANG_DEVICE_VRAM_FRACTION", "0.5")))
+dm.log_status()
 
 logger = logging.getLogger("ang.app")
 

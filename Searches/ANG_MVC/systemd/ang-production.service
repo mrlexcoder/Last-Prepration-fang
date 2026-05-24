@@ -1,0 +1,42 @@
+# =============================================================================
+# AuroraNeuroGrid — System-wide systemd service (requires root via sudo)
+# Auto-starts at boot, runs continuously as user 'mrlexcoder'.
+# Install: copy to /etc/systemd/system/ang-production.service
+#            then systemctl enable --now ang-production
+# =============================================================================
+
+[Unit]
+Description=AuroraNeuroGrid Production Stack
+Documentation=https://github.com/mrlexcoder/Last-Prepration-fang
+After=network.target multi-user.target
+Wants=network.target
+
+[Service]
+Type=forking
+# Run as the regular user
+User=mrlexcoder
+Group=mrlexcoder
+
+ExecStart=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC/start_prod.sh
+ExecStop=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC/stop.sh
+ExecStopPost=/bin/sleep 2
+
+WorkingDirectory=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC
+
+Restart=always
+RestartSec=8
+TimeoutStopSec=30
+TimeoutStartSec=45
+
+Environment=ANG_ROOT=/home/mrlexcoder/Last-Prepration-fang/Searches/ANG_MVC
+Environment=ANG_LOG_LEVEL=INFO
+Environment=ANG_SCRAPER_ENABLED=0
+Environment=ANG_KAFKA_WORKERS=0
+Environment=ANG_AUTO_TRAIN=0
+Environment=ANG_LETTA_ENABLED=0
+Environment=ANG_CACHE_DIR=/tmp/ang_infinity_cache
+Environment=PYTHONUNBUFFERED=1
+Environment=UVICORN_LOG_LEVEL=warning
+
+[Install]
+WantedBy=multi-user.target

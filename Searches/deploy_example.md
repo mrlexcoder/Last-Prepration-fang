@@ -39,3 +39,11 @@ Safety
 - Enable prompt evaluation and human-in-the-loop toggles for destructive actions.
 
 Next: I will commit these new files and push them to the repo. 
+
+
+
+
+cd /opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC
+
+./agi stop
+./agi start
