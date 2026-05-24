@@ -138,4 +138,15 @@ export const angApi = {
 
   refreshConnectors: () =>
     post<{ refreshed: boolean; adapter_count: number }>('/admin/refresh-connectors', {}),
+
+  learningStats: () =>
+    get<{ signals_processed: number; online_steps: number; batch_trains: number; buffer_size: number }>(
+      '/api/bridge/learn/stats'
+    ),
+
+  superintelligenceEvolve: (targetLines?: number) =>
+    post<{ status: string; target_lines: number }>('/api/bridge/superintelligence/evolve', { target_lines: targetLines || 1000000 }),
+
+  superintelligenceStatus: () =>
+    get<{ cycles: number; lines_generated: number; active: boolean }>('/api/bridge/superintelligence/status'),
 }

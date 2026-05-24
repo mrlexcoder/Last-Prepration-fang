@@ -19,6 +19,7 @@ export function AdminPage() {
   const [connectors, setConnectors] = useState<{ count: number; adapters: { id: string; name: string; capabilities: string[]; latency_ms: number }[] } | null>(null)
   const [agiStatus, setAgiStatus] = useState<Record<string, unknown> | null>(null)
   const [cacheStats, setCacheStats] = useState<{ total_entries: number; faiss_available: boolean; index_size: number } | null>(null)
+  const [learningStats, setLearningStats] = useState<{ signals_processed: number; online_steps: number; batch_trains: number } | null>(null)
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -27,16 +28,18 @@ export function AdminPage() {
     setLoading(true)
     setError(null)
     try {
-      const [h, c, a, cs] = await Promise.all([
+      const [h, c, a, cs, ls] = await Promise.all([
         angApi.health(),
         angApi.connectors(),
         angApi.agiStatus(),
         angApi.cacheStats(),
+        angApi.learningStats(),
       ])
       setHealth(h)
       setConnectors(c)
       setAgiStatus(a as Record<string, unknown>)
       setCacheStats(cs)
+      setLearningStats(ls)
     } catch (e) {
       setError(`Backend unreachable: ${e instanceof Error ? e.message : String(e)}`)
     } finally {
@@ -62,7 +65,7 @@ export function AdminPage() {
     { label: 'Backend', value: health?.status ?? '…', icon: 'check_circle', color: health?.status === 'ok' ? 'text-green-600' : 'text-red-500' },
     { label: 'Adapters', value: connectors?.count ?? '…', icon: 'hub', color: 'text-blue-600' },
     { label: 'Cache entries', value: cacheStats?.total_entries ?? '…', icon: 'database', color: 'text-purple-600' },
-    { label: 'FAISS', value: cacheStats?.faiss_available ? 'Active' : 'Fallback', icon: 'memory', color: cacheStats?.faiss_available ? 'text-green-600' : 'text-yellow-600' },
+    { label: 'Learning', value: learningStats?.signals_processed ?? '…', icon: 'auto_awesome', color: 'text-indigo-600' },
   ]
 
   return (
@@ -198,32 +201,59 @@ export function AdminPage() {
             ))}
           </motion.section>
 
-          {/* Cache Stats */}
-          <motion.section
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="rounded-2xl border border-border-soft bg-white p-6 shadow-sm"
-          >
-            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-text">
-              <Icon name="database" size={20} className="text-indigo-600" />
-              InfinityCache
-            </h2>
-            {cacheStats && (
-              <div className="space-y-3">
-                {[
-                  { label: 'Total entries', value: cacheStats.total_entries },
-                  { label: 'FAISS index size', value: cacheStats.index_size },
-                  { label: 'Vector search', value: cacheStats.faiss_available ? '✅ Active' : '⚠️ Fallback (no faiss)' },
-                ].map((row) => (
-                  <div key={row.label} className="flex items-center justify-between rounded-xl bg-sidebar px-4 py-2.5">
-                    <span className="text-sm text-text-muted">{row.label}</span>
-                    <span className="text-sm font-medium text-text">{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </motion.section>
+{/* Cache Stats */}
+           <motion.section
+             initial={{ opacity: 0, y: 16 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.3 }}
+             className="rounded-2xl border border-border-soft bg-white p-6 shadow-sm"
+           >
+             <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-text">
+               <Icon name="database" size={20} className="text-indigo-600" />
+               InfinityCache
+             </h2>
+             {cacheStats && (
+               <div className="space-y-3">
+                 {[
+                   { label: 'Total entries', value: cacheStats.total_entries },
+                   { label: 'FAISS index size', value: cacheStats.index_size },
+                   { label: 'Vector search', value: cacheStats.faiss_available ? '✅ Active' : '⚠️ Fallback (no faiss)' },
+                 ].map((row) => (
+                   <div key={row.label} className="flex items-center justify-between rounded-xl bg-sidebar px-4 py-2.5">
+                     <span className="text-sm text-text-muted">{row.label}</span>
+                     <span className="text-sm font-medium text-text">{row.value}</span>
+                   </div>
+                 ))}
+               </div>
+             )}
+           </motion.section>
+
+           {/* Auto-Learning Stats */}
+           <motion.section
+             initial={{ opacity: 0, y: 16 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.32 }}
+             className="rounded-2xl border border-border-soft bg-white p-6 shadow-sm"
+           >
+             <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-text">
+               <Icon name="auto_awesome" size={20} className="text-indigo-600" />
+               Auto-Learning System
+             </h2>
+             {learningStats && (
+               <div className="space-y-3">
+                 {[
+                   { label: 'Signals Processed', value: learningStats.signals_processed },
+                   { label: 'Online LoRA Steps', value: learningStats.online_steps },
+                   { label: 'Batch Trains', value: learningStats.batch_trains },
+                 ].map((row) => (
+                   <div key={row.label} className="flex items-center justify-between rounded-xl bg-sidebar px-4 py-2.5">
+                     <span className="text-sm text-text-muted">{row.label}</span>
+                     <span className="text-sm font-medium text-text">{row.value}</span>
+                   </div>
+                 ))}
+               </div>
+             )}
+           </motion.section>
 
           {/* Quick Actions */}
           <motion.section

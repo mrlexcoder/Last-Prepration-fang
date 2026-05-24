@@ -78,3 +78,35 @@ async def bridge_learn_stats():
     if state.auto_learner:
         return state.auto_learner.get_stats()
     return {"error": "Auto-learner not initialized"}
+
+@bridge_router.post("/bridge/superintelligence/evolve")
+async def superintelligence_evolve(payload: dict):
+    """Start superintelligence evolution process."""
+    try:
+        from core.pro_superintelligence_enhancer import get_superintelligence_enhancer
+        enhancer = get_superintelligence_enhancer()
+        target_lines = payload.get("target_lines", 1000000)
+        
+        # Run in background
+        async def run_evolution():
+            result = await enhancer.evolve_system(target_lines)
+            return result
+            
+        asyncio.create_task(run_evolution())
+        return {"status": "evolution_started", "target_lines": target_lines}
+    except Exception as e:
+        return {"error": str(e)}
+
+@bridge_router.get("/bridge/superintelligence/status")
+async def superintelligence_status():
+    """Get superintelligence evolution status."""
+    try:
+        from core.pro_superintelligence_enhancer import get_superintelligence_enhancer
+        enhancer = get_superintelligence_enhancer()
+        return {
+            "cycles": enhancer.evolution_cycles,
+            "lines_generated": enhancer.lines_generated,
+            "active": enhancer.active
+        }
+    except Exception as e:
+        return {"error": str(e)}

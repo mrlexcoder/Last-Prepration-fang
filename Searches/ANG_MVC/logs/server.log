@@ -1,97 +1,125 @@
-{"ts": 1779560041.145, "level": "WARNING", "logger": "ang.infinity_cache", "msg": "faiss/numpy not installed \u2014 InfinityCache running in no-vector mode"}
-INFO:     Started server process [40436]
+{"ts": 1779560661.884, "level": "WARNING", "logger": "ang.infinity_cache", "msg": "faiss/numpy not installed \u2014 InfinityCache running in no-vector mode"}
+INFO:     Started server process [61878]
 INFO:     Waiting for application startup.
-{"ts": 1779560041.227, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initializing Auto-Start Manager"}
-[AutoStart] Starting ANG v3 boot sequence...
-[AutoStart] Boot sequence complete. Boot count: 1
-{"ts": 1779560041.227, "level": "INFO", "logger": "ang.app", "msg": "Resource limits set: {'total_memory_mb': 15697, 'available_memory_mb': 7357, 'cpu_count': 24, 'load_average': 5.96044921875, 'target_cpu_percent': 40, 'target_memory_mb': 4096}"}
-{"ts": 1779560041.228, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: loading registry"}
-{"ts": 1779560041.228, "level": "INFO", "logger": "ang.quantum_router", "msg": "registry reloaded: 4 adapters"}
-{"ts": 1779560041.228, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising WarmAdapterPool (v3)"}
-{"ts": 1779560041.228, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading 4 adapters..."}
-{"ts": 1779560041.228, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_stub' loaded and kept warm"}
-{"ts": 1779560041.229, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_hf' loaded and kept warm"}
-{"ts": 1779560041.229, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_llama' loaded and kept warm"}
-{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter.agentscope", "msg": "AgentScope integration running in limited mode: No module named 'agentscope'"}
-{"ts": 1779560041.23, "level": "ERROR", "logger": "ang.adapter_pool", "msg": "Failed to load adapter 'runtime_adapter_agentscope': name 'ChatResponse' is not defined"}
-{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_agentscope' loaded and kept warm"}
-{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading complete. Warm adapters: ['runtime_adapter_stub', 'runtime_adapter_hf', 'runtime_adapter_llama', 'runtime_adapter_agentscope']"}
-{"ts": 1779560041.23, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising storage clients"}
-{"ts": 1779560041.715, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Mem0 layer"}
-{"ts": 1779560041.715, "level": "WARNING", "logger": "ang.mem0", "msg": "mem0ai not installed \u2014 using Go store fallback"}
-{"ts": 1779560041.715, "level": "INFO", "logger": "ang.mem0", "msg": "Mem0 unavailable \u2014 using Go store for memory"}
-{"ts": 1779560041.715, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising InfinityCache"}
-{"ts": 1779560044.548, "level": "WARNING", "logger": "ang.infinity_cache", "msg": "sentence-transformers not available \u2014 using dummy embeddings"}
-{"ts": 1779560044.548, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising AGI layer"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0001 \u2014 Serve accurate, low-latency AI inference with auto-learning"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0002 \u2014 Route requests to optimal runtime adapter"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0003 \u2014 Maintain and query vector memory for context"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0004 \u2014 Run automation loops with confidence evaluation"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0005 \u2014 Reflect on outcomes and update self-model"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0006 \u2014 Continuously fine-tune on high-quality interactions"}
-{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0007 \u2014 Run multi-agent ensemble for best answers"}
-{"ts": 1779560044.55, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0008 \u2014 Auto-learn from every interaction"}
-{"ts": 1779560044.55, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0009 \u2014 Auto-build improvements continuously"}
-{"ts": 1779560044.55, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Pro AGI Master with full system access"}
-ERROR:    Traceback (most recent call last):
-  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 692, in lifespan
-    async with self.lifespan_context(app) as maybe_state:
-               ~~~~~~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-               ~~~~~~~~~~~~~~~~^^^^^
-  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/app.py", line 127, in lifespan
-    from core.pro_agi_master import get_pro_agi_master
-  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/pro_agi_master.py", line 41, in <module>
-    from core.pro_agi_tools import ProAGITools
-  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/pro_agi_tools.py", line 31, in <module>
-    from core.laptop_observer import get_laptop_observer
-  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/laptop_observer.py", line 16, in <module>
-    import psutil
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
-  File "<frozen importlib._bootstrap_external>", line 1118, in get_code
-  File "<frozen importlib._bootstrap_external>", line 1218, in get_data
-MemoryError
+{"ts": 1779560661.964, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: loading registry"}
+{"ts": 1779560661.964, "level": "INFO", "logger": "ang.quantum_router", "msg": "registry reloaded: 4 adapters"}
+{"ts": 1779560661.964, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising WarmAdapterPool (v3)"}
+{"ts": 1779560661.964, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading 4 adapters..."}
+{"ts": 1779560661.964, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_stub' loaded and kept warm"}
+{"ts": 1779560661.965, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_hf' loaded and kept warm"}
+{"ts": 1779560661.965, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_llama' loaded and kept warm"}
+{"ts": 1779560661.966, "level": "INFO", "logger": "ang.adapter.agentscope", "msg": "AgentScope integration running in limited mode: No module named 'agentscope'"}
+{"ts": 1779560661.966, "level": "ERROR", "logger": "ang.adapter_pool", "msg": "Failed to load adapter 'runtime_adapter_agentscope': name 'ChatResponse' is not defined"}
+{"ts": 1779560661.966, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_agentscope' loaded and kept warm"}
+{"ts": 1779560661.966, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading complete. Warm adapters: ['runtime_adapter_stub', 'runtime_adapter_hf', 'runtime_adapter_llama', 'runtime_adapter_agentscope']"}
+{"ts": 1779560661.966, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising storage clients"}
+{"ts": 1779560662.408, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Mem0 layer"}
+{"ts": 1779560662.409, "level": "WARNING", "logger": "ang.mem0", "msg": "mem0ai not installed \u2014 using Go store fallback"}
+{"ts": 1779560662.409, "level": "INFO", "logger": "ang.mem0", "msg": "Mem0 unavailable \u2014 using Go store for memory"}
+{"ts": 1779560662.409, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising InfinityCache"}
+{"ts": 1779560665.696, "level": "INFO", "logger": "numexpr.utils", "msg": "Note: NumExpr detected 24 cores but \"NUMEXPR_MAX_THREADS\" not set, so enforcing safe limit of 16."}
+{"ts": 1779560665.696, "level": "INFO", "logger": "numexpr.utils", "msg": "NumExpr defaulting to 16 threads."}
+{"ts": 1779560669.959, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "No device provided, using cuda:0"}
+{"ts": 1779560670.387, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560670.444, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560670.798, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560670.847, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560670.849, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2."}
+{"ts": 1779560671.284, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560671.335, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560671.722, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md \"HTTP/1.1 307 Temporary Redirect\""}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"ts": 1779560671.723, "level": "WARNING", "logger": "huggingface_hub.utils._http", "msg": "Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."}
+{"ts": 1779560671.773, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/README.md \"HTTP/1.1 200 OK\""}
+{"ts": 1779560672.058, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560672.111, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560672.429, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560672.492, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/sentence_bert_config.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560672.844, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560673.129, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560673.174, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json \"HTTP/1.1 200 OK\""}
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 13649.71it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-L6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
 
-ERROR:    Application startup failed. Exiting.
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+{"ts": 1779560673.566, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/processor_config.json \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560673.868, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560674.17, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/video_preprocessor_config.json \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560674.471, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560674.75, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560674.798, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/tokenizer_config.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560675.069, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560675.12, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560675.507, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560675.562, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560675.916, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560675.969, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/tokenizer_config.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560676.326, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false \"HTTP/1.1 404 Not Found\""}
+{"ts": 1779560676.635, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false \"HTTP/1.1 200 OK\""}
+{"ts": 1779560677.045, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json \"HTTP/1.1 307 Temporary Redirect\""}
+{"ts": 1779560677.093, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/1_Pooling%2Fconfig.json \"HTTP/1.1 200 OK\""}
+{"ts": 1779560677.453, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 \"HTTP/1.1 200 OK\""}
+{"ts": 1779560677.572, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising AGI layer"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0001 \u2014 Serve accurate, low-latency AI inference with auto-learning"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0002 \u2014 Route requests to optimal runtime adapter"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0003 \u2014 Maintain and query vector memory for context"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0004 \u2014 Run automation loops with confidence evaluation"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0005 \u2014 Reflect on outcomes and update self-model"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0006 \u2014 Continuously fine-tune on high-quality interactions"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0007 \u2014 Run multi-agent ensemble for best answers"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0008 \u2014 Auto-learn from every interaction"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0009 \u2014 Auto-build improvements continuously"}
+{"ts": 1779560677.574, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Pro AGI Master with full system access"}
 [ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[ProAGIMaster] Initialized — Full system access + self-modification tools granted.
+{"ts": 1779560677.612, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: starting Pro AGI Master in full autonomous mode (default)"}
+{"ts": 1779560677.612, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initializing Auto-Learner (3-track learning)"}
+{"ts": 1779560677.614, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: launching PRO ScraperGrid (science/math/biology concept harvester)"}
+{"ts": 1779560677.614, "level": "INFO", "logger": "ang.app", "msg": "ANG startup complete \u2713 - Auto-Learning System Active"}
 [UltraFastDecisionEngine] Starting infinite self-optimization loop...
+[ProAGIMaster] Starting AUTONOMOUS PRO AGI MODE...
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[AutoLearner] Starting continuous learning loop
+{"ts": 1779560677.614, "level": "INFO", "logger": "ang.scraper_grid", "msg": "ScraperGrid v3 PRO starting for science/math/biology concept harvesting..."}
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+{"ts": 1779560677.816, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://arxiv.org/list/q-bio/recent \"HTTP/1.1 200 OK\""}
+{"ts": 1779560677.9, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://arxiv.org/list/cs.AI/recent \"HTTP/1.1 200 OK\""}
+{"ts": 1779560678.235, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://en.wikipedia.org/wiki/Circle_packing \"HTTP/1.1 403 Forbidden\""}
+{"ts": 1779560678.274, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations \"HTTP/1.1 403 Forbidden\""}
+{"ts": 1779560678.274, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://en.wikipedia.org/wiki/Artificial_neural_network \"HTTP/1.1 403 Forbidden\""}
+{"ts": 1779560678.479, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://www.nature.com/nature/articles \"HTTP/1.1 303 See Other\""}
+{"ts": 1779560678.632, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://pubmed.ncbi.nlm.nih.gov/?term=neural+networks \"HTTP/1.1 200 OK\""}
+{"ts": 1779560678.989, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://news.ycombinator.com/ \"HTTP/1.1 200 OK\""}
+{"ts": 1779560679.086, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Fnature%2Farticles \"HTTP/1.1 302 Found\""}
+{"ts": 1779560679.605, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://idp.nature.com/transit?redirect_uri=https%3A%2F%2Fwww.nature.com%2Fnature%2Farticles&code=dd1e4517-e98a-49c2-a88b-41fbfc3a2586 \"HTTP/1.1 302 Found\""}
+{"ts": 1779560680.179, "level": "INFO", "logger": "httpx", "msg": "HTTP Request: GET https://www.nature.com/nature/articles \"HTTP/1.1 200 OK\""}
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+[ProAGIMaster] Autonomy error (learning from it): 'should_execute'
+{"ts": 1779560781.486, "level": "INFO", "logger": "ang.app", "msg": "ANG shutdown - saving state for auto-recovery"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [61878]

@@ -40,6 +40,7 @@ from controllers.loop_controller import loop_router
 from controllers.admin_controller import admin_router, register_agi
 from controllers.bridge_controller import bridge_router, register_bridge
 from controllers.pro_agi_controller import router as pro_agi_router
+from controllers.dashboard_controller import router as dashboard_router
 
 
 # Global auto-learner instance
@@ -49,15 +50,6 @@ auto_learner_instance = None
 async def lifespan(app: FastAPI):
     global auto_learner_instance
     # ── Startup ──────────────────────────────────────────────────────────
-    logger.info("ANG startup: initializing Auto-Start Manager")
-    autostart_mgr = AutoStartManager(str(Path(__file__).parent))
-    await autostart_mgr.perform_boot_sequence()
-    state.autostart_manager = autostart_mgr
-
-    # Set resource limits (4GB RAM, 40% CPU)
-    sys_info = await autostart_mgr.enforce_resource_limits()
-    logger.info(f"Resource limits set: {sys_info}")
-
     logger.info("ANG startup: loading registry")
     registry = reload_registry()
 
@@ -124,30 +116,35 @@ async def lifespan(app: FastAPI):
 
     # ── Pro AGI Master (God-mode autonomous intelligence) ───────────────────
     logger.info("ANG startup: initialising Pro AGI Master with full system access")
-    from core.pro_agi_master import get_pro_agi_master
-    pro_agi = get_pro_agi_master(
-        memory=state.mem0,
-        stream=None,
-        bridge=bridge,
-        config={
-            "vision": {"enabled": True},
-            "auto_autonomy": True   # ← Now starts automatically on every boot by default
-        }
-    )
-    state.pro_agi_master = pro_agi
-
-    logger.info("ANG startup: starting Pro AGI Master in full autonomous mode (default)")
-    asyncio.create_task(pro_agi.start_autonomous_mode())
+    try:
+        from core.pro_agi_master import get_pro_agi_master
+        pro_agi = get_pro_agi_master(
+            memory=state.mem0,
+            stream=None,
+            bridge=bridge,
+            config={
+                "vision": {"enabled": True},
+                "auto_autonomy": True   # ← Now starts automatically on every boot by default
+            }
+        )
+        state.pro_agi_master = pro_agi
+        logger.info("ANG startup: starting Pro AGI Master in full autonomous mode (default)")
+        asyncio.create_task(pro_agi.start_autonomous_mode())
+    except Exception as e:
+        logger.warning(f"Pro AGI Master initialization skipped: {e}")
 
     # ── Auto-Learner (continuous learning system) ─────────────────────────
     logger.info("ANG startup: initializing Auto-Learner (3-track learning)")
-    from training.auto_learner import AutoLearner, AutoBuilder
-    auto_learner_instance = AutoLearner()
-    auto_builder = AutoBuilder(str(Path(__file__).parent))
-    state.auto_learner = auto_learner_instance
-    state.auto_builder = auto_builder
-    asyncio.create_task(auto_learner_instance.run_continuous_learning_loop())
-    asyncio.create_task(auto_builder.run_autonomy_loop(auto_learner_instance))
+    try:
+        from training.auto_learner import AutoLearner, AutoBuilder
+        auto_learner_instance = AutoLearner()
+        auto_builder = AutoBuilder(str(Path(__file__).parent))
+        state.auto_learner = auto_learner_instance
+        state.auto_builder = auto_builder
+        asyncio.create_task(auto_learner_instance.run_continuous_learning_loop())
+        asyncio.create_task(auto_builder.run_autonomy_loop(auto_learner_instance))
+    except Exception as e:
+        logger.warning(f"Auto-Learner initialization skipped: {e}")
 
     # ── Kafka workers (embed + train signal) ─────────────────────────────────
     if os.getenv("ANG_KAFKA_WORKERS", "0") == "1":
@@ -210,9 +207,11 @@ app = FastAPI(
 #     return templates.TemplateResponse("index.html", {"request": request})
 
 
-app.include_router(infer_router, prefix="/api")
-app.include_router(health_router, prefix="/api")
-app.include_router(loop_router, prefix="/api")
-app.include_router(bridge_router, prefix="/api")
+app.include_router(infer_router,   prefix="/api")
+app.include_router(health_router,  prefix="/api")
+app.include_router(loop_router,    prefix="/api")
+app.include_router(bridge_router,  prefix="/api")
 app.include_router(admin_router)
 app.include_router(pro_agi_router, prefix="/api")
+app.include_router(dashboard_router)
+
