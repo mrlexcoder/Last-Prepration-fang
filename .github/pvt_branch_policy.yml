@@ -1,0 +1,15 @@
+name: pvt_new_master — Pro-Level Gate
+on:
+  push:
+    branches: [ pvt_new_master ]
+  pull_request:
+    branches: [ pvt_new_master ]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pro-Level Validation
+        run: |
+          echo "🚨 pvt_new_master gate — all CI/lint/test/security-audit workflows run here."
