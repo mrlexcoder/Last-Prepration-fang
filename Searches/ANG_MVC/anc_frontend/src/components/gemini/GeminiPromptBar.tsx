@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { useChatStore } from '@/store/chatStore'
 import { useUiStore, type GeminiModel } from '@/store/uiStore'
 import type { RuntimeHint } from '@/lib/angApi'
+import { sendVoiceCommand } from '@/lib/angApi'
 
 const models: { id: GeminiModel; label: string; hint: RuntimeHint }[] = [
   { id: 'flash', label: 'Stub (fast)', hint: 'runtime_adapter_stub' },
@@ -40,6 +41,11 @@ export function GeminiPromptBar({ centered, className }: GeminiPromptBarProps) {
   const selectedModel = useUiStore((s) => s.selectedModel)
   const setSelectedModel = useUiStore((s) => s.setSelectedModel)
 
+  // Voice / Listening state (Pro level)
+  const [isListening, setIsListening] = useState(false)
+  const [voiceTranscript, setVoiceTranscript] = useState('')
+  const recognitionRef = useRef<any>(null)
+
   useEffect(() => {
     const close = (e: MouseEvent) => {
       if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
@@ -70,6 +76,80 @@ export function GeminiPromptBar({ centered, className }: GeminiPromptBarProps) {
   }
 
   const hasText = text.trim().length > 0
+
+  // Pro-level voice listening using browser SpeechRecognition + backend voice actions
+  const startVoiceListening = () => {
+    const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SpeechRec) {
+      alert('Voice input requires Chrome or Edge browser. Please use one of them.')
+      return
+    }
+
+    if (isListening) {
+      // Stop listening
+      if (recognitionRef.current) recognitionRef.current.stop()
+      setIsListening(false)
+      setVoiceTranscript('')
+      return
+    }
+
+    const rec = new SpeechRec()
+    recognitionRef.current = rec
+    rec.continuous = false
+    rec.interimResults = true
+    rec.lang = 'en-US'
+
+    rec.onresult = async (event: any) => {
+      let final = ''
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) final = event.results[i][0].transcript.trim()
+      }
+      if (final) {
+        setVoiceTranscript(final)
+        setIsListening(false)
+
+        try {
+          // Send to Pro AGI Voice endpoint — this executes real actions (folder, chrome, etc.)
+          const result = await sendVoiceCommand(final)
+          const reply = result.spoken_response || result.result || 'Done.'
+
+          // Speak the response
+          if ('speechSynthesis' in window) {
+            const u = new SpeechSynthesisUtterance(reply)
+            window.speechSynthesis.speak(u)
+          }
+
+          // Also show in chat if possible
+          if (reply && reply.length > 5) {
+            // Optional: you can also push to chatStore here if wanted
+            console.log('[Voice] Pro response:', reply)
+          }
+        } catch (e) {
+          console.error('Voice command error', e)
+        }
+        setVoiceTranscript('')
+      }
+    }
+
+    rec.onerror = (e: any) => {
+      console.error('Mic error', e)
+      setIsListening(false)
+      setVoiceTranscript('')
+    }
+
+    rec.onend = () => {
+      setIsListening(false)
+    }
+
+    try {
+      rec.start()
+      setIsListening(true)
+      setVoiceTranscript('Listening...')
+    } catch (e) {
+      alert('Could not start microphone. Please allow mic permission in browser settings.')
+      setIsListening(false)
+    }
+  }
 
   return (
     <form
@@ -109,12 +189,12 @@ export function GeminiPromptBar({ centered, className }: GeminiPromptBarProps) {
           <AttachMenuTrigger />
 
           <textarea
-            value={text}
+            value={isListening ? voiceTranscript : text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Ask ANC"
+            placeholder={isListening ? "Listening..." : "Ask ANC"}
             rows={1}
-            disabled={isGenerating}
+            disabled={isGenerating || isListening}
             className="max-h-[200px] min-h-[40px] flex-1 resize-none bg-transparent py-3 text-base text-text placeholder:text-text-muted focus:outline-none disabled:opacity-60"
             style={{ fieldSizing: 'content' } as React.CSSProperties}
           />
@@ -179,8 +259,14 @@ export function GeminiPromptBar({ centered, className }: GeminiPromptBarProps) {
             ) : (
               <button
                 type="button"
-                className="ml-1 rounded-full p-2.5 text-text-muted hover:bg-sidebar transition-colors"
-                title="Voice"
+                onClick={startVoiceListening}
+                className={cn(
+                  "ml-1 rounded-full p-2.5 transition-all",
+                  isListening 
+                    ? "bg-red-500 text-white animate-pulse" 
+                    : "text-text-muted hover:bg-sidebar hover:text-text"
+                )}
+                title={isListening ? "Stop listening" : "Voice — Click to speak (Pro mode: Hey ANG commands work)"}
               >
                 <Icon name="mic" size={24} />
               </button>

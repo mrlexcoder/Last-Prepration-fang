@@ -6,6 +6,7 @@ import { SignupPage } from '@/pages/SignupPage'
 import { GeminiAppPage } from '@/pages/GeminiAppPage'
 import { AdminPage } from '@/pages/AdminPage'
 import { NotebookApp } from '@/notebook-app/routes/NotebookApp'
+import { ProAGIDashboard } from '@/pages/ProAGIDashboard'
 
 export default function App() {
   return (
@@ -39,6 +40,15 @@ export default function App() {
           <AdminRoute>
             <AdminPage />
           </AdminRoute>
+        }
+      />
+
+      <Route
+        path="/pro-agi"
+        element={
+          <ProtectedRoute>
+            <ProAGIDashboard />
+          </ProtectedRoute>
         }
       />
 

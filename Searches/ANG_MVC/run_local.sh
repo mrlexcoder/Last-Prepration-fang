@@ -51,27 +51,34 @@ ANG_AUTO_TRAIN=0 \
 ANG_LETTA_ENABLED=0 \
 RINGBUF_URL=http://localhost:8090 \
 GO_STORE_GRPC=localhost:50051 \
-"$VENV/uvicorn" app:app --host 0.0.0.0 --port 8081 --reload &
-API_PID=$!
+    "$VENV/uvicorn" app:app --host 0.0.0.0 --port 8081 --reload &
+    API_PID=$!
 
-# ── 4. Vite Frontend ──────────────────────────────────────────────────────────
-echo "[4/4] Starting frontend on :5173..."
-(cd "$ROOT/anc_frontend" && npm run dev -- --port 5173) &
-FRONT_PID=$!
+    # ── 5. PRO Learning Ecosystem (separate process, separate port) ──────────────
+    echo "[5/5] Starting PRO Learning Ecosystem (generative AI + auto-doing) on :8082..."
+    ANG_LEARNING_PORT=8082 \
+    "$VENV/uvicorn" learning_service.app:app --host 0.0.0.0 --port 8082 --reload &
+    LEARN_PID=$!
 
-sleep 3
-echo ""
-echo "✓ Ring buffer:  http://localhost:8090/health"
-echo "✓ Go store:     localhost:50051 (gRPC)"
-echo "✓ Backend API:  http://localhost:8081/api/health"
-echo "✓ Frontend:     http://localhost:5173"
-echo ""
-echo "Press Ctrl+C to stop all services"
+    # ── 6. Vite Frontend ──────────────────────────────────────────────────────────
+    echo "[6/6] Starting frontend on :5173..."
+    (cd "$ROOT/anc_frontend" && npm run dev -- --port 5173) &
+    FRONT_PID=$!
 
-cleanup() {
-  echo "Stopping..."
-  kill $RINGBUF_PID $GO_PID $API_PID $FRONT_PID 2>/dev/null
-  exit 0
-}
+    sleep 4
+    echo ""
+    echo "✓ Ring buffer:           http://localhost:8090/health"
+    echo "✓ Go store:              localhost:50051 (gRPC)"
+    echo "✓ Main ANG Inference:    http://localhost:8081/api/health"
+    echo "✓ PRO Learning Ecosystem: http://localhost:8082/health  (3-track generative auto-doing)"
+    echo "✓ Frontend:              http://localhost:5173"
+    echo ""
+    echo "Press Ctrl+C to stop all services"
+
+    cleanup() {
+      echo "Stopping all (main + learning ecosystem)..."
+      kill $RINGBUF_PID $GO_PID $API_PID $LEARN_PID $FRONT_PID 2>/dev/null
+      exit 0
+    }
 trap cleanup INT TERM
 wait

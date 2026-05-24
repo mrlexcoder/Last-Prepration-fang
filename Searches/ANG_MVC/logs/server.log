@@ -1,0 +1,97 @@
+{"ts": 1779560041.145, "level": "WARNING", "logger": "ang.infinity_cache", "msg": "faiss/numpy not installed \u2014 InfinityCache running in no-vector mode"}
+INFO:     Started server process [40436]
+INFO:     Waiting for application startup.
+{"ts": 1779560041.227, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initializing Auto-Start Manager"}
+[AutoStart] Starting ANG v3 boot sequence...
+[AutoStart] Boot sequence complete. Boot count: 1
+{"ts": 1779560041.227, "level": "INFO", "logger": "ang.app", "msg": "Resource limits set: {'total_memory_mb': 15697, 'available_memory_mb': 7357, 'cpu_count': 24, 'load_average': 5.96044921875, 'target_cpu_percent': 40, 'target_memory_mb': 4096}"}
+{"ts": 1779560041.228, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: loading registry"}
+{"ts": 1779560041.228, "level": "INFO", "logger": "ang.quantum_router", "msg": "registry reloaded: 4 adapters"}
+{"ts": 1779560041.228, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising WarmAdapterPool (v3)"}
+{"ts": 1779560041.228, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading 4 adapters..."}
+{"ts": 1779560041.228, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_stub' loaded and kept warm"}
+{"ts": 1779560041.229, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_hf' loaded and kept warm"}
+{"ts": 1779560041.229, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_llama' loaded and kept warm"}
+{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter.agentscope", "msg": "AgentScope integration running in limited mode: No module named 'agentscope'"}
+{"ts": 1779560041.23, "level": "ERROR", "logger": "ang.adapter_pool", "msg": "Failed to load adapter 'runtime_adapter_agentscope': name 'ChatResponse' is not defined"}
+{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_agentscope' loaded and kept warm"}
+{"ts": 1779560041.23, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading complete. Warm adapters: ['runtime_adapter_stub', 'runtime_adapter_hf', 'runtime_adapter_llama', 'runtime_adapter_agentscope']"}
+{"ts": 1779560041.23, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising storage clients"}
+{"ts": 1779560041.715, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Mem0 layer"}
+{"ts": 1779560041.715, "level": "WARNING", "logger": "ang.mem0", "msg": "mem0ai not installed \u2014 using Go store fallback"}
+{"ts": 1779560041.715, "level": "INFO", "logger": "ang.mem0", "msg": "Mem0 unavailable \u2014 using Go store for memory"}
+{"ts": 1779560041.715, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising InfinityCache"}
+{"ts": 1779560044.548, "level": "WARNING", "logger": "ang.infinity_cache", "msg": "sentence-transformers not available \u2014 using dummy embeddings"}
+{"ts": 1779560044.548, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising AGI layer"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0001 \u2014 Serve accurate, low-latency AI inference with auto-learning"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0002 \u2014 Route requests to optimal runtime adapter"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0003 \u2014 Maintain and query vector memory for context"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0004 \u2014 Run automation loops with confidence evaluation"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0005 \u2014 Reflect on outcomes and update self-model"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0006 \u2014 Continuously fine-tune on high-quality interactions"}
+{"ts": 1779560044.549, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0007 \u2014 Run multi-agent ensemble for best answers"}
+{"ts": 1779560044.55, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0008 \u2014 Auto-learn from every interaction"}
+{"ts": 1779560044.55, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0009 \u2014 Auto-build improvements continuously"}
+{"ts": 1779560044.55, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Pro AGI Master with full system access"}
+ERROR:    Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/starlette/routing.py", line 692, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrlexcoder/.local/lib/python3.13/site-packages/fastapi/routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/app.py", line 127, in lifespan
+    from core.pro_agi_master import get_pro_agi_master
+  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/pro_agi_master.py", line 41, in <module>
+    from core.pro_agi_tools import ProAGITools
+  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/pro_agi_tools.py", line 31, in <module>
+    from core.laptop_observer import get_laptop_observer
+  File "/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/core/laptop_observer.py", line 16, in <module>
+    import psutil
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1118, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1218, in get_data
+MemoryError
+
+ERROR:    Application startup failed. Exiting.
+[ProAGIMaster] Warning: Machine_understanding vision not importable (will run without desktop vision)
+[UltraFastDecisionEngine] Starting infinite self-optimization loop...

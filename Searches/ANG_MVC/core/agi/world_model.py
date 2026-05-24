@@ -37,7 +37,7 @@ class WorldModel:
             "metadata": metadata or {},
         }
         self._events.append(entry)
-        logger.debug("world_model observed: %s", event[:80])
+        logger.debug("world_model observed: %s", str(event)[:80] if event else "")
 
     def add_entity(self, entity_id: str, entity_type: str, attributes: Optional[dict] = None):
         """Register or update an entity in the world state."""

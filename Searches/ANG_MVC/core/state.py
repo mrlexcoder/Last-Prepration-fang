@@ -22,6 +22,8 @@ class AppState:
     bridge: "MultiStructuralBridge | None" = None
     adapter_pool: "WarmAdapterPool | None" = None   # v3 — Warm Adapter Pool (P0)
     cmu_router: "CognitiveMotorRouter | None" = None  # v3 Pro — decides multiple-calc paths
+    ultra_fast_engine: "UltraFastDecisionEngine | None" = None  # v4.344+ — <30ms physics+quantum+future brain
+    pro_agi_master: "ProAGIMaster | None" = None  # Top-level professional AGI with full system access
     # Hot-reloadable registry cache
     _registry: dict | None = None
 

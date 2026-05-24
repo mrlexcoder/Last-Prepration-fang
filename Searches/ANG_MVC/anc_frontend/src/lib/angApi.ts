@@ -19,6 +19,27 @@ export interface ANGInferResponse {
   meta: { latency_ms?: number; provider?: string; model?: string }
 }
 
+export interface VoiceCommandRequest {
+  command: string
+}
+
+export interface VoiceCommandResponse {
+  executed: boolean
+  action?: string
+  result: string
+  spoken_response: string
+}
+
+export async function sendVoiceCommand(command: string): Promise<VoiceCommandResponse> {
+  const res = await fetch('/api/pro/agi/voice', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ command })
+  })
+  if (!res.ok) throw new Error('Voice command failed')
+  return res.json()
+}
+
 export interface ANGBridgeRequest {
   mode: ANGMode
   input: string

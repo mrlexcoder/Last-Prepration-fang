@@ -1,0 +1,21 @@
+[Unit]
+Description=AuroraNeuroGrid AGI System (ANG v3 Pro)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC
+Environment="ANG_KAFKA_WORKERS=1"
+Environment="ANG_AUTO_TRAIN=1"
+Environment="ANG_SCRAPER_ENABLED=1"
+Environment="ANG_LETTA_ENABLED=0"
+Environment="ANG_LOG_LEVEL=INFO"
+ExecStart=/usr/bin/python3 -m uvicorn app:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

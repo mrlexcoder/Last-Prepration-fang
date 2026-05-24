@@ -1,0 +1,85 @@
+INFO:     Will watch for changes in these directories: ['/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC']
+{"ts": 1779543242.414, "level": "INFO", "logger": "faiss.loader", "msg": "Loading faiss with AVX2 support."}
+{"ts": 1779543242.427, "level": "INFO", "logger": "faiss.loader", "msg": "Successfully loaded faiss with AVX2 support."}
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:     Started reloader process [354398] using WatchFiles
+{"ts": 1779543242.837, "level": "INFO", "logger": "faiss.loader", "msg": "Loading faiss with AVX2 support."}
+{"ts": 1779543242.851, "level": "INFO", "logger": "faiss.loader", "msg": "Successfully loaded faiss with AVX2 support."}
+INFO:     Started server process [354432]
+INFO:     Waiting for application startup.
+{"ts": 1779543242.863, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: loading registry"}
+{"ts": 1779543242.864, "level": "INFO", "logger": "ang.quantum_router", "msg": "registry reloaded: 4 adapters"}
+{"ts": 1779543242.864, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising WarmAdapterPool (v3)"}
+{"ts": 1779543242.864, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading 4 adapters..."}
+{"ts": 1779543242.864, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_stub' loaded and kept warm"}
+{"ts": 1779543242.864, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_hf' loaded and kept warm"}
+{"ts": 1779543242.865, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_llama' loaded and kept warm"}
+{"ts": 1779543243.081, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543243.432, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543243.544, "level": "INFO", "logger": "ang.adapter.agentscope", "msg": "AgentScope (v1.x) + ChatModelBase loaded successfully"}
+{"ts": 1779543243.544, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: adapter 'runtime_adapter_agentscope' loaded and kept warm"}
+{"ts": 1779543243.544, "level": "INFO", "logger": "ang.adapter_pool", "msg": "WarmAdapterPool: preloading complete. Warm adapters: ['runtime_adapter_stub', 'runtime_adapter_hf', 'runtime_adapter_llama', 'runtime_adapter_agentscope']"}
+{"ts": 1779543243.544, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising storage clients"}
+{"ts": 1779543243.569, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising Mem0 layer"}
+{"ts": 1779543243.57, "level": "WARNING", "logger": "ang.mem0", "msg": "mem0ai not installed \u2014 using Go store fallback"}
+{"ts": 1779543243.57, "level": "INFO", "logger": "ang.mem0", "msg": "Mem0 unavailable \u2014 using Go store for memory"}
+{"ts": 1779543243.57, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising InfinityCache"}
+{"ts": 1779543243.783, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543244.133, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543244.484, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543244.838, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543245.188, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543245.539, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543245.889, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543246.24, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+/opt/lampp/htdocs/myprepProjects/Last-Prepration-fang/Searches/ANG_MVC/.venv/lib/python3.13/site-packages/torch/cuda/__init__.py:129: UserWarning: CUDA initialization: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
+  return torch._C._cuda_getDeviceCount() > 0
+{"ts": 1779543246.531, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "No device provided, using cpu"}
+{"ts": 1779543246.59, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543246.941, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543247.292, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543247.408, "level": "INFO", "logger": "sentence_transformers.base.model", "msg": "Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2."}
+{"ts": 1779543247.643, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543247.994, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543248.345, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543248.697, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543249.048, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543249.399, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543249.75, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543250.101, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543250.452, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543250.803, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543251.155, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543251.506, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543251.857, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543252.208, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543252.476, "level": "INFO", "logger": "ang.app", "msg": "ANG startup: initialising AGI layer"}
+{"ts": 1779543252.476, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0001 \u2014 Serve accurate, low-latency AI inference"}
+{"ts": 1779543252.476, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0002 \u2014 Route requests to optimal runtime adapter"}
+{"ts": 1779543252.476, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0003 \u2014 Maintain and query vector memory for context"}
+{"ts": 1779543252.476, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0004 \u2014 Run automation loops with confidence evaluation"}
+{"ts": 1779543252.477, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0005 \u2014 Reflect on outcomes and update self-model"}
+{"ts": 1779543252.477, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0006 \u2014 Continuously fine-tune on high-quality interactions"}
+{"ts": 1779543252.477, "level": "INFO", "logger": "ang.goal_engine", "msg": "goal created: goal_0007 \u2014 Run multi-agent ensemble for best answers"}
+{"ts": 1779543252.477, "level": "INFO", "logger": "ang.app", "msg": "ANG startup complete \u2713"}
+INFO:     Application startup complete.
+{"ts": 1779543252.559, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543252.91, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543253.264, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543253.615, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543253.966, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543254.317, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543254.668, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543255.019, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543255.37, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543255.721, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543256.072, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543256.423, "level": "INFO", "logger": "watchfiles.main", "msg": "3 changes detected"}
+{"ts": 1779543256.774, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+{"ts": 1779543257.125, "level": "INFO", "logger": "watchfiles.main", "msg": "1 change detected"}
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"ts": 1779543257.292, "level": "INFO", "logger": "ang.app", "msg": "ANG shutdown"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [354432]
+INFO:     Stopping reloader process [354398]

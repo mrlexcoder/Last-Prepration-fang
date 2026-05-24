@@ -4,6 +4,7 @@ import { Icon } from '@/components/icons/Icon'
 import { WelcomeModal } from '@/notebook-app/components/editor/WelcomeModal'
 import { cn } from '@/lib/utils'
 import { useNotebookEditorStore } from '@/notebook-app/store/editorStore'
+import { VoiceChat } from '@/components/VoiceChat'
 
 const SUGGESTIONS = [
   'Start a project',
@@ -28,6 +29,7 @@ export function ChatPanel() {
   const sendChatMessage = useNotebookEditorStore((s) => s.sendChatMessage)
   const saveMessageToNote = useNotebookEditorStore((s) => s.saveMessageToNote)
   const [input, setInput] = useState('')
+  const [showVoice, setShowVoice] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -50,12 +52,20 @@ export function ChatPanel() {
 
       <div className="flex items-center justify-between px-4 py-3 border-b border-border-soft/80">
         <span className="text-sm font-medium text-text">Chat</span>
-        <button
-          type="button"
-          className="rounded-full p-1.5 text-text-muted hover:bg-sidebar"
-        >
-          <Icon name="more_vert" size={22} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowVoice(!showVoice)}
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-full transition ${showVoice ? 'bg-red-500 text-white' : 'bg-sidebar hover:bg-sidebar/80'}`}
+          >
+            🎤 {showVoice ? 'Hide Voice' : 'Voice Control (Pro)'}
+          </button>
+          <button
+            type="button"
+            className="rounded-full p-1.5 text-text-muted hover:bg-sidebar"
+          >
+            <Icon name="more_vert" size={22} />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 py-6">
@@ -144,6 +154,12 @@ export function ChatPanel() {
           </div>
         )}
       </div>
+
+      {showVoice && (
+        <div className="border-t border-border-soft p-4 bg-surface/50">
+          <VoiceChat />
+        </div>
+      )}
 
       <form onSubmit={submit} className="border-t border-border-soft p-4">
         <div className="mx-auto max-w-2xl rounded-2xl border border-border-soft bg-surface shadow-sm focus-within:border-google-blue/40 focus-within:shadow-md transition-shadow">

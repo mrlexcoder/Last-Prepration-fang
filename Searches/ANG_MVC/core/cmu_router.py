@@ -136,9 +136,9 @@ class CognitiveMotorRouter:
                 reason = "exact_cache_reflex"
             else:
                 complexity = self._score_complexity(query, context)
-                if complexity < 0.25:
-                    cmu = 1
-                    reason = "low_complexity_fast_path"
+                if complexity < 0.22:
+                    cmu = 0   # even more aggressive reflex/fast
+                    reason = "very_low_complexity_fast_neural_approx"
                 elif complexity < 0.55:
                     cmu = 2
                     reason = "medium_complexity_cot_critic"

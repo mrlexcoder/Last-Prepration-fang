@@ -81,12 +81,9 @@ export const useChatStore = create<ChatState>()(
         }
 
         const assistantId = `msg-${uid()}`
-        // Dynamic steps for AgentScope
-        let initialSteps = [
-          { id: '1', label: 'Routing to optimal brain', content: '', status: 'active' as const },
-          { id: '2', label: 'Recalling long-term memory', content: '', status: 'pending' as const },
-          { id: '3', label: 'Generating response', content: '', status: 'pending' as const },
-        ]
+        // Human-like: No visible internal thinking steps by default.
+        // Only show for advanced modes if explicitly wanted.
+        let initialSteps: any[] = []
 
         if (mode === 'agentscope') {
           initialSteps = [
@@ -104,8 +101,8 @@ export const useChatStore = create<ChatState>()(
           createdAt: now,
           status: 'thinking',
           thinking: {
-            visible: true,
-            collapsed: false,
+            visible: false,   // Hidden for clean human-like experience
+            collapsed: true,
             steps: initialSteps,
           },
         }

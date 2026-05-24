@@ -31,6 +31,13 @@ class BridgeRequest(BaseModel):
     force_live: Optional[bool] = False
 
 
+class LearningSignalRequest(BaseModel):
+    prompt: str
+    response: str
+    confidence: float = 0.5
+    metrics: dict = {}
+
+
 @bridge_router.post("/bridge")
 async def bridge_execute(request: BridgeRequest):
     if state.bridge is None:
@@ -43,3 +50,31 @@ async def bridge_execute(request: BridgeRequest):
     except Exception as exc:
         logger.error("bridge error: %s", exc)
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@bridge_router.post("/bridge/learn")
+async def bridge_learn(request: LearningSignalRequest):
+    """Send a learning signal to the auto-learner."""
+    if state.auto_learner is None:
+        raise HTTPException(status_code=503, detail="Auto-learner not initialized")
+    try:
+        await state.auto_learner.on_signal(
+            prompt=request.prompt,
+            response=request.response,
+            metrics={
+                "confidence": request.confidence,
+                **request.metrics
+            }
+        )
+        return {"status": "learned", "timestamp": state.auto_learner.stats["signals_processed"]}
+    except Exception as exc:
+        logger.error("learning error: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@bridge_router.get("/bridge/learn/stats")
+async def bridge_learn_stats():
+    """Get auto-learning statistics."""
+    if state.auto_learner:
+        return state.auto_learner.get_stats()
+    return {"error": "Auto-learner not initialized"}
