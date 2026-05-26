@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion'
 
+interface Source {
+  url: string
+  title?: string
+}
+
 interface SourceCardsProps {
-  sources: string[]
+  sources: string[] | Source[]
   live?: boolean
 }
 
@@ -22,8 +27,14 @@ function getFavicon(url: string): string {
   }
 }
 
+function normalise(s: string | Source): Source {
+  return typeof s === 'string' ? { url: s } : s
+}
+
 export function SourceCards({ sources, live }: SourceCardsProps) {
   if (!sources || sources.length === 0) return null
+  const items = sources.map(normalise).filter(s => s.url.startsWith('http'))
+  if (items.length === 0) return null
 
   return (
     <div className="mt-3 space-y-1.5">
@@ -34,28 +45,31 @@ export function SourceCards({ sources, live }: SourceCardsProps) {
             Live web
           </span>
         )}
-        <span>{sources.length} source{sources.length !== 1 ? 's' : ''}</span>
+        <span>{items.length} source{items.length !== 1 ? 's' : ''}</span>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {sources.slice(0, 6).map((url, i) => (
+        {items.slice(0, 6).map((src, i) => (
           <motion.a
             key={i}
-            href={url}
+            href={src.url}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.04 }}
-            className="flex items-center gap-1.5 rounded-lg border border-border-soft bg-surface px-2.5 py-1.5 text-xs text-text-muted hover:border-google-blue hover:text-google-blue transition-colors max-w-[200px]"
+            title={src.title ?? src.url}
+            className="flex items-center gap-1.5 rounded-lg border border-border-soft bg-surface px-2.5 py-1.5 text-xs text-text-muted hover:border-google-blue hover:text-google-blue transition-colors max-w-[220px]"
           >
             <img
-              src={getFavicon(url)}
+              src={getFavicon(src.url)}
               alt=""
               className="h-3.5 w-3.5 shrink-0 rounded-sm"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
             />
-            <span className="truncate">{getDomain(url)}</span>
+            <span className="truncate">
+              {src.title ? src.title.slice(0, 28) : getDomain(src.url)}
+            </span>
           </motion.a>
         ))}
       </div>
