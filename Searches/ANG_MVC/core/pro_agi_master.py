@@ -258,7 +258,7 @@ class ProAGIMaster:
                     self.physics.predict_future_state(np.array([0.7, 0.9, 0.5, 0.3]), dt=2.0)
                 )
 
-                if decision["should_execute"] and decision["best_action"] != "none":
+                if decision.get("should_execute", False) and decision.get("best_action") != "none":
                     print(f"[ProAGIMaster] Autonomous decision: {decision}")
                     await self.think_and_act(
                         f"Autonomous action based on current world state: {decision}",

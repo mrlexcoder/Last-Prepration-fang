@@ -217,7 +217,10 @@ class ProAGITools:
             from core.state import state
             if hasattr(state, "mem0") and state.mem0:
                 # Assuming memory has a store method
-                state.mem0.store({"type": "injected_thought", "content": thought, "from": agent_id})
+                if hasattr(state.mem0, "store_sync"):
+                    state.mem0.store_sync({"type": "injected_thought", "content": thought, "from": agent_id})
+                else:
+                    state.mem0.store({"type": "injected_thought", "content": thought, "from": agent_id})
             return f"Thought injected into system memory: {thought[:100]}..."
         except Exception as e:
             return f"Failed to inject thought: {e}"
