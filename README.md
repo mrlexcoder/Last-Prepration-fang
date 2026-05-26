@@ -2,12 +2,18 @@
 
 A focused repository for daily FAANG-style preparation with DSA practice and coding reference material.
 
+## 📅 Latest Update
+- **Date:** May 26, 2026
+- **Status:** Active preparation in progress
+- **Connection:** Successfully established with GitHub remote
+
 ## Contents
 
 - `15May-2026/` — daily practice files, coding exercises, and prep notes
 - `Daily_fang_track.md` — progress tracking for daily preparation
 - `Final_Poroject/` — final project work and related implementation
 - `Minimal_prep/` — lightweight preparation resources
+- `Searches/` — search algorithm implementations and practice
 
 ## Usage
 
@@ -20,6 +26,17 @@ Example:
 python 15May-2026/Day1/find_duplicates.py
 ```
 
+## Git Configuration
+
+This repository is configured with:
+- **Username:** mrlexcoder
+- **Email:** mrlexcoder@gmail.com
+- **Remote:** origin (https://github.com/mrlexcoder/ANC_Official.git)
+
 ## Notes
 
 This repo is intended for structured interview prep and tracking progress across multiple languages.
+
+---
+
+*Last updated: May 26, 2026 | Connection verified and working*
