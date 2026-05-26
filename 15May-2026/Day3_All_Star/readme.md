@@ -2,6 +2,10 @@
 
 Practice printing star patterns using nested loops. A classic topic in coding interviews and college exams.
 
+## 📅 Latest Update
+- **Date:** May 26, 2026
+- **Status:** Complete with 7 pattern implementations
+
 ---
 
 ## Patterns Covered
@@ -88,3 +92,16 @@ node 07_butterfly.js
 **    **
 *      *
 ```
+
+---
+
+## Practice Tips
+
+1. Start with the right triangle - it's the simplest
+2. Understand how spaces and stars work together
+3. Practice drawing the pattern on paper first
+4. Break complex patterns into halves (top/bottom)
+
+---
+
+*Last updated: May 26, 2026*
