@@ -137,12 +137,15 @@ async def lifespan(app: FastAPI):
             bridge=bridge,
             config={
                 "vision": {"enabled": True},
-                "auto_autonomy": True   # ← Now starts automatically on every boot by default
+                "auto_autonomy": False   # Disabled by default — the autonomy loop has multiple bugs (memory.store, tool crashes, etc.) that kill the server
             }
         )
         state.pro_agi_master = pro_agi
-        logger.info("ANG startup: starting Pro AGI Master in full autonomous mode (default)")
-        asyncio.create_task(pro_agi.start_autonomous_mode())
+        if pro_agi and getattr(pro_agi, "config", {}).get("auto_autonomy"):
+            logger.info("ANG startup: starting Pro AGI Master in full autonomous mode")
+            asyncio.create_task(pro_agi.start_autonomous_mode())
+        else:
+            logger.info("ANG startup: Pro AGI Master loaded (autonomous mode disabled to keep server stable)")
     except Exception as e:
         logger.warning(f"Pro AGI Master initialization skipped: {e}")
 
