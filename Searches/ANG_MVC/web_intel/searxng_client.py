@@ -105,7 +105,13 @@ class SearXNGClient:
         """
         Returns list of: { url, title, snippet, engine, score }
         Tries SearXNG first, falls back to DuckDuckGo.
+        Auto-boosts news category for news/current-events queries.
         """
+        # Auto-detect news queries and boost news engines
+        news_keywords = ["news", "today", "latest", "recent", "breaking",
+                         "himachal", "pradesh", "india", "election", "minister"]
+        if any(kw in query.lower() for kw in news_keywords):
+            categories = "news,general"
         # Try SearXNG
         if await self._check_searxng():
             params = {
