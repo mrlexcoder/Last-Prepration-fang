@@ -24,9 +24,12 @@ logger = logging.getLogger("ang.web_rag")
 # Keywords that signal need for live web data
 LIVE_TRIGGERS = [
     r"\b(today|yesterday|this week|this month|latest|recent|current|now|2024|2025|2026)\b",
-    r"\b(news|breaking|update|release|launch|announce)\b",
-    r"\b(price|stock|weather|score|result|winner)\b",
+    r"\b(news|breaking|update|release|launch|announce|announced)\b",
+    r"\b(price|stock|weather|score|result|winner|standings)\b",
     r"\b(who is|what is .+ doing|where is .+ now)\b",
+    r"\b(himachal|pradesh|india|state|government|minister|election|policy)\b",
+    r"\b(match|game|tournament|championship|league|ipl|cricket|football)\b",
+    r"\b(earthquake|flood|disaster|accident|incident|attack|protest)\b",
 ]
 _LIVE_RE = re.compile("|".join(LIVE_TRIGGERS), re.IGNORECASE)
 
