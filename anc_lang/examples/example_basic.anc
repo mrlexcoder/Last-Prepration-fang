@@ -1,0 +1,24 @@
+// example_basic.anc
+// First real example of the ANC language
+
+module basic_os_introspection;
+
+import "linux/sys.h";
+import "anc/c_bridge.h";
+
+fn main() -> i32 {
+    print("ANC Language - Direct Linux Control Demo");
+
+    let pid = anc.get_pid();
+    let tid = anc.get_tid();
+
+    print("Process ID: ", pid);
+    print("Thread ID : ", tid);
+
+    let status = anc.read_proc_status();
+    print("Read /proc/self/status successfully.");
+
+    // Future: direct mmap, shm, ptrace examples will go here
+
+    return 0;
+}
