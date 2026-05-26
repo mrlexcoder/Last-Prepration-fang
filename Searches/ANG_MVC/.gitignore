@@ -1,1 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Logs
 *.log
+logs/
+
+# Node / Frontend
+node_modules/
+anc_frontend/dist/
+anc_frontend/.vite/
+
+# Rust build
+storage/rust_ringbuf/target/
+
+# Go build artifacts
+storage/go_store/ang_store
+
+# Data / cache
+go_store_data/
+/tmp/
+*.faiss
+*.db
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/
+*.swp
