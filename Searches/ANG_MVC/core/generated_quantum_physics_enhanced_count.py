@@ -1,16 +1,15 @@
 import numpy as np
-# Simple Cell Cycle / Lotka-Volterra Biology Simulator - from: Lotka-Volterra biology dynamics for self-regulating goal engine
-def run_ecosystem(steps=1000, dt=0.01):
-    x, y = 20.0, 10.0  # prey, predator
-    hist = []
+# Physics + Quantum-inspired Simulator for concept: quantum random walk for counterfactual exploration in WorldModel
+def quantum_walk(steps=200, dim=2):
+    pos = np.zeros(dim)
+    trajectory = [pos.copy()]
     for _ in range(steps):
-        dx = 0.5 * x - 0.03 * x * y
-        dy = 0.02 * x * y - 0.4 * y
-        x += dx * dt
-        y += dy * dt
-        hist.append((x, y))
-    return np.array(hist)
+        direction = np.random.randn(dim)
+        direction /= np.linalg.norm(direction)
+        pos += direction * 0.1
+        trajectory.append(pos.copy())
+    return np.array(trajectory)
 
 if __name__ == "__main__":
-    h = run_ecosystem()
-    print("Biology cycle max prey:", np.max(h[:,0]))
+    traj = quantum_walk()
+    print("Final displacement:", np.linalg.norm(traj[-1]))
