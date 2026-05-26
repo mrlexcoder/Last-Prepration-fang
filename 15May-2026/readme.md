@@ -2,6 +2,11 @@
 
 Daily DSA practice across multiple languages.
 
+## 📅 Latest Update
+- **Date:** May 26, 2026
+- **Status:** Active preparation in progress
+- **Connection:** Successfully established with GitHub remote
+
 ## Structure
 
 ```
@@ -12,6 +17,14 @@ Daily DSA practice across multiple languages.
 │   ├── FindDuplicates.java     # Java
 │   ├── find_duplicates.rb      # Ruby
 │   └── find_duplicates.php     # PHP
+├── Day3_All_Star/
+│   ├── 01_right_triangle.js
+│   ├── 02_inverted_right_triangle.js
+│   ├── 03_pyramid.js
+│   ├── 04_inverted_pyramid.js
+│   ├── 05_diamond.js
+│   ├── 06_hollow_rectangle.js
+│   └── 07_butterfly.js
 ├── Final/
 │   └── day2_qn/
 │       └── day2.md             # Day 2 question list
@@ -26,6 +39,7 @@ Daily DSA practice across multiple languages.
 |-----|-------|-----------|
 | 1   | Find duplicates in random number list | Python, JS, Java, Ruby, PHP |
 | 2   | Arrays & Strings (Two Sum, Kadane's, etc.) | — |
+| 3   | Star Patterns (nested loops) | JavaScript |
 
 ## How to Run
 
@@ -44,4 +58,15 @@ php Day1/find_duplicates.php
 
 # Ruby
 ruby Day1/find_duplicates.rb
+
+# Star Patterns
+node Day3_All_Star/01_right_triangle.js
 ```
+
+## Progress Tracking
+
+Track your daily progress in `Daily_fang_track.md` at the root of the repository.
+
+---
+
+*Last updated: May 26, 2026*
