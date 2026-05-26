@@ -10,6 +10,7 @@ Mem0 gives us:
   - Session-level memory (current conversation context)
 """
 
+import asyncio
 import logging
 import os
 from typing import Optional
@@ -157,6 +158,37 @@ class Mem0Layer:
         for m in memories:
             lines.append(f"- {m['memory']}")
         return "\n".join(lines) + "\n\n"
+
+    async def store(self, data: dict) -> bool:
+        """Compatibility shim — works whether called with await or not."""
+        try:
+            payload = [{"role": "system", "content": str(data)}]
+            uid = (data or {}).get("user_id", "system")
+            if self._available:
+                try:
+                    # Try native if it exists on the underlying mem0
+                    if hasattr(self._mem0, "store"):
+                        if asyncio.iscoroutinefunction(self._mem0.store):
+                            await self._mem0.store(data)
+                        else:
+                            self._mem0.store(data)
+                        return True
+                except Exception:
+                    pass
+            # Fallback to our add
+            self.add(payload, user_id=uid, metadata=(data or {}).get("metadata"))
+            return True
+        except Exception as e:
+            logger.debug("Mem0Layer.store shim: %s", e)
+            return False
+
+    def store_sync(self, data: dict) -> bool:
+        """Sync version for code that calls without await."""
+        try:
+            self.add([{"role": "system", "content": str(data)}], user_id=(data or {}).get("user_id", "system"))
+            return True
+        except Exception:
+            return False
 
     @property
     def available(self) -> bool:
