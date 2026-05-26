@@ -29,6 +29,18 @@ CHUNK_SIZE          = int(os.getenv("CHUNK_SIZE", "400"))   # tokens approx
 CHUNK_OVERLAP       = int(os.getenv("CHUNK_OVERLAP", "50"))
 MAX_CHUNKS_PER_URL  = int(os.getenv("MAX_CHUNKS_PER_URL", "8"))
 
+# Rotate user agents to avoid blocks
+_USER_AGENTS = [
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+]
+
+def _random_ua() -> str:
+    import random
+    return random.choice(_USER_AGENTS)
+
 _JS_SIGNALS = ["__NEXT_DATA__", "window.__", "React.createElement", "angular", "vue.js"]
 
 
@@ -121,7 +133,7 @@ async def scrape_url(url: str, query: str, producer) -> list[str]:
     t0 = time.perf_counter()
 
     async with httpx.AsyncClient(
-        headers={"User-Agent": "ANG-Bot/2.0 (+https://ang.ai/bot)"},
+        headers={"User-Agent": _random_ua()},
         timeout=FETCH_TIMEOUT,
     ) as client:
         html = await _fetch_httpx(url, client)
